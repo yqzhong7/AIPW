@@ -26,3 +26,5 @@ Imports:
     tmle,
     stats,
     utils
+URL: https://github.com/yqzhong7/AIPW
+BugReports: https://github.com/yqzhong7/AIPW/issues
