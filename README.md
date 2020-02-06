@@ -19,7 +19,7 @@ The current version of AIPW was built on the influence function from TMLE,
 ``` r
 library(AIPW)
 library(SuperLearner)
-library(TMLE)
+library(tmle)
 
 a <- read.csv("./data.csv",stringsAsFactors = F)
 glmnet_learner = create.Learner("SL.glmnet",tune=list(alpha = seq(0,1)))
