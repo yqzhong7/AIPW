@@ -1,0 +1,28 @@
+Package: AIPW
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Yongqi",
+             family = "Zhong",
+             role = c("aut", "cre"),
+             email = "yqzhong7@gmail.com",
+             comment = c(ORCID = "0000-0002-4042-7450")),
+      person(given = "Ashley",
+             family = "Naimi",
+             role = c("aut"),
+             email = "ashley.naimi@pitt.edu",
+             comment = c(ORCID = "0000-0002-1510-8175")))
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: es
+LazyData: true
+Roxygen: list(markdown = TRUE)
+Suggests: 
+    testthat (>= 2.1.0)
+RoxygenNote: 7.0.2
+Imports: 
+    SuperLearner,
+    tmle,
+    stats,
+    utils
