@@ -12,7 +12,7 @@ Authors@R:
              role = c("aut"),
              email = "ashley.naimi@pitt.edu",
              comment = c(ORCID = "0000-0002-1510-8175")))
-Description: What the package does (one paragraph).
+Description: This AIPW function takes a fitted TMLE object for effect estimation.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: es
