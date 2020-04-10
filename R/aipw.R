@@ -24,14 +24,14 @@ aipw <- function(exposure,outcome,tmle_fit,tmle3_fit=NULL){
   pi <- tmle_fit$g$g1W #g_pred (propensity score)
 
   #AIPW est
-  aipw_eif1 <- mean((as.numeric(exposure==1)/pi)*(outcome - mu) + mu1)
-  aipw_eif0 <- mean((as.numeric(exposure==0)/pi)*(outcome - mu) + mu0)
+  aipw_eif1 <- (as.numeric(exposure==1)/pi)*(outcome - mu) + mu1
+  aipw_eif0 <- (as.numeric(exposure==0)/pi)*(outcome - mu) + mu0
 
   Z_norm <- sqrt(length(exposure))
 
   ## risk difference
-  aipw_RD <- aipw_eif1-aipw_eif0
-  se_RD <- stats::sd(aipw_i_est)/Z_norm
+  aipw_RD <- mean(aipw_eif1 - aipw_eif0)
+  se_RD <- stats::sd(aipw_eif1 - aipw_eif0)/Z_norm
   aipw_RD.ci <- ci(aipw_RD,se_RD,ratio=F)
 
   ## risk ratio
