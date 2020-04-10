@@ -41,6 +41,6 @@ fit <- tmle(Y=outcome,
             family="binomial")
 
 #exposure and outcome must be binary numeric vectors
-aipw(tmle_fit = fit, exposure=exposure,outcome=outcome)
+aipw(tmle_fit = fit, exposure=exposure, outcome=outcome)
 ```
 

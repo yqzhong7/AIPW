@@ -23,25 +23,22 @@ aipw <- function(exposure,outcome,tmle_fit,tmle3_fit=NULL){
   #exposure model
   pi <- tmle_fit$g$g1W #g_pred (propensity score)
 
-  ## risk difference
-  aipw_i_est <- ((2*exposure-1)*(outcome - mu))/((2*exposure-1)*pi + (1-exposure)) + mu1 - mu0
+  #AIPW est
+  aipw_eif1 <- mean((as.numeric(exposure==1)/pi)*(outcome - mu) + mu1)
+  aipw_eif0 <- mean((as.numeric(exposure==0)/pi)*(outcome - mu) + mu0)
+
   Z_norm <- sqrt(length(exposure))
-  aipw_RD <- mean(aipw_i_est)
+
+  ## risk difference
+  aipw_RD <- aipw_eif1-aipw_eif0
   se_RD <- stats::sd(aipw_i_est)/Z_norm
-  aipw_RD.lcl <- aipw_RD - 1.96*se_RD
-  aipw_RD.ucl <- aipw_RD + 1.96*se_RD
   aipw_RD.ci <- ci(aipw_RD,se_RD,ratio=F)
 
   ## risk ratio
-  aipw_eif1 <- (as.numeric(exposure==1)/pi)*(outcome - mu) + mu1
-  aipw_eif0 <- (as.numeric(exposure==0)/pi)*(outcome - mu) + mu0
-
   sigma_covar <- matrix(c(stats::var(aipw_eif0),
                                    stats::cov(aipw_eif0,aipw_eif1),
                                    stats::cov(aipw_eif1,aipw_eif0),
                                    stats::var(aipw_eif1)),nrow=2)
-
-
   aipw_RR <- mean(aipw_eif1)/mean(aipw_eif0)
   se_RR <- ((sigma_covar[1,1]/(mean(aipw_eif0)^2)) -
               (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))) +
