@@ -19,7 +19,6 @@ remotes::install_github("yqzhong7/AIPW")
 ``` r
 library(AIPW)
 library(SuperLearner)
-library(tmle)
 
 #setup data
 N <- 100
@@ -44,9 +43,10 @@ aipw_input_value<- aipw_input(Y=outcome,
 aipw(aipw_input = aipw_input_value)                  
 ```
 
-Use TMLE fitted object as input:
+Use TMLE fitted object as input (sample splitting is not supported using TMLE fitted object):
 
 ```R
+library(tmle)
 #tmle object
 fit <- tmle(Y=outcome,
             A=exposure,
