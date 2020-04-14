@@ -4,16 +4,16 @@
 \alias{aipw}
 \title{AIPW}
 \usage{
-aipw(exposure, outcome, tmle_fit, tmle3_fit = NULL)
+aipw(aipw_input = NULL, tmle_fit = NULL, A = NULL, Y = NULL)
 }
 \arguments{
-\item{exposure}{binary numeric vector}
+\item{aipw_input}{a matrix of individual estimates created by  \code{\link[=aipw_input]{aipw_input()}}}
 
-\item{outcome}{binary numeric vector}
+\item{tmle_fit}{fitted `tmle`` object}
 
-\item{tmle_fit}{fitted tmle object}
+\item{A}{exposure (only needed when using tmle fitted object as input)}
 
-\item{tmle3_fit}{place holder for tmle3 function}
+\item{Y}{outcome (only needed when using tmle fitted object as input)}
 }
 \value{
 a matrix with risk difference (RD), risk ratio (RR), odds ratio (OR)

@@ -15,14 +15,13 @@ remotes::install_github("yqzhong7/AIPW")
 
 ## Example
 
-The current version of AIPW was built on the influence function from TMLE,
 
 ``` r
 library(AIPW)
 library(SuperLearner)
 library(tmle)
 
-#setup
+#setup data
 N <- 100
 outcome <- rbinom(N,1,0.3)
 exposure <- rbinom(N,1,0.5)
@@ -31,8 +30,24 @@ covariates <- as.data.frame(matrix(c(rbinom(N,1,0.4),
               rpois(N,lambda = 2)
               ),ncol=3))
               
+#SuperLearner libraries for outcome and exposure models              
+sl.Q.lib <-sl.g.lib <- sl.lib <- c("SL.mean","SL.glm")
+              
+#get individual estimates               
+aipw_input_value<- aipw_input(Y=outcome,
+                                  A=exposure,
+                                  W=covariates,
+                                  Q.SL.library=sl.Q.lib, #outcome model
+                                  g.SL.library=sl.g.lib, #exposure model
+                                  k_split = 5)
+#estimate average treatment effect                                 
+aipw(aipw_input = aipw_input_value)                  
+```
+
+Use TMLE fitted object as input:
+
+```R
 #tmle object
-sl.lib <- c("SL.mean","SL.glm")
 fit <- tmle(Y=outcome,
             A=exposure,
             W=covariates,
@@ -41,6 +56,6 @@ fit <- tmle(Y=outcome,
             family="binomial")
 
 #exposure and outcome must be binary numeric vectors
-aipw(tmle_fit = fit, exposure=exposure, outcome=outcome)
+aipw(tmle_fit = fit, A=exposure, Y=outcome)
 ```
 

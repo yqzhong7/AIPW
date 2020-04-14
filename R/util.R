@@ -6,7 +6,6 @@
 #'
 #' @return lower and upper bounds of the 95% confidence interval
 #'
-#' @examples
 #' @noRd
 ci <- function(est, se, ratio=F) {
   if (ratio){
