@@ -139,8 +139,8 @@ aipw <- function(aipw_input=NULL,tmle_fit=NULL,A=NULL,Y=NULL){
                                    *mean(1-aipw_eif1)*mean(1-aipw_eif0))))/Z_norm
   aipw_OR.ci <- ci(aipw_OR,se_OR,ratio=T)
 
-  res <- matrix(c(aipw_RD,se_RD,aipw_RD.ci,aipw_RR,se_RR,aipw_RR.ci,aipw_OR,se_OR,aipw_OR.ci),nrow=3,byrow=T)
-  colnames(res) <- c("Estimate","SE","95% LCL","95% UCL")
+  res <- matrix(c(aipw_RD,se_RD,aipw_RD.ci,N,aipw_RR,se_RR,aipw_RR.ci,N,aipw_OR,se_OR,aipw_OR.ci,N),nrow=3,byrow=T)
+  colnames(res) <- c("Estimate","SE","95% LCL","95% UCL","N")
   row.names(res) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
   return(res)
 }
