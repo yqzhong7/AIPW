@@ -10,7 +10,7 @@ Augmented inverse probability weighting (AIPW) for binary exposure and outcome
 
 ``` r
 install.packages("remotes")
-remotes::install_github("yqzhong7/AIPW")
+remotes::install_github("yqzhong7/AIPW",ref="sample-splitting-superlearner")
 ```
 
 ## Example
