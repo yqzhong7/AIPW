@@ -72,7 +72,10 @@ aipw_input <- function(Y,A,W,Q.SL.library,g.SL.library,k_split=1,verbose=FALSE){
 
   aipw_input_value <- matrix(c(aipw_eif1,aipw_eif0),ncol=2)
   colnames(aipw_input_value) <- c("aipw_eif1","aipw_eif0")
-  return(aipw_input_value)
+
+  res <- list(aipw_input_value,g_fit,Q_fit)
+
+  return(res)
 }
 
 
