@@ -7,7 +7,7 @@
 aipw(aipw_input = NULL, tmle_fit = NULL, A = NULL, Y = NULL)
 }
 \arguments{
-\item{aipw_input}{a matrix of individual estimates created by  \code{\link[=aipw_input]{aipw_input()}}}
+\item{aipw_input}{a list created by  \code{\link[=aipw_input]{aipw_input()}}, which contains a matrix of individual estimates}
 
 \item{tmle_fit}{fitted `tmle`` object}
 

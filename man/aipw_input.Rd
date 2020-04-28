@@ -4,14 +4,25 @@
 \alias{aipw_input}
 \title{AIPW inputs}
 \usage{
-aipw_input(Y, A, W, Q.SL.library, g.SL.library, k_split = 1, verbose = FALSE)
+aipw_input(
+  Y,
+  A,
+  W.Q,
+  W.g,
+  Q.SL.library,
+  g.SL.library,
+  k_split = 1,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{Y}{a vector of outcome}
 
 \item{A}{a vector of treatment}
 
-\item{W}{a matrix or data.frame of covariates}
+\item{W.Q}{a matrix or data.frame of covariates for outcome model}
+
+\item{W.g}{a matrix or data.frame of covariates for exposure model}
 
 \item{Q.SL.library}{outcome model}
 
@@ -24,8 +35,12 @@ if k_split>1, use similar technique of cross-validation
 \item{verbose}{logical. Default = FALSE; when TRUE, show a text progress bar.}
 }
 \value{
-a matrix with estimates for each row when treated aipw_eif1 and untreated aipw_eif0
+a list of 1) matrix with estimates for each row when treated aipw_eif1 and untreated aipw_eif0,
+2) Q_fit object & 3) g_fit object
 }
 \description{
-Creating a input matrix for \code{\link[=aipw]{aipw()}}Augmented Inverse Probability Weighting
+Augmented Inverse Probability Weighting
+}
+\details{
+Creating an input for \code{\link[=aipw]{aipw()}}
 }

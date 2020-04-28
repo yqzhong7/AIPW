@@ -1,10 +1,13 @@
 #' AIPW inputs
 #'
-#' Creating a input matrix for [`aipw()`]Augmented Inverse Probability Weighting
+#' Augmented Inverse Probability Weighting
+#'
+#' Creating an input for [`aipw()`]
 #'
 #' @param Y a vector of outcome
 #' @param A a vector of treatment
-#' @param W a matrix or data.frame of covariates
+#' @param W.Q a matrix or data.frame of covariates for outcome model
+#' @param W.g a matrix or data.frame of covariates for exposure model
 #' @param Q.SL.library outcome model
 #' @param g.SL.library expousre model (propensity score)
 #' @param k_split number of splitting: if k_split=1, no sample splitting;
@@ -12,19 +15,21 @@
 #'   (e.g., k_split=5, use 4/5 of the data to estimate the 1/5 leftover data)
 #' @param verbose logical. Default = FALSE; when TRUE, show a text progress bar.
 #'
-#' @return a matrix with estimates for each row when treated aipw_eif1 and untreated aipw_eif0
+#' @return a list of 1) matrix with estimates for each row when treated aipw_eif1 and untreated aipw_eif0,
+#' 2) Q_fit object & 3) g_fit object
 #' @export
 #'
-aipw_input <- function(Y,A,W,Q.SL.library,g.SL.library,k_split=1,verbose=FALSE){
+aipw_input <- function(Y, A, W.Q, W.g,
+                       Q.SL.library, g.SL.library,
+                       k_split=1,verbose=FALSE){
+
+  # change covariates into data.frames for convenience
+  W.Q <- as.data.frame(W.Q)
+  W.g <- as.data.frame(W.g)
+
   #check data length
-  if(!is.null(W)){
-    if (!(length(Y)==length(A) & length(Y)==nrow(W))){
-      stop("Please check the dimension of the data")
-    }
-  } else {
-    if (!(length(Y)==length(A))) { ## NB; cant figure out how to check dim of W.g and W.Q in cases where they are either single or multi-column.
-      stop("Please check the dimension of the data")
-    }
+  if (!(length(Y)==length(A) & length(Y)==dim(W.Q)[1] & length(A)==dim(W.g)[1])){
+    stop("Please check the dimension of the data")
   }
 
   #setup
@@ -34,76 +39,56 @@ aipw_input <- function(Y,A,W,Q.SL.library,g.SL.library,k_split=1,verbose=FALSE){
   mu <- rep(NA,n)
   pi <- rep(NA,n)
   k_index <- sample(rep(1:k_split,ceiling(n/k_split))[1:n],replace = F)
+  #progression bar
+  if (verbose){
+    pb = utils::txtProgressBar(min = 0, max = k_split, initial = 0,style = 3)
+  }
 
-  pb = utils::txtProgressBar(min = 0, max = length(k_split), initial = 0,style = 3)
+  #sample splitting
   for (i in 1:k_split){
-
-    if (verbose){
-      utils::setTxtProgressBar(pb,i)
-    }
-
-    #sample splitting
+    #create index for sample splitting
     if (k_split==1){
       train_index <- validation_index <- k_index==i
     } else{
       train_index <- k_index!=i
       validation_index <- k_index==i
     }
-    if(!is.null(W)){
-      train_set <- data.frame(cbind(A,W))[train_index,]
-      validation_set <- data.frame(cbind(A,W))[validation_index,]
-    } else if(is.null(W)&!(is.null(W.g)|is.null(W.Q))) {
-      train_set.Q <- data.frame(cbind(A,W.Q))[train_index,]
-      validation_set.Q <- data.frame(cbind(A,W.Q))[validation_index,]
-      train_set.g <- data.frame(cbind(A,W.g))[train_index,]
-      validation_set.g <- data.frame(cbind(A,W.g))[validation_index,]
-    } else {
-      stop("No Valid Covariates (W)")
-    }
+
+    #split the sample
+    train_set.Q <- cbind(A,W.Q)[train_index,]
+    validation_set.Q <- cbind(A,W.Q)[validation_index,]
+    train_set.g <- data.frame(W.g[train_index,])
+    validation_set.g <- data.frame(W.g[validation_index,])
+    colnames(train_set.g)=colnames(validation_set.g)=colnames(W.g) #make to g df colnames consistent
 
 
     #Q model(outcome model: g-comp)
     #fit with train set
-    if(!is.null(W)){
-      Q_fit <- SuperLearner::SuperLearner(Y = Y[train_index],
-                                          X = train_set,
-                                          SL.library = Q.SL.library,
-                                          family="binomial")
-      #predict on validation set
-      mu0[validation_index] <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set,A=0))$pred) #Q0_pred
-      mu1[validation_index]  <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set,A=1))$pred) #Q1_pred
-      mu[validation_index]  <- mu0[validation_index]*(1-A[validation_index]) + mu1[validation_index]*(A[validation_index]) #Q_pred
-    } else{
-      Q_fit <- SuperLearner::SuperLearner(Y = Y[train_index],
-                                          X = train_set.Q,
-                                          SL.library = Q.SL.library,
-                                          family="binomial")
-      #predict on validation set
-      mu0[validation_index] <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set.Q,A=0))$pred) #Q0_pred
-      mu1[validation_index]  <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set.Q,A=1))$pred) #Q1_pred
-      mu[validation_index]  <- mu0[validation_index]*(1-A[validation_index]) + mu1[validation_index]*(A[validation_index]) #Q_pred
-    }
+    Q_fit <- SuperLearner::SuperLearner(Y = Y[train_index],
+                                        X = train_set.Q,
+                                        SL.library = Q.SL.library,
+                                        family="binomial")
+    #predict on validation set
+    mu0[validation_index] <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set.Q,A=0))$pred) #Q0_pred
+    mu1[validation_index]  <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set.Q,A=1))$pred) #Q1_pred
+    mu[validation_index]  <- mu0[validation_index]*(1-A[validation_index]) + mu1[validation_index]*(A[validation_index]) #Q_pred
 
 
     #g model(exposure model: propensity score)
     #fit with train set
-    if(!is.null(W)){
-      g_fit <- SuperLearner::SuperLearner(Y=A[train_index],
-                                          X=W[train_index,],
-                                          SL.library = g.SL.library,
-                                          family="binomial")
-      #predict on validation set
-      pi[validation_index]  <- as.numeric(stats::predict(g_fit,newdata = W[validation_index,])$pred)  #g_pred
-    } else{
-      g_fit <- SuperLearner::SuperLearner(Y=A[train_index],
-                                          X=W.g[train_index,],
-                                          SL.library = g.SL.library,
-                                          family="binomial")
-      #predict on validation set
-      pi[validation_index]  <- as.numeric(stats::predict(g_fit,newdata = W.g[validation_index,])$pred)  #g_pred
+    g_fit <- SuperLearner::SuperLearner(Y= A[train_index],
+                                        X= train_set.g,
+                                        SL.library = g.SL.library,
+                                        family="binomial")
+    #predict on validation set
+    pi[validation_index]  <- as.numeric(stats::predict(g_fit,newdata = validation_set.g)$pred)  #g_pred
+
+    #progression bar
+    if (verbose){
+      utils::setTxtProgressBar(pb,i)
     }
   }
-
+  cat("\n")
   #AIPW est
   aipw_eif1 <- (as.numeric(A==1)/pi)*(Y - mu) + mu1
   aipw_eif0 <- (as.numeric(A==0)/pi)*(Y - mu) + mu0
@@ -121,7 +106,7 @@ aipw_input <- function(Y,A,W,Q.SL.library,g.SL.library,k_split=1,verbose=FALSE){
 #'
 #' Augmented Inverse Probability Weighting
 #'
-#' @param aipw_input a matrix of individual estimates created by  [`aipw_input()`]
+#' @param aipw_input a list created by  [`aipw_input()`], which contains a matrix of individual estimates
 #' @param A exposure (only needed when using tmle fitted object as input)
 #' @param Y outcome (only needed when using tmle fitted object as input)
 #' @param tmle_fit fitted `tmle`` object
@@ -148,11 +133,12 @@ aipw <- function(aipw_input=NULL,tmle_fit=NULL,A=NULL,Y=NULL){
   }
 
   if (!is.null(aipw_input) & is.null(tmle_fit)){
-    aipw_eif1 <- aipw_input[,1]
-    aipw_eif0 <- aipw_input[,2]
+    aipw_eif1 <- aipw_input[[1]][,1]
+    aipw_eif0 <- aipw_input[[1]][,2]
   }
 
-  Z_norm <- sqrt(length(aipw_eif1))
+  n <- length(aipw_eif1)
+  Z_norm <- sqrt(n)
 
   ## risk difference
   aipw_RD <- mean(aipw_eif1 - aipw_eif0)
@@ -180,9 +166,8 @@ aipw <- function(aipw_input=NULL,tmle_fit=NULL,A=NULL,Y=NULL){
                                    *mean(1-aipw_eif1)*mean(1-aipw_eif0))))/Z_norm
   aipw_OR.ci <- ci(aipw_OR,se_OR,ratio=T)
 
-  N <- length(aipw_eif1)
-
-  res <- matrix(c(aipw_RD,se_RD,aipw_RD.ci,N,aipw_RR,se_RR,aipw_RR.ci,N,aipw_OR,se_OR,aipw_OR.ci,N),nrow=3,byrow=T)
+  res <- cbind(matrix(c(aipw_RD,se_RD,aipw_RD.ci,aipw_RR,se_RR,aipw_RR.ci,aipw_OR,se_OR,aipw_OR.ci),nrow=3,byrow=T),
+               N=n)
   colnames(res) <- c("Estimate","SE","95% LCL","95% UCL","N")
   row.names(res) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
   return(res)

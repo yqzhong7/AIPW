@@ -21,36 +21,45 @@ library(AIPW)
 library(SuperLearner)
 
 #setup data
-N <- 100
-outcome <- rbinom(N,1,0.3)
-exposure <- rbinom(N,1,0.5)
-covariates <- as.data.frame(matrix(c(rbinom(N,1,0.4),
-              rnorm(N,mean = 0,sd=1),
-              rpois(N,lambda = 2)
-              ),ncol=3))
+N <- 200
+Y <- outcome <- rbinom(N,1,0.3)
+A <- exposure <- rbinom(N,1,0.5)
+covariates.Q <- matrix(c(rbinom(N,1,0.4),
+                                     rnorm(N,mean = 0,sd=1),
+                                     rpois(N,lambda = 2)),
+                                   ncol=3)
+
+covariates.g <- matrix(c(rbinom(N,1,0.4),
+                         rnorm(N,mean = 0,sd=1),
+                         rpois(N,lambda = 2)),
+                       ncol=3)
+                                     
+# covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
               
 #SuperLearner libraries for outcome and exposure models              
 sl.Q.lib <-sl.g.lib <- sl.lib <- c("SL.mean","SL.glm")
               
 #get individual estimates               
 aipw_input_value<- aipw_input(Y=outcome,
-                                  A=exposure,
-                                  W=covariates,
-                                  Q.SL.library=sl.Q.lib, #outcome model
-                                  g.SL.library=sl.g.lib, #exposure model
-                                  k_split = 5)
+                              A=exposure,
+                              W.Q=covariates.Q,
+                              W.g=covariates.g,
+                              Q.SL.library=sl.Q.lib,
+                              g.SL.library=sl.g.lib,
+                              k_split = 2,
+                              verbose = T)
 #estimate average treatment effect                                 
 aipw(aipw_input = aipw_input_value)                  
 ```
 
-Use TMLE fitted object as input (sample splitting is not supported using TMLE fitted object):
+Use TMLE fitted object as input (sample splitting & separte sets of covariates are not supported using TMLE fitted object):
 
 ```R
 library(tmle)
-#tmle object
+tmle object
 fit <- tmle(Y=outcome,
             A=exposure,
-            W=covariates,
+            W=covariates.Q,
             Q.SL.library=sl.lib,
             g.SL.library=sl.lib,
             family="binomial")
