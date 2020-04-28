@@ -22,8 +22,8 @@ library(SuperLearner)
 
 #setup data
 N <- 200
-Y <- outcome <- rbinom(N,1,0.3)
-A <- exposure <- rbinom(N,1,0.5)
+outcome <- rbinom(N,1,0.3)
+exposure <- rbinom(N,1,0.5)
 covariates.Q <- matrix(c(rbinom(N,1,0.4),
                                      rnorm(N,mean = 0,sd=1),
                                      rpois(N,lambda = 2)),
