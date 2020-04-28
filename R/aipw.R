@@ -17,9 +17,16 @@
 #'
 aipw_input <- function(Y,A,W,Q.SL.library,g.SL.library,k_split=1,verbose=FALSE){
   #check data length
-  if (!(length(Y)==length(A) & length(Y)==nrow(W))){
-    stop("Please check the dimension of the data")
+  if(!is.null(W)){
+    if (!(length(Y)==length(A) & length(Y)==nrow(W))){
+      stop("Please check the dimension of the data")
+    }
+  } else {
+    if (!(length(Y)==length(A))) { ## NB; cant figure out how to check dim of W.g and W.Q in cases where they are either single or multi-column.
+      stop("Please check the dimension of the data")
+    }
   }
+
   #setup
   n <- length(Y)
   mu0 <- rep(NA,n)
@@ -42,28 +49,59 @@ aipw_input <- function(Y,A,W,Q.SL.library,g.SL.library,k_split=1,verbose=FALSE){
       train_index <- k_index!=i
       validation_index <- k_index==i
     }
-    train_set <- data.frame(cbind(A,W))[train_index,]
-    validation_set <- data.frame(cbind(A,W))[validation_index,]
+    if(!is.null(W)){
+      train_set <- data.frame(cbind(A,W))[train_index,]
+      validation_set <- data.frame(cbind(A,W))[validation_index,]
+    } else if(is.null(W)&!(is.null(W.g)|is.null(W.Q))) {
+      train_set.Q <- data.frame(cbind(A,W.Q))[train_index,]
+      validation_set.Q <- data.frame(cbind(A,W.Q))[validation_index,]
+      train_set.g <- data.frame(cbind(A,W.g))[train_index,]
+      validation_set.g <- data.frame(cbind(A,W.g))[validation_index,]
+    } else {
+      stop("No Valid Covariates (W)")
+    }
+
 
     #Q model(outcome model: g-comp)
     #fit with train set
-    Q_fit <- SuperLearner::SuperLearner(Y = Y[train_index],
-                          X = train_set,
-                          SL.library = Q.SL.library,
-                          family="binomial")
-    #predict on validation set
-    mu0[validation_index] <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set,A=0))$pred) #Q0_pred
-    mu1[validation_index]  <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set,A=1))$pred) #Q1_pred
-    mu[validation_index]  <- mu0[validation_index]*(1-A[validation_index]) + mu1[validation_index]*(A[validation_index]) #Q_pred
+    if(!is.null(W)){
+      Q_fit <- SuperLearner::SuperLearner(Y = Y[train_index],
+                                          X = train_set,
+                                          SL.library = Q.SL.library,
+                                          family="binomial")
+      #predict on validation set
+      mu0[validation_index] <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set,A=0))$pred) #Q0_pred
+      mu1[validation_index]  <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set,A=1))$pred) #Q1_pred
+      mu[validation_index]  <- mu0[validation_index]*(1-A[validation_index]) + mu1[validation_index]*(A[validation_index]) #Q_pred
+    } else{
+      Q_fit <- SuperLearner::SuperLearner(Y = Y[train_index],
+                                          X = train_set.Q,
+                                          SL.library = Q.SL.library,
+                                          family="binomial")
+      #predict on validation set
+      mu0[validation_index] <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set.Q,A=0))$pred) #Q0_pred
+      mu1[validation_index]  <- as.numeric(stats::predict(Q_fit,newdata = transform(validation_set.Q,A=1))$pred) #Q1_pred
+      mu[validation_index]  <- mu0[validation_index]*(1-A[validation_index]) + mu1[validation_index]*(A[validation_index]) #Q_pred
+    }
+
 
     #g model(exposure model: propensity score)
     #fit with train set
-    g_fit <- SuperLearner::SuperLearner(Y=A[train_index],
-                          X=W[train_index,],
-                          SL.library = g.SL.library,
-                          family="binomial")
-    #predict on validation set
-    pi[validation_index]  <- as.numeric(stats::predict(g_fit,newdata = W[validation_index,])$pred)  #g_pred
+    if(!is.null(W)){
+      g_fit <- SuperLearner::SuperLearner(Y=A[train_index],
+                                          X=W[train_index,],
+                                          SL.library = g.SL.library,
+                                          family="binomial")
+      #predict on validation set
+      pi[validation_index]  <- as.numeric(stats::predict(g_fit,newdata = W[validation_index,])$pred)  #g_pred
+    } else{
+      g_fit <- SuperLearner::SuperLearner(Y=A[train_index],
+                                          X=W.g[train_index,],
+                                          SL.library = g.SL.library,
+                                          family="binomial")
+      #predict on validation set
+      pi[validation_index]  <- as.numeric(stats::predict(g_fit,newdata = W.g[validation_index,])$pred)  #g_pred
+    }
   }
 
   #AIPW est
@@ -72,7 +110,10 @@ aipw_input <- function(Y,A,W,Q.SL.library,g.SL.library,k_split=1,verbose=FALSE){
 
   aipw_input_value <- matrix(c(aipw_eif1,aipw_eif0),ncol=2)
   colnames(aipw_input_value) <- c("aipw_eif1","aipw_eif0")
-  return(aipw_input_value)
+
+  res <- list(aipw_input_value,g_fit,Q_fit)
+
+  return(res)
 }
 
 
@@ -139,8 +180,10 @@ aipw <- function(aipw_input=NULL,tmle_fit=NULL,A=NULL,Y=NULL){
                                    *mean(1-aipw_eif1)*mean(1-aipw_eif0))))/Z_norm
   aipw_OR.ci <- ci(aipw_OR,se_OR,ratio=T)
 
-  res <- matrix(c(aipw_RD,se_RD,aipw_RD.ci,aipw_RR,se_RR,aipw_RR.ci,aipw_OR,se_OR,aipw_OR.ci),nrow=3,byrow=T)
-  colnames(res) <- c("Estimate","SE","95% LCL","95% UCL")
+  N <- length(aipw_eif1)
+
+  res <- matrix(c(aipw_RD,se_RD,aipw_RD.ci,N,aipw_RR,se_RR,aipw_RR.ci,N,aipw_OR,se_OR,aipw_OR.ci,N),nrow=3,byrow=T)
+  colnames(res) <- c("Estimate","SE","95% LCL","95% UCL","N")
   row.names(res) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
   return(res)
 }
