@@ -7,7 +7,7 @@
 #' @return lower and upper bounds of the 95% confidence interval
 #'
 #' @noRd
-ci <- function(est, se, ratio=F) {
+get_ci <- function(est, se, ratio=F) {
   if (ratio){
     est <- log(est)
     lcl <- est - 1.96*se

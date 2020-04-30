@@ -12,7 +12,7 @@ Authors@R:
              role = c("aut"),
              email = "ashley.naimi@pitt.edu",
              comment = c(ORCID = "0000-0002-1510-8175")))
-Description: This AIPW function takes a fitted TMLE object for effect estimation.
+Description: Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: es
@@ -23,8 +23,9 @@ Suggests:
 RoxygenNote: 7.1.0
 Imports: 
     SuperLearner,
-    tmle,
     stats,
-    utils
+    utils,
+    R6,
+    sl3
 URL: https://github.com/yqzhong7/AIPW
 BugReports: https://github.com/yqzhong7/AIPW/issues
