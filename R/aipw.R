@@ -1,8 +1,6 @@
 #' @title Augmented Inverse Probablity Weighting (AIPW)
 #'
-#' Define an AIPW object
-#'
-#' @name aipw
+#' @description Define an R6Class aipw object
 #'
 #' @docType class
 #'

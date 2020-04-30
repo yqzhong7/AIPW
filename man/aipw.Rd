@@ -3,9 +3,7 @@
 \docType{class}
 \name{aipw}
 \alias{aipw}
-\title{Augmented Inverse Probablity Weighting (AIPW)
-
-Define an AIPW object}
+\title{Augmented Inverse Probablity Weighting (AIPW)}
 \format{
 \code{\link{R6Class}} object.
 }
@@ -13,13 +11,7 @@ Define an AIPW object}
 \code{aipw} object
 }
 \description{
-Augmented Inverse Probablity Weighting (AIPW)
-
-Define an AIPW object
-
-Augmented Inverse Probablity Weighting (AIPW)
-
-Define an AIPW object
+Define an R6Class aipw object
 }
 \details{
 create an AIPW object
