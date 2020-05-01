@@ -49,7 +49,7 @@ library(SuperLearner)
 sl.lib <- c("SL.mean","SL.glm")
 
 #construct an aipw object for later estimations 
-AIPW_SL <- aipw$new(Y= outcome,
+AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
                     W.Q=covariates.Q, 
                     W.g=covariates.g,
@@ -85,7 +85,7 @@ sl3.lib <- Lrnr_sl$new(learners = stacklearner,
                       metalearner = metalearner)
 
 #construct an aipw object for later estimations 
-AIPW_sl3 <- aipw$new(Y= outcome,
+AIPW_sl3 <- AIPW$new(Y= outcome,
                     A= exposure,
                     W.Q=covariates.Q, 
                     W.g=covariates.g,

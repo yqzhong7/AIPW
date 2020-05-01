@@ -10,12 +10,12 @@
 #'
 #' @details create an AIPW object
 #'
-#' @return \code{aipw} object
+#' @return \code{AIPW} object
 #'
 #' @format \code{\link{R6Class}} object.
 #'
-aipw <- R6::R6Class(
-  "aipw",
+AIPW <- R6::R6Class(
+  "AIPW",
   portable = TRUE,
   public = list(
     #' @field n number of observations
