@@ -132,6 +132,7 @@ aipw <- function(aipw_input=NULL,tmle_fit=NULL,A=NULL,Y=NULL){
 
   }
 
+
   if (!is.null(aipw_input) & is.null(tmle_fit)){
     aipw_eif1 <- aipw_input[[1]][,1]
     aipw_eif0 <- aipw_input[[1]][,2]
