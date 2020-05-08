@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) 2020 Ashely Naimi & Yongqi Zhong
+Copyright (c) 2020 Yongqi Zhong,Ashley Naimi,Gabriel Conzuelo
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
