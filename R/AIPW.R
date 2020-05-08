@@ -32,7 +32,7 @@ AIPW <- R6::R6Class(
                    pi = NULL,
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
-    #' @field estimates risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calcualtion
+    #' @field estimates risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
     estimates = list(RD = NULL,
                      RR = NULL,
                      OR = NULL,
