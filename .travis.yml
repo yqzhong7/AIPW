@@ -3,5 +3,18 @@
 language: R
 cache: packages
 
-after_success:
-  - Rscript -e 'covr::codecov()'
+
+matrix:
+  include:
+    - r: release
+      env: R_CODECOV=true
+      before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+      deploy:
+        provider: script
+        script: Rscript -e 'pkgdown::deploy_site_github()'
+        skip_cleanup: true
+        on:
+          all_branches: true
+          condition: '"$TRAVIS_BRANCH" == "pkgdown-travis" || -n "$TRAVIS_TAG"'
+  after_success:
+    - Rscript -e 'covr::codecov()'
