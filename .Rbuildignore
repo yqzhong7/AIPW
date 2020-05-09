@@ -4,3 +4,4 @@
 ^scripts$
 ^manual_tests$
 ^docs$
+^\.travis\.yml$
