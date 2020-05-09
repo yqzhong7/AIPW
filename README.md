@@ -2,6 +2,8 @@
 # AIPW
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
+[![Travis build status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-ci.com/yqzhong7/AIPW)
 <!-- badges: end -->
 
 Augmented inverse probability weighting (AIPW) for binary exposure and outcome

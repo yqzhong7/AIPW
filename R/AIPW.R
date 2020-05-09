@@ -47,16 +47,17 @@ AIPW <- R6::R6Class(
     #' @description
     #' Create a new AIPW object.
     #'
-    #' @param Y outcome
-    #' @param A exposure
-    #' @param W.Q covariates for outcome model
-    #' @param W.g covariates for exposure model
+    #' @param Y outcome (binary integer: 0 or 1)
+    #' @param A exposure (binary integer: 0 or 1)
+    #' @param W.Q covariates for outcome model (vector, matrix or data.frame)
+    #' @param W.g covariates for exposure model (vector, matrix or data.frame)
     #' @param Q.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model
     #' @param g.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model
-    #' @param k_split number of splitting: if k_split=1, no sample splitting;
+    #' @param k_split number of splitting (integer; range: from 1 to number of observation-1):
+    #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
     #'   (e.g., k_split=5, use 4/5 of the data to estimate the 1/5 leftover data)
-    #' @param verbose logical. Default = FALSE; when TRUE, show a text progress bar.
+    #' @param verbose whether to show progression bar (logical; Default = FALSE)
     #'
     #' @return A new `aipw` object.
     initialize = function(Y=NULL, A=NULL,W.Q=NULL, W.g=NULL,
@@ -116,13 +117,20 @@ AIPW <- R6::R6Class(
       #input sl libraries
       self$libs$Q.SL.library=Q.SL.library
       self$libs$g.SL.library=g.SL.library
-
       #setup
       self$n <- length(private$Y)
       self$obs_est$mu0 <- rep(NA,self$n)
       self$obs_est$mu1 <- rep(NA,self$n)
       self$obs_est$mu <- rep(NA,self$n)
       self$obs_est$pi <- rep(NA,self$n)
+      #check k_split value
+      if (private$k_split<1 | private$k_split>=self$n){
+        stop("k_split is not valid")
+      }
+      #check verbose value
+      if (!is.logical(private$verbose)){
+        stop("verbose is not valid")
+      }
     },
     #' @description
     #' Calculate average causal effects in RD, RR and OR
@@ -132,7 +140,7 @@ AIPW <- R6::R6Class(
       k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
       #progress bar
       if (private$verbose){
-        pb = utils::txtProgressBar(min = 0, max = length(private$k_split), initial = 0,style = 3)
+        pb = utils::txtProgressBar(min = 0, max = private$k_split, initial = 0,style = 3)
       }
 
       #sample splitting
@@ -187,11 +195,10 @@ AIPW <- R6::R6Class(
       ## risk difference
       self$estimates$RD <- private$get_RD(self$obs_est$aipw_eif1, self$obs_est$aipw_eif0, Z_norm)
 
+      ## var-cov mat for rr and od calculation
+      self$estimates$sigma_covar <- private$get_sigma_covar(self$obs_est$aipw_eif0,self$obs_est$aipw_eif1)
+
       ## risk ratio
-      self$estimates$sigma_covar <- matrix(c(stats::var(self$obs_est$aipw_eif0),
-                                             stats::cov(self$obs_est$aipw_eif0,self$obs_est$aipw_eif1),
-                                             stats::cov(self$obs_est$aipw_eif1,self$obs_est$aipw_eif0),
-                                             stats::var(self$obs_est$aipw_eif1)),nrow=2)
       self$estimates$RR <- private$get_RR(self$obs_est$aipw_eif1,self$obs_est$aipw_eif0, self$estimates$sigma_covar, Z_norm)
 
       ## odds ratio
@@ -246,6 +253,12 @@ AIPW <- R6::R6Class(
       output = c(est, se, ci)
       names(output) = c("Estimate","SE","95% LCL","95% UCL")
       return(output)
+    },
+    get_sigma_covar = function(aipw_eif0,aipw_eif1){
+      matrix(c(stats::var(aipw_eif0),
+               stats::cov(aipw_eif0,aipw_eif1),
+               stats::cov(aipw_eif1,aipw_eif0),
+               stats::var(aipw_eif1)),nrow=2)
     }
   )
 )

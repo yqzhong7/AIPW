@@ -25,7 +25,7 @@ create an AIPW object
 
 \item{\code{obs_est}}{estimates for each observation to calculate average causal effects}
 
-\item{\code{estimates}}{risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calcualtion}
+\item{\code{estimates}}{risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation}
 
 \item{\code{sl.fit}}{a wrapper for fitting SuperLearner or sl3}
 
@@ -64,23 +64,24 @@ Create a new AIPW object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{Y}}{outcome}
+\item{\code{Y}}{outcome (binary integer: 0 or 1)}
 
-\item{\code{A}}{exposure}
+\item{\code{A}}{exposure (binary integer: 0 or 1)}
 
-\item{\code{W.Q}}{covariates for outcome model}
+\item{\code{W.Q}}{covariates for outcome model (vector, matrix or data.frame)}
 
-\item{\code{W.g}}{covariates for exposure model}
+\item{\code{W.g}}{covariates for exposure model (vector, matrix or data.frame)}
 
 \item{\code{Q.SL.library}}{SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model}
 
 \item{\code{g.SL.library}}{SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model}
 
-\item{\code{k_split}}{number of splitting: if k_split=1, no sample splitting;
+\item{\code{k_split}}{number of splitting (integer; range: from 1 to number of observation-1):
+if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
 (e.g., k_split=5, use 4/5 of the data to estimate the 1/5 leftover data)}
 
-\item{\code{verbose}}{logical. Default = FALSE; when TRUE, show a text progress bar.}
+\item{\code{verbose}}{whether to show progression bar (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }

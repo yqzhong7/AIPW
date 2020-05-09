@@ -1,0 +1,41 @@
+---
+title: "Getting Started with AIPW"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with AIPW}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+#####Remember to use pkgdown::build_site()  after updates of the package, testing, vignettes,etc.######
+```
+
+## Installation
+1. Install AIPW from GitHub
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("yqzhong7/AIPW")
+```
+
+2. Install SuperLearner 
+
+```{r, eval = FALSE}
+install.packages("SuperLearner")
+```
+
+3. Install sl3
+
+```{r, eval = FALSE}
+remotes::install_github("tlverse/sl3")
+```
+
+## Setup for analyses
+```{r setup}
+library(AIPW)
+```
