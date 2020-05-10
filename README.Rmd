@@ -1,41 +1,37 @@
-AIPW: Augmented Inverse Probability Weighting
-================
-
+---
+title: "AIPW: Augmented Inverse Probability Weighting"
+output:
+  github_document
+---
 <!-- badges: start -->
-
-[![Codecov test
-coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
-[![Travis build
-status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-ci.com/yqzhong7/AIPW)
-[![Project Status: WIP – Initial development is in progress, but there
-has not yet been a stable, usable release suitable for the
-public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#WIP)
-[![R build
-status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
+[![Codecov test coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
+[![Travis build status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-ci.com/yqzhong7/AIPW)
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#WIP)
+[![R build status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
 <!-- badges: end -->
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-**Authors:** [Yongqi Zhong](https://github.com/yqzhong7), [Ashley
-Naimi](https://github.com/ainaimi), [Gabriel
-Conzuelo](https://github.com/gconzuelo)
+__Authors:__ [Yongqi Zhong](https://github.com/yqzhong7), [Ashley Naimi](https://github.com/ainaimi), [Gabriel Conzuelo](https://github.com/gconzuelo)
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 ## Installation
 
-``` r
+```{r installation, eval=FALSE}
 install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
------
+------
 
 ## Example
 
-1.  Setup example data
-
-<!-- end list -->
-
-``` r
+1. Setup example data
+```{r example data}
 set.seed(888)
 N <- 200
 outcome <- rbinom(N,1,0.3)
@@ -54,14 +50,8 @@ covariates.g <- matrix(c(rbinom(N,1,0.4),
 # covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
 
-2.  Use
-    [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html)
-    libraries (reference: [Guide to
-    SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
-
-<!-- end list -->
-
-``` r
+  2. Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
+```{r SuperLearner, message=FALSE}
 library(AIPW)
 library(SuperLearner)
 
@@ -81,17 +71,8 @@ AIPW_SL <- AIPW$new(Y= outcome,
 AIPW_SL$calculate_result()
 ```
 
-    ##                 Estimate     SE 95% LCL 95% UCL   N
-    ## Risk Difference   -0.150 0.0654 -0.2786 -0.0221 200
-    ## Risk Ratio         0.631 0.6203  0.1872  2.1299 200
-    ## Odds Ratio         0.504 1.3261  0.0374  6.7747 200
-
-3.  Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference:
-    [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
-
-<!-- end list -->
-
-``` r
+  3. Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
+```{r sl3}
 library(AIPW)
 library(sl3)
 
@@ -118,7 +99,3 @@ AIPW_sl3 <- AIPW$new(Y= outcome,
 AIPW_sl3$calculate_result()
 ```
 
-    ##                 Estimate     SE 95% LCL 95% UCL   N
-    ## Risk Difference   -0.147 0.0659 -0.2763 -0.0179 200
-    ## Risk Ratio         0.638 0.6216  0.1885  2.1559 200
-    ## Odds Ratio         0.511 1.3356  0.0373  7.0037 200
