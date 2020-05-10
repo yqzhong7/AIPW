@@ -15,6 +15,6 @@ matrix:
         skip_cleanup: true
         on:
           all_branches: true
-          condition: '"$TRAVIS_BRANCH" == "pkgdown-travis" || -n "$TRAVIS_TAG"'
+          condition: '"$TRAVIS_BRANCH" == "master" || -n "$TRAVIS_TAG"'
   after_success:
     - Rscript -e 'covr::codecov()'
