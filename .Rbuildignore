@@ -9,3 +9,4 @@
 ^pkgdown$
 ^codecov\.yml$
 ^\.github$
+^README\.Rmd$

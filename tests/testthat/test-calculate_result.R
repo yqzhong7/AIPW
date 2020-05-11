@@ -15,7 +15,7 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)
-  est_mat <- aipw$calculate_result()
+  invisible(capture.output(est_mat <- aipw$calculate_result()))
   #correctly print output
   expect_output(aipw$calculate_result(), regexp = "Estimate")
   #whether output is a matrix
@@ -34,7 +34,7 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 5,verbose = FALSE)
-  est_mat <- aipw$calculate_result()
+  invisible(capture.output(est_mat <- aipw$calculate_result()))
   #correctly print output
   expect_output(aipw$calculate_result(), regexp = "Estimate")
   #whether output is a matrix
@@ -68,7 +68,7 @@ test_that("AIPW calculate_result: sl3 & k_split", {
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
                     k_split = 1,verbose = FALSE)
-  est_mat <- aipw$calculate_result()
+  invisible(capture.output(est_mat <- aipw$calculate_result()))
   #correctly print output
   expect_output(aipw$calculate_result(), regexp = "Estimate")
   #whether output is a matrix
@@ -87,7 +87,7 @@ test_that("AIPW calculate_result: sl3 & k_split", {
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
                     k_split = 2,verbose = FALSE)
-  est_mat <- aipw$calculate_result()
+  invisible(capture.output(est_mat <- aipw$calculate_result()))
   #correctly print output
   expect_output(aipw$calculate_result(), regexp = "Estimate")
   #whether output is a matrix

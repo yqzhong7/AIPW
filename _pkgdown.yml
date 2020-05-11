@@ -1,3 +1,6 @@
+url: https://yqzhong7.github.io/AIPW
+
+
 destination: docs
 
 authors:
@@ -13,5 +16,5 @@ template:
   params:
     bootswatch: simplex
     docsearch:
-      api_key: API_KEY
-      index_name: INDEX_NAME
+      api_key: fdb17ce3606ec3425c318a7950c6cf48
+      index_name: aipw

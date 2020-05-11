@@ -15,8 +15,11 @@ output:
 __Authors:__ [Yongqi Zhong](https://github.com/yqzhong7), [Ashley Naimi](https://github.com/ainaimi), [Gabriel Conzuelo](https://github.com/gconzuelo)
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
 
 ## Installation
@@ -30,7 +33,7 @@ remotes::install_github("yqzhong7/AIPW")
 
 ## Example
 
-1. Setup example data
+#### Setup example data
 ```{r example data}
 set.seed(888)
 N <- 200
@@ -50,7 +53,7 @@ covariates.g <- matrix(c(rbinom(N,1,0.4),
 # covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
 
-  2. Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
+#### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
 ```{r SuperLearner, message=FALSE}
 library(AIPW)
 library(SuperLearner)
@@ -71,7 +74,7 @@ AIPW_SL <- AIPW$new(Y= outcome,
 AIPW_SL$calculate_result()
 ```
 
-  3. Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
+#### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
 ```{r sl3}
 library(AIPW)
 library(sl3)
