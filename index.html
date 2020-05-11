@@ -94,10 +94,10 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<ol>
-<li>Setup example data</li>
-</ol>
-<!-- end list --><div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">888</span>)
+<div id="setup-example-data" class="section level4">
+<h4 class="hasAnchor">
+<a href="#setup-example-data" class="anchor"></a>Setup example data</h4>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">888</span>)
 <span class="no">N</span> <span class="kw">&lt;-</span> <span class="fl">200</span>
 <span class="no">outcome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.3</span>)
 <span class="no">exposure</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.5</span>)
@@ -113,10 +113,11 @@
                               <span class="kw">ncol</span><span class="kw">=</span><span class="fl">3</span>)
 
 <span class="co"># covariates.g &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></pre></div>
-<ol>
-<li>Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries (reference: <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">Guide to SuperLearner</a>)</li>
-</ol>
-<!-- end list --><div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
+</div>
+<div id="use-superlearner-libraries-reference-guide-to-superlearner" class="section level4">
+<h4 class="hasAnchor">
+<a href="#use-superlearner-libraries-reference-guide-to-superlearner" class="anchor"></a>Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries (reference: <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">Guide to SuperLearner</a>)</h4>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">SuperLearner</span>)
 
 <span class="co">#SuperLearner libraries for outcome (Q) and exposure models (g)</span>
@@ -132,15 +133,16 @@
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
                     <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)
 <span class="co">#estimate the average causal effects</span>
-<span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>()</pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">##                 Estimate     SE 95% LCL 95% UCL   N</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">## Risk Difference   -0.150 0.0654 -0.2786 -0.0221 200</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">## Risk Ratio         0.631 0.6203  0.1872  2.1299 200</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">## Odds Ratio         0.504 1.3261  0.0374  6.7747 200</a></code></pre></div>
-<ol>
-<li>Use <a href="https://tlverse.org/sl3/index.html">sl3</a> libraries (reference: <a href="https://tlverse.org/sl3/articles/intro_sl3.html">Intro to sl3</a>)</li>
-</ol>
-<!-- end list --><div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
+<span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>()
+<span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.150 0.0654 -0.2786 -0.0221 200</span>
+<span class="co">#&gt; Risk Ratio         0.631 0.6203  0.1872  2.1299 200</span>
+<span class="co">#&gt; Odds Ratio         0.504 1.3261  0.0374  6.7747 200</span></pre></div>
+</div>
+<div id="use-sl3-libraries-reference-intro-to-sl3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#use-sl3-libraries-reference-intro-to-sl3" class="anchor"></a>Use <a href="https://tlverse.org/sl3/index.html">sl3</a> libraries (reference: <a href="https://tlverse.org/sl3/articles/intro_sl3.html">Intro to sl3</a>)</h4>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>)
 
 <span class="co">##construct sl3 learners for outcome (Q) and exposure models (g)</span>
@@ -163,11 +165,12 @@
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
                     <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)
 <span class="co">#estimate the average causal effects</span>
-<span class="no">AIPW_sl3</span>$<span class="fu">calculate_result</span>()</pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">##                 Estimate     SE 95% LCL 95% UCL   N</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">## Risk Difference   -0.147 0.0659 -0.2763 -0.0179 200</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">## Risk Ratio         0.638 0.6216  0.1885  2.1559 200</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">## Odds Ratio         0.511 1.3356  0.0373  7.0037 200</a></code></pre></div>
+<span class="no">AIPW_sl3</span>$<span class="fu">calculate_result</span>()
+<span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.147 0.0659 -0.2763 -0.0179 200</span>
+<span class="co">#&gt; Risk Ratio         0.638 0.6216  0.1885  2.1559 200</span>
+<span class="co">#&gt; Odds Ratio         0.511 1.3356  0.0373  7.0037 200</span></pre></div>
+</div>
 </div>
 </div>
   </div>
@@ -230,8 +233,8 @@
   docsearch({
     
     
-    apiKey: 'API_KEY',
-    indexName: 'INDEX_NAME',
+    apiKey: 'fdb17ce3606ec3425c318a7950c6cf48',
+    indexName: 'aipw',
     inputSelector: 'input#search-input.form-control',
     transformData: function(hits) {
       return hits.map(function (hit) {
