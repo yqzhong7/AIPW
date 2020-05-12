@@ -57,18 +57,21 @@ AIPW <- R6::R6Class(
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
     #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
+    #' @param g.bound value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
     #' @param verbose whether to show progression bar (logical; Default = FALSE)
     #'
     #' @return A new `aipw` object.
     initialize = function(Y=NULL, A=NULL,W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL,g.SL.library=NULL,
-                          k_split=1,verbose=FALSE){
+                          k_split=1,g.bound=0.025,verbose=FALSE){
       #save input into private fields
       private$Y=Y
       private$A=A
       private$Q.set=cbind(A, as.data.frame(W.Q))
       private$g.set=as.data.frame(W.g)
+      private$g.bound=g.bound
       private$k_split=k_split
+      #private$g.bound=g.bound
       private$verbose=verbose
       #check data length
       if (!(length(private$Y)==length(private$A) & length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
@@ -178,7 +181,12 @@ AIPW <- R6::R6Class(
                                        X=train_set.g,
                                        SL.library = self$libs$g.SL.library)
         # predict on validation set
-        self$obs_est$pi[validation_index]  <- self$sl.predict(self$libs$g.fit,newdata = validation_set.g)  #g_pred
+        .bound <- function(ps,bound=private$g.bound){
+          res <- base::ifelse(ps<bound,bound,
+                              base::ifelse(ps>(1-bound),(1-bound),ps))
+          return(res)
+        }
+        self$obs_est$pi[validation_index]  <- .bound(self$sl.predict(self$libs$g.fit,newdata = validation_set.g))  #g_pred
 
         #progress bar
         if (private$verbose){
@@ -220,6 +228,7 @@ AIPW <- R6::R6Class(
     Q.set=NULL,
     g.set=NULL,
     k_split=NULL,
+    g.bound=NULL,
     verbose=NULL,
     #private methods
     #Use individaul estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%
