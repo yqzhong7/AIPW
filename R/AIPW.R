@@ -56,7 +56,7 @@ AIPW <- R6::R6Class(
     #' @param k_split number of splitting (integer; range: from 1 to number of observation-1):
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
-    #'   (e.g., k_split=5, use 4/5 of the data to estimate the 1/5 leftover data)
+    #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
     #' @param verbose whether to show progression bar (logical; Default = FALSE)
     #'
     #' @return A new `aipw` object.
@@ -92,7 +92,7 @@ AIPW <- R6::R6Class(
       } else if (any(class(Q.SL.library) == "Lrnr_base") & any(class(g.SL.library) == "Lrnr_base")) {
         #only using Stack in sl3 will return estimates of each library separately
         if (any(class(Q.SL.library) == "Stack") & any(class(g.SL.library) == "Stack")){
-          warning("Only using sl3::Stack may cause problem. Please consider to use metalearner for the stacked libraries!")
+          warning("Only using sl3::Stack may cause problem. Please consider using metalearners for the stacked libraries!")
         } else {
           #change wrapper functions
           self$sl.fit = function(X, Y, SL.library){
@@ -195,7 +195,7 @@ AIPW <- R6::R6Class(
       ## risk difference
       self$estimates$RD <- private$get_RD(self$obs_est$aipw_eif1, self$obs_est$aipw_eif0, Z_norm)
 
-      ## var-cov mat for rr and od calculation
+      ## var-cov mat for rr and or calculation
       self$estimates$sigma_covar <- private$get_sigma_covar(self$obs_est$aipw_eif0,self$obs_est$aipw_eif1)
 
       ## risk ratio
