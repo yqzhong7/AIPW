@@ -134,6 +134,13 @@ AIPW <- R6::R6Class(
       if (!is.logical(private$verbose)){
         stop("verbose is not valid")
       }
+      #check g.bound value
+      if (!is.numeric(private$g.bound)){
+        stop("g.bound must be a numeric value")
+      }
+      if (private$g.bound>1|private$g.bound<0){
+        stop("g.bound must between 0 and 1")
+      }
     },
     #' @description
     #' Calculate average causal effects in RD, RR and OR
@@ -181,18 +188,20 @@ AIPW <- R6::R6Class(
                                        X=train_set.g,
                                        SL.library = self$libs$g.SL.library)
         # predict on validation set
-        .bound <- function(ps,bound=private$g.bound){
-          res <- base::ifelse(ps<bound,bound,
-                              base::ifelse(ps>(1-bound),(1-bound),ps))
-          return(res)
-        }
-        self$obs_est$pi[validation_index]  <- .bound(self$sl.predict(self$libs$g.fit,newdata = validation_set.g))  #g_pred
+        self$obs_est$pi[validation_index]  <- self$sl.predict(self$libs$g.fit,newdata = validation_set.g)  #g_pred
 
         #progress bar
         if (private$verbose){
           utils::setTxtProgressBar(pb,i)
         }
       }
+
+      .bound <- function(ps,bound=private$g.bound){
+        res <- base::ifelse(ps<bound,bound,
+                            base::ifelse(ps>(1-bound),(1-bound),ps))
+        return(res)
+      }
+      self$obs_est$pi <- .bound(self$obs_est$pi)
 
       #AIPW est
       self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$pi)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
