@@ -29,7 +29,6 @@ test_that("AIPW helper functions", {
   expect_identical(aipw$.__enclos_env__$private$get_sigma_covar(aipw_eif0 = vec,
                                                                 aipw_eif1 = vec),
                    matrix(rep(0,4),ncol=2))
-  ####To be done by Ashley
   #get_RR
   # sigma_covar <- matrix(c(0,1,1,0),ncol=2)
   # expect_identical(as.numeric(aipw$.__enclos_env__$private$get_RR(aipw_eif0 = vec,
@@ -43,6 +42,7 @@ test_that("AIPW helper functions", {
   #                                                                 sigma_covar = sigma_covar,
   #                                                                 Z_norm=Z_norm)),
   #                  rep(0,4))
+  #.bound
 
 
   }

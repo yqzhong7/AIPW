@@ -257,7 +257,7 @@ AIPW <- R6::R6Class(
         ggplot2::geom_density(alpha=0.5) +
         ggplot2::scale_x_continuous(limits = c(0,1)) +
         ggplot2::facet_wrap(~trunc) +
-        ggtitle("Propensity scores by treatment status") +
+        ggtitle("Propensity scores by exposure status") +
         theme_bw()
       print(g.plot)
     }
