@@ -251,10 +251,10 @@ AIPW <- R6::R6Class(
     },
     get_RR = function(aipw_eif1,aipw_eif0,sigma_covar,Z_norm){
       est <- mean(aipw_eif1)/mean(aipw_eif0)
-      se <- ((sigma_covar[1,1]/(mean(aipw_eif0)^2)) -
-               (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))) +
-               (sigma_covar[2,2]/mean(aipw_eif1)^2) -
-               (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))))/Z_norm
+      se <- sqrt((sigma_covar[1,1]/(mean(aipw_eif0)^2)) -
+                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))) +
+                 (sigma_covar[2,2]/mean(aipw_eif1)^2) -
+                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))))/Z_norm
       ci <- get_ci(est,se,ratio=T)
       output = c(est, se, ci)
       names(output) = c("Estimate","SE","95% LCL","95% UCL")
@@ -262,10 +262,10 @@ AIPW <- R6::R6Class(
     },
     get_OR = function(aipw_eif1,aipw_eif0,sigma_covar,Z_norm){
       est <- (mean(aipw_eif1)/(1-mean(aipw_eif1))) / (mean(aipw_eif0)/(1-mean(aipw_eif0)))
-      se <- ((sigma_covar[1,1]/((mean(aipw_eif0)^2)*(mean(1-aipw_eif0)^2))) -
-               (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)*mean(1-aipw_eif1)*mean(1-aipw_eif0))) +
-               (sigma_covar[2,2]/((mean(aipw_eif1)^2)*(mean(1-aipw_eif1)^2))) -
-               (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)
+      se <- sqrt((sigma_covar[1,1]/((mean(aipw_eif0)^2)*(mean(1-aipw_eif0)^2))) -
+                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)*mean(1-aipw_eif1)*mean(1-aipw_eif0))) +
+                 (sigma_covar[2,2]/((mean(aipw_eif1)^2)*(mean(1-aipw_eif1)^2))) -
+                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)
                                     *mean(1-aipw_eif1)*mean(1-aipw_eif0))))/Z_norm
       ci <- get_ci(est,se,ratio=T)
       output = c(est, se, ci)
