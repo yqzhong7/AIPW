@@ -39,6 +39,7 @@ create an AIPW object
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AIPW$new()}}
+\item \href{#method-fit}{\code{AIPW$fit()}}
 \item \href{#method-calculate_result}{\code{AIPW$calculate_result()}}
 \item \href{#method-clone}{\code{AIPW$clone()}}
 }
@@ -47,7 +48,7 @@ create an AIPW object
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new AIPW object.
+Create a new unfitted AIPW object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$new(
   Y = NULL,
@@ -57,7 +58,6 @@ Create a new AIPW object.
   Q.SL.library = NULL,
   g.SL.library = NULL,
   k_split = 1,
-  g.bound = 0.025,
   verbose = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -82,8 +82,6 @@ if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
 (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)}
 
-\item{\code{g.bound}}{value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
-
 \item{\code{verbose}}{whether to show progression bar (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
@@ -93,14 +91,34 @@ A new \code{aipw} object.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-fit"></a>}}
+\if{latex}{\out{\hypertarget{method-fit}{}}}
+\subsection{Method \code{fit()}}{
+Fitting the data into the AIPW object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AIPW$fit()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-calculate_result"></a>}}
 \if{latex}{\out{\hypertarget{method-calculate_result}{}}}
 \subsection{Method \code{calculate_result()}}{
 Calculate average causal effects in RD, RR and OR
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AIPW$calculate_result()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AIPW$calculate_result(g.bound = 0.025)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{g.bound}}{value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Average treatment effect estimations in RD, RR and OR
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

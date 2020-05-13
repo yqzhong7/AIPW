@@ -29,6 +29,7 @@ AIPW <- R6::R6Class(
     obs_est = list(mu0 = NULL,
                    mu1 = NULL,
                    mu = NULL,
+                   raw_p_score = NULL,
                    p_score = NULL,
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
@@ -45,7 +46,7 @@ AIPW <- R6::R6Class(
     result = NULL,
 
     #' @description
-    #' Create a new AIPW object.
+    #' Create a new unfitted AIPW object.
     #'
     #' @param Y outcome (binary integer: 0 or 1)
     #' @param A exposure (binary integer: 0 or 1)
@@ -57,19 +58,17 @@ AIPW <- R6::R6Class(
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
     #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
-    #' @param g.bound value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
     #' @param verbose whether to show progression bar (logical; Default = FALSE)
     #'
     #' @return A new `aipw` object.
     initialize = function(Y=NULL, A=NULL,W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL,g.SL.library=NULL,
-                          k_split=1,g.bound=0.025,verbose=FALSE){
+                          k_split=1,verbose=FALSE){
       #save input into private fields
       private$Y=Y
       private$A=A
       private$Q.set=cbind(A, as.data.frame(W.Q))
       private$g.set=as.data.frame(W.g)
-      private$g.bound=g.bound
       private$k_split=k_split
       private$verbose=verbose
       #check data length
@@ -101,7 +100,7 @@ AIPW <- R6::R6Class(
             dat <- data.frame(cbind(Y,X))
             dat_colnames <- colnames(dat)
             task <- sl3::sl3_Task$new(dat, covariates = colnames(dat)[-1],
-                                 outcome = colnames(dat)[1], outcome_type = "binomial"
+                                      outcome = colnames(dat)[1], outcome_type = "binomial"
             )
             fit <- SL.library$train(task)
             return(fit)
@@ -124,7 +123,7 @@ AIPW <- R6::R6Class(
       self$obs_est$mu0 <- rep(NA,self$n)
       self$obs_est$mu1 <- rep(NA,self$n)
       self$obs_est$mu <- rep(NA,self$n)
-      self$obs_est$p_score <- rep(NA,self$n)
+      self$obs_est$raw_p_score <- rep(NA,self$n)
       #check k_split value
       if (private$k_split<1 | private$k_split>=self$n){
         stop("k_split is not valid")
@@ -133,18 +132,11 @@ AIPW <- R6::R6Class(
       if (!is.logical(private$verbose)){
         stop("verbose is not valid")
       }
-      #check g.bound value
-      if (!is.numeric(private$g.bound)){
-        stop("g.bound must be a numeric value")
-      }
-      if (private$g.bound>1|private$g.bound<0){
-        stop("g.bound must between 0 and 1")
-      }
     },
     #' @description
-    #' Calculate average causal effects in RD, RR and OR
+    #' Fitting the data into the AIPW object
     #'
-    calculate_result =function(){
+    fit = function(){
       #create index for sample splitting
       k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
       #progress bar
@@ -152,7 +144,7 @@ AIPW <- R6::R6Class(
         pb = utils::txtProgressBar(min = 0, max = private$k_split, initial = 0,style = 3)
       }
 
-      #sample splitting
+      #perform sample splitting (k_split==1: no split; k_split \in (1,n))
       for (i in 1:private$k_split){
         if (private$k_split==1){
           train_index <- validation_index <- k_index==i
@@ -161,7 +153,7 @@ AIPW <- R6::R6Class(
           validation_index <- k_index==i
         }
 
-        #split the sample
+        #split the sample based on the index
         #Q outcome set
         train_set.Q <- private$Q.set[train_index,]
         validation_set.Q <- private$Q.set[validation_index,]
@@ -187,20 +179,33 @@ AIPW <- R6::R6Class(
                                        X=train_set.g,
                                        SL.library = self$libs$g.SL.library)
         # predict on validation set
-        self$obs_est$p_score[validation_index]  <- self$sl.predict(self$libs$g.fit,newdata = validation_set.g)  #g_pred
+        self$obs_est$raw_p_score[validation_index]  <- self$sl.predict(self$libs$g.fit,newdata = validation_set.g)  #g_pred
 
         #progress bar
         if (private$verbose){
           utils::setTxtProgressBar(pb,i)
         }
       }
-
-      .bound <- function(ps,bound=private$g.bound){
-        res <- base::ifelse(ps<bound,bound,
-                            base::ifelse(ps>(1-bound),(1-bound),ps))
-        return(res)
+      if (private$verbose){
+        cat("\n Done! \n")
       }
-      self$obs_est$p_score <- .bound(self$obs_est$p_score)
+    },
+    #' @description
+    #' Calculate average causal effects in RD, RR and OR
+    #'
+    #' @param g.bound value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
+    #'
+    #' @return Average treatment effect estimations in RD, RR and OR
+    calculate_result = function(g.bound=0.025){
+      #propensity score truncation
+      private$g.bound=g.bound
+      #check g.bound value
+      if (!is.numeric(private$g.bound)){
+        stop("g.bound must be a numeric value")
+      } else if (private$g.bound>1|private$g.bound<0){
+        stop("g.bound must between 0 and 1")
+      }
+      self$obs_est$p_score <- private$.bound(self$obs_est$raw_p_score)
 
       #AIPW est
       self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
@@ -223,9 +228,6 @@ AIPW <- R6::R6Class(
       self$result <- cbind(matrix(c(self$estimates$RD,self$estimates$RR,self$estimates$OR),nrow=3,byrow=T),self$n)
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
       row.names(self$result) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
-      if (private$verbose){
-        cat("\n Done! \n")
-      }
       print(self$result,digit=3)
     }
   ),
@@ -251,9 +253,9 @@ AIPW <- R6::R6Class(
     get_RR = function(aipw_eif1,aipw_eif0,sigma_covar,Z_norm){
       est <- mean(aipw_eif1)/mean(aipw_eif0)
       se <- sqrt((sigma_covar[1,1]/(mean(aipw_eif0)^2)) -
-                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))) +
-                 (sigma_covar[2,2]/mean(aipw_eif1)^2) -
-                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))))/Z_norm
+                   (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))) +
+                   (sigma_covar[2,2]/mean(aipw_eif1)^2) -
+                   (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0))))/Z_norm
       ci <- get_ci(est,se,ratio=T)
       output = c(est, se, ci)
       names(output) = c("Estimate","SE","95% LCL","95% UCL")
@@ -262,20 +264,27 @@ AIPW <- R6::R6Class(
     get_OR = function(aipw_eif1,aipw_eif0,sigma_covar,Z_norm){
       est <- (mean(aipw_eif1)/(1-mean(aipw_eif1))) / (mean(aipw_eif0)/(1-mean(aipw_eif0)))
       se <- sqrt((sigma_covar[1,1]/((mean(aipw_eif0)^2)*(mean(1-aipw_eif0)^2))) -
-                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)*mean(1-aipw_eif1)*mean(1-aipw_eif0))) +
-                 (sigma_covar[2,2]/((mean(aipw_eif1)^2)*(mean(1-aipw_eif1)^2))) -
-                 (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)
-                                    *mean(1-aipw_eif1)*mean(1-aipw_eif0))))/Z_norm
+                   (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)*mean(1-aipw_eif1)*mean(1-aipw_eif0))) +
+                   (sigma_covar[2,2]/((mean(aipw_eif1)^2)*(mean(1-aipw_eif1)^2))) -
+                   (2*sigma_covar[1,2]/(mean(aipw_eif1)*mean(aipw_eif0)
+                                        *mean(1-aipw_eif1)*mean(1-aipw_eif0))))/Z_norm
       ci <- get_ci(est,se,ratio=T)
       output = c(est, se, ci)
       names(output) = c("Estimate","SE","95% LCL","95% UCL")
       return(output)
     },
     get_sigma_covar = function(aipw_eif0,aipw_eif1){
-      matrix(c(stats::var(aipw_eif0),
-               stats::cov(aipw_eif0,aipw_eif1),
-               stats::cov(aipw_eif1,aipw_eif0),
-               stats::var(aipw_eif1)),nrow=2)
+      mat <- matrix(c(stats::var(aipw_eif0),
+                      stats::cov(aipw_eif0,aipw_eif1),
+                      stats::cov(aipw_eif1,aipw_eif0),
+                      stats::var(aipw_eif1)),nrow=2)
+      return(mat)
+    },
+    #setup the bounds for the propensity score to ensure the balance
+    .bound = function(p_score,bound = private$g.bound){
+      res <- base::ifelse(p_score<bound,bound,
+                          base::ifelse(p_score>(1-bound),(1-bound),p_score))
+      return(res)
     }
   )
 )
