@@ -68,6 +68,7 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     W.g=covariates.g,
                     Q.SL.library = sl.lib,
                     g.SL.library = sl.lib,
+                    g.bound = 0.25, #propensity score truncation 
                     k_split = 3,
                     verbose=FALSE)
 #estimate the average causal effects
@@ -101,6 +102,7 @@ AIPW_sl3 <- AIPW$new(Y= outcome,
                     W.g=covariates.g,
                     Q.SL.library = sl3.lib,
                     g.SL.library = sl3.lib,
+                    g.bound = 0.25, #propensity score truncation 
                     k_split = 3,
                     verbose=FALSE)
 #estimate the average causal effects

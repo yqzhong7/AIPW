@@ -82,7 +82,7 @@ AIPW <- R6::R6Class(
         if (any(grepl("SL.",Q.SL.library)) & any(grepl("SL.",g.SL.library))){
           #change wrapper functions
           self$sl.fit = function(Y, X, SL.library){
-            fit <- SuperLearner(Y = Y, X = X, SL.library = SL.library, family="binomial")
+            fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family="binomial")
             return(fit)
           }
           self$sl.predict = function(fit, newdata){
@@ -101,14 +101,14 @@ AIPW <- R6::R6Class(
           self$sl.fit = function(X, Y, SL.library){
             dat <- data.frame(cbind(Y,X))
             dat_colnames <- colnames(dat)
-            task <- sl3_Task$new(dat, covariates = colnames(dat)[-1],
+            task <- sl3::sl3_Task$new(dat, covariates = colnames(dat)[-1],
                                  outcome = colnames(dat)[1], outcome_type = "binomial"
             )
             fit <- SL.library$train(task)
             return(fit)
           }
           self$sl.predict = function(fit, newdata){
-            new_task <- sl3_Task$new(newdata, covariates = colnames(newdata))
+            new_task <- sl3::sl3_Task$new(newdata, covariates = colnames(newdata))
             pred <- fit$predict(new_task)
             return(pred)
           }
