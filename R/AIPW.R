@@ -56,19 +56,22 @@ AIPW <- R6::R6Class(
     #' @param k_split number of splitting (integer; range: from 1 to number of observation-1):
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
-    #'   (e.g., k_split=5, use 4/5 of the data to estimate the 1/5 leftover data)
+    #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
+    #' @param g.bound value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
     #' @param verbose whether to show progression bar (logical; Default = FALSE)
     #'
     #' @return A new `aipw` object.
     initialize = function(Y=NULL, A=NULL,W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL,g.SL.library=NULL,
-                          k_split=1,verbose=FALSE){
+                          k_split=1,g.bound=0.025,verbose=FALSE){
       #save input into private fields
       private$Y=Y
       private$A=A
       private$Q.set=cbind(A, as.data.frame(W.Q))
       private$g.set=as.data.frame(W.g)
+      private$g.bound=g.bound
       private$k_split=k_split
+      #private$g.bound=g.bound
       private$verbose=verbose
       #check data length
       if (!(length(private$Y)==length(private$A) & length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
@@ -92,7 +95,7 @@ AIPW <- R6::R6Class(
       } else if (any(class(Q.SL.library) == "Lrnr_base") & any(class(g.SL.library) == "Lrnr_base")) {
         #only using Stack in sl3 will return estimates of each library separately
         if (any(class(Q.SL.library) == "Stack") & any(class(g.SL.library) == "Stack")){
-          warning("Only using sl3::Stack may cause problem. Please consider to use metalearner for the stacked libraries!")
+          warning("Only using sl3::Stack may cause problem. Please consider using metalearners for the stacked libraries!")
         } else {
           #change wrapper functions
           self$sl.fit = function(X, Y, SL.library){
@@ -130,6 +133,13 @@ AIPW <- R6::R6Class(
       #check verbose value
       if (!is.logical(private$verbose)){
         stop("verbose is not valid")
+      }
+      #check g.bound value
+      if (!is.numeric(private$g.bound)){
+        stop("g.bound must be a numeric value")
+      }
+      if (private$g.bound>1|private$g.bound<0){
+        stop("g.bound must between 0 and 1")
       }
     },
     #' @description
@@ -186,6 +196,13 @@ AIPW <- R6::R6Class(
         }
       }
 
+      .bound <- function(ps,bound=private$g.bound){
+        res <- base::ifelse(ps<bound,bound,
+                            base::ifelse(ps>(1-bound),(1-bound),ps))
+        return(res)
+      }
+      self$obs_est$pi <- .bound(self$obs_est$pi)
+
       #AIPW est
       self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$pi)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
       self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/self$obs_est$pi)*(private$Y - self$obs_est$mu) + self$obs_est$mu0
@@ -195,7 +212,7 @@ AIPW <- R6::R6Class(
       ## risk difference
       self$estimates$RD <- private$get_RD(self$obs_est$aipw_eif1, self$obs_est$aipw_eif0, Z_norm)
 
-      ## var-cov mat for rr and od calculation
+      ## var-cov mat for rr and or calculation
       self$estimates$sigma_covar <- private$get_sigma_covar(self$obs_est$aipw_eif0,self$obs_est$aipw_eif1)
 
       ## risk ratio
@@ -220,6 +237,7 @@ AIPW <- R6::R6Class(
     Q.set=NULL,
     g.set=NULL,
     k_split=NULL,
+    g.bound=NULL,
     verbose=NULL,
     #private methods
     #Use individaul estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%

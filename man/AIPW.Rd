@@ -57,6 +57,7 @@ Create a new AIPW object.
   Q.SL.library = NULL,
   g.SL.library = NULL,
   k_split = 1,
+  g.bound = 0.025,
   verbose = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -79,7 +80,9 @@ Create a new AIPW object.
 \item{\code{k_split}}{number of splitting (integer; range: from 1 to number of observation-1):
 if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
-(e.g., k_split=5, use 4/5 of the data to estimate the 1/5 leftover data)}
+(e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)}
+
+\item{\code{g.bound}}{value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
 
 \item{\code{verbose}}{whether to show progression bar (logical; Default = FALSE)}
 }
