@@ -74,9 +74,9 @@ AIPW_SL <- AIPW$new(Y= outcome,
 #estimate the average causal effects
 AIPW_SL$calculate_result()
 #>                 Estimate     SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.150 0.0654 -0.2786 -0.0221 200
-#> Risk Ratio         0.631 0.6203  0.1872  2.1299 200
-#> Odds Ratio         0.504 1.3261  0.0374  6.7747 200
+#> Risk Difference   -0.150 0.0654  -0.279 -0.0221 200
+#> Risk Ratio         0.631 0.2094   0.419  0.9520 200
+#> Odds Ratio         0.504 0.3062   0.276  0.9178 200
 ```
 
 #### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
@@ -108,7 +108,7 @@ AIPW_sl3 <- AIPW$new(Y= outcome,
 #estimate the average causal effects
 AIPW_sl3$calculate_result()
 #>                 Estimate     SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.147 0.0659 -0.2763 -0.0179 200
-#> Risk Ratio         0.638 0.6216  0.1885  2.1559 200
-#> Odds Ratio         0.511 1.3356  0.0373  7.0037 200
+#> Risk Difference   -0.147 0.0659  -0.276 -0.0179 200
+#> Risk Ratio         0.638 0.2096   0.423  0.9616 200
+#> Odds Ratio         0.511 0.3073   0.280  0.9333 200
 ```

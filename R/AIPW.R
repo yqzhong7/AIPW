@@ -29,7 +29,7 @@ AIPW <- R6::R6Class(
     obs_est = list(mu0 = NULL,
                    mu1 = NULL,
                    mu = NULL,
-                   pi = NULL,
+                   p_score = NULL,
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
     #' @field estimates risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
@@ -71,7 +71,6 @@ AIPW <- R6::R6Class(
       private$g.set=as.data.frame(W.g)
       private$g.bound=g.bound
       private$k_split=k_split
-      #private$g.bound=g.bound
       private$verbose=verbose
       #check data length
       if (!(length(private$Y)==length(private$A) & length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
@@ -125,7 +124,7 @@ AIPW <- R6::R6Class(
       self$obs_est$mu0 <- rep(NA,self$n)
       self$obs_est$mu1 <- rep(NA,self$n)
       self$obs_est$mu <- rep(NA,self$n)
-      self$obs_est$pi <- rep(NA,self$n)
+      self$obs_est$p_score <- rep(NA,self$n)
       #check k_split value
       if (private$k_split<1 | private$k_split>=self$n){
         stop("k_split is not valid")
@@ -188,7 +187,7 @@ AIPW <- R6::R6Class(
                                        X=train_set.g,
                                        SL.library = self$libs$g.SL.library)
         # predict on validation set
-        self$obs_est$pi[validation_index]  <- self$sl.predict(self$libs$g.fit,newdata = validation_set.g)  #g_pred
+        self$obs_est$p_score[validation_index]  <- self$sl.predict(self$libs$g.fit,newdata = validation_set.g)  #g_pred
 
         #progress bar
         if (private$verbose){
@@ -201,11 +200,11 @@ AIPW <- R6::R6Class(
                             base::ifelse(ps>(1-bound),(1-bound),ps))
         return(res)
       }
-      self$obs_est$pi <- .bound(self$obs_est$pi)
+      self$obs_est$p_score <- .bound(self$obs_est$p_score)
 
       #AIPW est
-      self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$pi)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
-      self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/self$obs_est$pi)*(private$Y - self$obs_est$mu) + self$obs_est$mu0
+      self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
+      self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu0
 
       Z_norm <- sqrt(self$n)
 
