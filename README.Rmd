@@ -18,6 +18,8 @@ __Authors:__ [Yongqi Zhong](https://github.com/yqzhong7), [Ashley Naimi](https:/
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  fig.width = 6,
+  fig.height = 4,
   comment = "#>"
 )
 ```
@@ -33,12 +35,12 @@ remotes::install_github("yqzhong7/AIPW")
 
 ## Example
 
-#### Setup example data
+### Setup example data
 ```{r example data}
 set.seed(888)
 N <- 200
 outcome <- rbinom(N,1,0.3)
-exposure <- rbinom(N,1,0.5)
+exposure <- rbinom(N,1,0.2)
 #covaraites for outcome model (Q)
 covariates.Q <- matrix(c(rbinom(N,1,0.4),
                                 rnorm(N,mean = 0,sd=1),
@@ -52,6 +54,8 @@ covariates.g <- matrix(c(rbinom(N,1,0.4),
 
 # covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
+
+### Create an AIPW object 
 
 #### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
 ```{r SuperLearner, message=FALSE}
@@ -68,11 +72,8 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     W.g=covariates.g,
                     Q.SL.library = sl.lib,
                     g.SL.library = sl.lib,
-                    g.bound = 0.25, #propensity score truncation 
                     k_split = 3,
                     verbose=FALSE)
-#estimate the average causal effects
-AIPW_SL$calculate_result()
 ```
 
 #### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
@@ -97,10 +98,38 @@ AIPW_sl3 <- AIPW$new(Y= outcome,
                     W.g=covariates.g,
                     Q.SL.library = sl3.lib,
                     g.SL.library = sl3.lib,
-                    g.bound = 0.25, #propensity score truncation 
                     k_split = 3,
                     verbose=FALSE)
-#estimate the average causal effects
-AIPW_sl3$calculate_result()
+```
+
+### Fit the data to the AIPW object
+
+```{r}
+#fit the AIPW_SL object
+AIPW_SL$fit()
+# #fit the AIPW_sl3 object
+# AIPW_sl3$fit()
+```
+
+### Calculate average treatment effects 
+
+#### Check the balance of propensity scores by exposure status
+```{r ps_raw}
+library(ggplot2)
+AIPW_SL$plot.p_score()
+```
+
+#### Estimate the ATE with propensity scores truncation
+```{r}
+#estimate the average causal effects from the fitted AIPW_SL object 
+AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
+
+#estimate the average causal effects from the fitted AIPW_sl3 object 
+# AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation 
+```
+
+#### Check the balance of propensity scores by exposure status after truncation
+```{r ps_trunc, fig.width=8}
+AIPW_SL$plot.p_score()
 ```
 

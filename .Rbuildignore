@@ -10,3 +10,4 @@
 ^codecov\.yml$
 ^\.github$
 ^README\.Rmd$
+^README_files$

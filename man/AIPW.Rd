@@ -41,6 +41,7 @@ create an AIPW object
 \item \href{#method-new}{\code{AIPW$new()}}
 \item \href{#method-fit}{\code{AIPW$fit()}}
 \item \href{#method-calculate_result}{\code{AIPW$calculate_result()}}
+\item \href{#method-plot.p_score}{\code{AIPW$plot.p_score()}}
 \item \href{#method-clone}{\code{AIPW$clone()}}
 }
 }
@@ -118,6 +119,19 @@ Calculate average causal effects in RD, RR and OR
 }
 \subsection{Returns}{
 Average treatment effect estimations in RD, RR and OR
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-plot.p_score"></a>}}
+\if{latex}{\out{\hypertarget{method-plot.p_score}{}}}
+\subsection{Method \code{plot.p_score()}}{
+Plot and check the propensity scores by exposure status
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AIPW$plot.p_score()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A density plot of propensity scores by exposure status
 }
 }
 \if{html}{\out{<hr>}}

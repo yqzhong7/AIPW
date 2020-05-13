@@ -197,7 +197,6 @@ AIPW <- R6::R6Class(
     #'
     #' @return Average treatment effect estimations in RD, RR and OR
     calculate_result = function(g.bound=0.025){
-      #propensity score truncation
       private$g.bound=g.bound
       #check g.bound value
       if (!is.numeric(private$g.bound)){
@@ -205,6 +204,8 @@ AIPW <- R6::R6Class(
       } else if (private$g.bound>1|private$g.bound<0){
         stop("g.bound must between 0 and 1")
       }
+      #check plot.g value
+
       self$obs_est$p_score <- private$.bound(self$obs_est$raw_p_score)
 
       #AIPW est
@@ -229,6 +230,36 @@ AIPW <- R6::R6Class(
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
       row.names(self$result) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
       print(self$result,digit=3)
+    },
+    #' @description
+    #' Plot and check the propensity scores by exposure status
+    #'
+    #' @return A density plot of propensity scores by exposure status
+    plot.p_score = function(){
+      #input check
+      if (is.null(self$obs_est$raw_p_score)){
+        stop("Propensity scores are not estimated.")
+      } else if (is.null(self$obs_est$p_score)) {
+      #p_score before truncation (estimated ps)
+      plot_data = data.frame(A = factor(private$A),
+                             p_score= self$obs_est$raw_p_score,
+                             trunc = "Not truncated")
+        message("ATE has not been calculated.")
+      } else {
+        plot_data = rbind(data.frame(A = factor(private$A),
+                               p_score= self$obs_est$raw_p_score,
+                               trunc = "Not truncated"),
+                          data.frame(A = factor(private$A),
+                               p_score= self$obs_est$p_score,
+                               trunc = "Truncated"))
+      }
+      g.plot <-  ggplot2::ggplot(data = plot_data,ggplot2::aes(x = p_score, group = A, color = A, fill=A)) +
+        ggplot2::geom_density(alpha=0.5) +
+        ggplot2::scale_x_continuous(limits = c(0,1)) +
+        ggplot2::facet_wrap(~trunc) +
+        ggtitle("Propensity scores by treatment status") +
+        theme_bw()
+      print(g.plot)
     }
   ),
   private = list(
@@ -238,8 +269,9 @@ AIPW <- R6::R6Class(
     Q.set=NULL,
     g.set=NULL,
     k_split=NULL,
-    g.bound=NULL,
     verbose=NULL,
+    g.bound=NULL,
+    plot.g = NULL,
     #private methods
     #Use individaul estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%
     get_RD = function(aipw_eif1,aipw_eif0,Z_norm){
