@@ -182,6 +182,7 @@
   <span class='kw'>Q.SL.library</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>g.SL.library</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>k_split</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre><p></div></p>
 
@@ -202,7 +203,9 @@
 <dt><code>k_split</code></dt><dd><p>number of splitting (integer; range: from 1 to number of observation-1):
 if k_split=1, no sample splitting;
 if k_split&gt;1, use similar technique of cross-validation
-(e.g., k_split=5, use 4/5 of the data to estimate the 1/5 leftover data)</p></dd>
+(e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)</p></dd>
+
+<dt><code>g.bound</code></dt><dd><p>value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></dd>
 
 <dt><code>verbose</code></dt><dd><p>whether to show progression bar (logical; Default = FALSE)</p></dd>
 
