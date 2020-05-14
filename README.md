@@ -20,18 +20,34 @@ status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https
 Naimi](https://github.com/ainaimi), [Gabriel
 Conzuelo](https://github.com/gconzuelo)
 
-## Installation
+## Contents:
+
+  - ##### [Installation](#Installation)
+
+  - ##### [Example](#Example)
+    
+      - ###### [Setup example data](#data)
+    
+      - ###### [One line version](#one_line)
+    
+      - ###### [Longer version](#details)
+        
+        1.  [Create an AIPW object](#constructor)
+        2.  [Fit the object](#fit)
+        3.  [Calculate average treatment effects](#ate)
+
+-----
+
+## <a id="Installation"></a>Installation
 
 ``` r
 install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
------
+## <a id="Example"></a>Example
 
-## Example
-
-### Setup example data
+### <a id="data"></a>Setup example data
 
 ``` r
 set.seed(888)
@@ -52,9 +68,42 @@ covariates.g <- matrix(c(rbinom(N,1,0.4),
 # covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
 
-### Create an AIPW object
+### <a id="one_line"></a>One line version (Method chaining from R6class)
 
-#### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
+``` r
+library(AIPW)
+library(SuperLearner)
+#> Loading required package: nnls
+#> Super Learner
+#> Version: 2.0-26
+#> Package created on 2019-10-27
+library(ggplot2)
+AIPW_SL <- AIPW$new(Y= outcome,
+                    A= exposure,
+                    W.Q=covariates.Q, 
+                    W.g=covariates.g,
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
+                    k_split = 3,
+                    verbose=FALSE)$
+  fit()$
+  calculate_result(g.bound = 0.25)$
+  plot.p_score()
+#>                 Estimate    SE 95% LCL  95% UCL   N
+#> Risk Difference   -0.267 0.132 -0.5250 -0.00817 200
+#> Risk Ratio         0.393 0.413  0.1748  0.88221 200
+#> Odds Ratio         0.266 0.616  0.0797  0.88957 200
+```
+
+![](man/figures/one_line-1.png)<!-- -->
+
+### <a id="details"></a>A slightly longer version
+
+#### 1\. <a id="constructor"></a>Create an AIPW object
+
+  - ##### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
+
+<!-- end list -->
 
 ``` r
 library(AIPW)
@@ -74,7 +123,9 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     verbose=FALSE)
 ```
 
-#### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
+  - ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
+
+<!-- end list -->
 
 ``` r
 library(AIPW)
@@ -101,7 +152,10 @@ AIPW_sl3 <- AIPW$new(Y= outcome,
                     verbose=FALSE)
 ```
 
-### Fit the data to the AIPW object
+#### 2\. <a id="fit"></a>Fit the AIPW object
+
+This step will fit the data stored in the AIPW object to obtain
+estimates for later average treatment effect calculations.
 
 ``` r
 #fit the AIPW_SL object
@@ -110,9 +164,11 @@ AIPW_SL$fit()
 # AIPW_sl3$fit()
 ```
 
-### Calculate average treatment effects
+#### 3\. <a id="ate"></a>Calculate average treatment effects
 
-#### Check the balance of propensity scores by exposure status
+  - ##### Check the balance of propensity scores by exposure status
+
+<!-- end list -->
 
 ``` r
 library(ggplot2)
@@ -122,21 +178,25 @@ AIPW_SL$plot.p_score()
 
 ![](man/figures/ps_raw-1.png)<!-- -->
 
-#### Estimate the ATE with propensity scores truncation
+  - ##### Estimate the ATE with propensity scores truncation
+
+<!-- end list -->
 
 ``` r
 #estimate the average causal effects from the fitted AIPW_SL object 
 AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
-#>                 Estimate    SE 95% LCL  95% UCL   N
-#> Risk Difference   -0.267 0.132 -0.5250 -0.00817 200
-#> Risk Ratio         0.393 0.413  0.1748  0.88221 200
-#> Odds Ratio         0.266 0.616  0.0797  0.88957 200
+#>                 Estimate    SE 95% LCL 95% UCL   N
+#> Risk Difference   -0.253 0.131 -0.5096 0.00366 200
+#> Risk Ratio         0.423 0.386  0.1986 0.90012 200
+#> Odds Ratio         0.291 0.591  0.0915 0.92867 200
 
 #estimate the average causal effects from the fitted AIPW_sl3 object 
 # AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation 
 ```
 
-#### Check the balance of propensity scores by exposure status after truncation
+  - ##### Check the balance of propensity scores by exposure status after truncation
+
+<!-- end list -->
 
 ``` r
 AIPW_SL$plot.p_score()

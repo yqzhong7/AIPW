@@ -189,6 +189,7 @@ AIPW <- R6::R6Class(
       if (private$verbose){
         cat("\n Done! \n")
       }
+      invisible(self)
     },
     #' @description
     #' Calculate average causal effects in RD, RR and OR
@@ -197,6 +198,7 @@ AIPW <- R6::R6Class(
     #'
     #' @return Average treatment effect estimations in RD, RR and OR
     calculate_result = function(g.bound=0.025){
+      #p_score truncation
       private$g.bound=g.bound
       #check g.bound value
       if (!is.numeric(private$g.bound)){
@@ -204,8 +206,6 @@ AIPW <- R6::R6Class(
       } else if (private$g.bound>1|private$g.bound<0){
         stop("g.bound must between 0 and 1")
       }
-      #check plot.g value
-
       self$obs_est$p_score <- private$.bound(self$obs_est$raw_p_score)
 
       #AIPW est
@@ -230,6 +230,7 @@ AIPW <- R6::R6Class(
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
       row.names(self$result) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
       print(self$result,digit=3)
+      invisible(self)
     },
     #' @description
     #' Plot and check the propensity scores by exposure status
@@ -271,7 +272,6 @@ AIPW <- R6::R6Class(
     k_split=NULL,
     verbose=NULL,
     g.bound=NULL,
-    plot.g = NULL,
     #private methods
     #Use individaul estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%
     get_RD = function(aipw_eif1,aipw_eif0,Z_norm){

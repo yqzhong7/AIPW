@@ -25,18 +25,31 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Installation
+## Contents:
+
+  * ##### [Installation](#Installation)
+  * ##### [Example](#Example)
+    + ###### [Setup example data](#data)
+    + ###### [One line version](#one_line)
+    + ###### [Longer version](#details)
+      1. [Create an AIPW object](#constructor)
+      2. [Fit the object](#fit)
+      3. [Calculate average treatment effects](#ate)
+
+
+---------
+
+## <a id="Installation"></a>Installation
 
 ```{r installation, eval=FALSE}
 install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
-------
 
-## Example
+## <a id="Example"></a>Example
 
-### Setup example data
+### <a id="data"></a>Setup example data
 ```{r example data}
 set.seed(888)
 N <- 200
@@ -56,9 +69,31 @@ covariates.g <- matrix(c(rbinom(N,1,0.4),
 # covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
 
-### Create an AIPW object 
+### <a id="one_line"></a>One line version (Method chaining from R6class)
 
-#### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
+```{r one_line, fig.width=8}
+library(AIPW)
+library(SuperLearner)
+library(ggplot2)
+AIPW_SL <- AIPW$new(Y= outcome,
+                    A= exposure,
+                    W.Q=covariates.Q, 
+                    W.g=covariates.g,
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
+                    k_split = 3,
+                    verbose=FALSE)$
+  fit()$
+  calculate_result(g.bound = 0.25)$
+  plot.p_score()
+```
+
+
+### <a id="details"></a>A slightly longer version
+
+#### 1. <a id="constructor"></a>Create an AIPW object 
+
+  * ##### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
 ```{r SuperLearner, message=FALSE}
 library(AIPW)
 library(SuperLearner)
@@ -77,7 +112,7 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     verbose=FALSE)
 ```
 
-#### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
+  * ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
 ```{r sl3}
 library(AIPW)
 library(sl3)
@@ -103,7 +138,9 @@ AIPW_sl3 <- AIPW$new(Y= outcome,
                     verbose=FALSE)
 ```
 
-### Fit the data to the AIPW object
+#### 2. <a id="fit"></a>Fit the AIPW object
+
+This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.
 
 ```{r}
 #fit the AIPW_SL object
@@ -112,15 +149,15 @@ AIPW_SL$fit()
 # AIPW_sl3$fit()
 ```
 
-### Calculate average treatment effects 
+#### 3. <a id="ate"></a>Calculate average treatment effects 
 
-#### Check the balance of propensity scores by exposure status
+  * ##### Check the balance of propensity scores by exposure status
 ```{r ps_raw}
 library(ggplot2)
 AIPW_SL$plot.p_score()
 ```
 
-#### Estimate the ATE with propensity scores truncation
+  * ##### Estimate the ATE with propensity scores truncation
 ```{r}
 #estimate the average causal effects from the fitted AIPW_SL object 
 AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
@@ -129,8 +166,9 @@ AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation
 # AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation 
 ```
 
-#### Check the balance of propensity scores by exposure status after truncation
+  * ##### Check the balance of propensity scores by exposure status after truncation
 ```{r ps_trunc, fig.width=8}
 AIPW_SL$plot.p_score()
 ```
+
 

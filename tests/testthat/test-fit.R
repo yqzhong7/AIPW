@@ -83,3 +83,24 @@ test_that("AIPW fit: sl3 & k_split", {
   expect_true(is.null(aipw$result))
   expect_true(is.null(aipw$estimate))
 })
+
+
+#' @title Tesing calculate_result: verbose
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2020/05/13
+test_that("AIPW calculate_result: verbose", {
+  #verbose == TRUE: w/ progression bar & "Done!"
+  vec <- function() sample(0:1,100,replace = T)
+  sl.lib <- c("SL.mean","SL.glm")
+  aipw <-  AIPW$new(Y=vec(),
+                    A=vec(),
+                    W.Q =vec(),
+                    W.g =vec(),
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 1,verbose = T)
+  expect_output(aipw$fit(),regexp = "Done")
+})
+
