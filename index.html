@@ -84,19 +84,41 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><strong>Authors:</strong> <a href="https://github.com/yqzhong7">Yongqi Zhong</a>, <a href="https://github.com/ainaimi">Ashley Naimi</a>, <a href="https://github.com/gconzuelo">Gabriel Conzuelo</a></p>
-<div id="installation" class="section level2">
+<div id="contents" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"yqzhong7/AIPW"</span>)</pre></div>
+<a href="#contents" class="anchor"></a>Contents:</h2>
+<ul>
+<li><h5 id="installation"><a href="#Installation">Installation</a></h5></li>
+<li>
+<h5 id="example"><a href="#Example">Example</a></h5>
+<ul>
+<li><h6 id="setup-example-data"><a href="#data">Setup example data</a></h6></li>
+<li><h6 id="one-line-version"><a href="#one_line">One line version</a></h6></li>
+<li>
+<h6 id="longer-version"><a href="#details">Longer version</a></h6>
+<ol>
+<li><a href="#constructor">Create an AIPW object</a></li>
+<li><a href="#fit">Fit the object</a></li>
+<li><a href="#ate">Calculate average treatment effects</a></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
 <hr>
 </div>
-<div id="example" class="section level2">
+<div id="installation-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<div id="setup-example-data" class="section level3">
+<a href="#installation-1" class="anchor"></a><a id="Installation"></a>Installation</h2>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
+<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"yqzhong7/AIPW"</span>)</pre></div>
+</div>
+<div id="example-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-1" class="anchor"></a><a id="Example"></a>Example</h2>
+<div id="setup-example-data-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#setup-example-data" class="anchor"></a>Setup example data</h3>
+<a href="#setup-example-data-1" class="anchor"></a><a id="data"></a>Setup example data</h3>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">888</span>)
 <span class="no">N</span> <span class="kw">&lt;-</span> <span class="fl">200</span>
 <span class="no">outcome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.3</span>)
@@ -114,13 +136,43 @@
 
 <span class="co"># covariates.g &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></pre></div>
 </div>
-<div id="create-an-aipw-object" class="section level3">
+<div id="one-line-version-method-chaining-from-r6class" class="section level3">
 <h3 class="hasAnchor">
-<a href="#create-an-aipw-object" class="anchor"></a>Create an AIPW object</h3>
-<div id="use-superlearner-libraries-reference-guide-to-superlearner" class="section level4">
-<h4 class="hasAnchor">
-<a href="#use-superlearner-libraries-reference-guide-to-superlearner" class="anchor"></a>Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries (reference: <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">Guide to SuperLearner</a>)</h4>
+<a href="#one-line-version-method-chaining-from-r6class" class="anchor"></a><a id="one_line"></a>One line version (Method chaining from R6class)</h3>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">SuperLearner</span>)
+<span class="co">#&gt; Loading required package: nnls</span>
+<span class="co">#&gt; Super Learner</span>
+<span class="co">#&gt; Version: 2.0-26</span>
+<span class="co">#&gt; Package created on 2019-10-27</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<span class="no">AIPW_SL</span> <span class="kw">&lt;-</span> <span class="no">AIPW</span>$<span class="fu">new</span>(<span class="kw">Y</span><span class="kw">=</span> <span class="no">outcome</span>,
+                    <span class="kw">A</span><span class="kw">=</span> <span class="no">exposure</span>,
+                    <span class="kw">W.Q</span><span class="kw">=</span><span class="no">covariates.Q</span>,
+                    <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
+                    <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
+                    <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
+                    <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
+                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)$
+  <span class="fu">fit</span>()$
+  <span class="fu">calculate_result</span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>)$
+  <span class="fu">plot.p_score</span>()
+<span class="co">#&gt;                 Estimate    SE 95% LCL  95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.267 0.132 -0.5250 -0.00817 200</span>
+<span class="co">#&gt; Risk Ratio         0.393 0.413  0.1748  0.88221 200</span>
+<span class="co">#&gt; Odds Ratio         0.266 0.616  0.0797  0.88957 200</span></pre></div>
+<p><img src="reference/figures/one_line-1.png"><!-- --></p>
+</div>
+<div id="a-slightly-longer-version" class="section level3">
+<h3 class="hasAnchor">
+<a href="#a-slightly-longer-version" class="anchor"></a><a id="details"></a>A slightly longer version</h3>
+<div id="create-an-aipw-object" class="section level4">
+<h4 class="hasAnchor">
+<a href="#create-an-aipw-object" class="anchor"></a>1. <a id="constructor"></a>Create an AIPW object</h4>
+<ul>
+<li><h5 id="use-superlearner-libraries-reference-guide-to-superlearner">Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries (reference: <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">Guide to SuperLearner</a>)</h5></li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">SuperLearner</span>)
 
 <span class="co">#SuperLearner libraries for outcome (Q) and exposure models (g)</span>
@@ -135,11 +187,10 @@
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
                     <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></div>
-</div>
-<div id="use-sl3-libraries-reference-intro-to-sl3" class="section level4">
-<h4 class="hasAnchor">
-<a href="#use-sl3-libraries-reference-intro-to-sl3" class="anchor"></a>Use <a href="https://tlverse.org/sl3/index.html">sl3</a> libraries (reference: <a href="https://tlverse.org/sl3/articles/intro_sl3.html">Intro to sl3</a>)</h4>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
+<ul>
+<li><h5 id="use-sl3-libraries-reference-intro-to-sl3">Use <a href="https://tlverse.org/sl3/index.html">sl3</a> libraries (reference: <a href="https://tlverse.org/sl3/articles/intro_sl3.html">Intro to sl3</a>)</h5></li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>)
 
 <span class="co">##construct sl3 learners for outcome (Q) and exposure models (g)</span>
@@ -162,43 +213,41 @@
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
                     <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></div>
 </div>
-</div>
-<div id="fit-the-data-to-the-aipw-object" class="section level3">
-<h3 class="hasAnchor">
-<a href="#fit-the-data-to-the-aipw-object" class="anchor"></a>Fit the data to the AIPW object</h3>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="co">#fit the AIPW_SL object</span>
+<div id="fit-the-aipw-object" class="section level4">
+<h4 class="hasAnchor">
+<a href="#fit-the-aipw-object" class="anchor"></a>2. <a id="fit"></a>Fit the AIPW object</h4>
+<p>This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.</p>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="co">#fit the AIPW_SL object</span>
 <span class="no">AIPW_SL</span>$<span class="fu">fit</span>()
 <span class="co"># #fit the AIPW_sl3 object</span>
 <span class="co"># AIPW_sl3$fit()</span></pre></div>
 </div>
-<div id="calculate-average-treatment-effects" class="section level3">
-<h3 class="hasAnchor">
-<a href="#calculate-average-treatment-effects" class="anchor"></a>Calculate average treatment effects</h3>
-<div id="check-the-balance-of-propensity-scores-by-exposure-status" class="section level4">
+<div id="calculate-average-treatment-effects" class="section level4">
 <h4 class="hasAnchor">
-<a href="#check-the-balance-of-propensity-scores-by-exposure-status" class="anchor"></a>Check the balance of propensity scores by exposure status</h4>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<a href="#calculate-average-treatment-effects" class="anchor"></a>3. <a id="ate"></a>Calculate average treatment effects</h4>
+<ul>
+<li><h5 id="check-the-balance-of-propensity-scores-by-exposure-status">Check the balance of propensity scores by exposure status</h5></li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
 <span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()
 <span class="co">#&gt; ATE has not been calculated.</span></pre></div>
 <p><img src="reference/figures/ps_raw-1.png"><!-- --></p>
-</div>
-<div id="estimate-the-ate-with-propensity-scores-truncation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#estimate-the-ate-with-propensity-scores-truncation" class="anchor"></a>Estimate the ATE with propensity scores truncation</h4>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
+<ul>
+<li><h5 id="estimate-the-ate-with-propensity-scores-truncation">Estimate the ATE with propensity scores truncation</h5></li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb8"><pre class="r"><span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
 <span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>) <span class="co">#propensity score truncation </span>
-<span class="co">#&gt;                 Estimate    SE 95% LCL  95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.267 0.132 -0.5250 -0.00817 200</span>
-<span class="co">#&gt; Risk Ratio         0.393 0.413  0.1748  0.88221 200</span>
-<span class="co">#&gt; Odds Ratio         0.266 0.616  0.0797  0.88957 200</span>
+<span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.253 0.131 -0.5096 0.00366 200</span>
+<span class="co">#&gt; Risk Ratio         0.423 0.386  0.1986 0.90012 200</span>
+<span class="co">#&gt; Odds Ratio         0.291 0.591  0.0915 0.92867 200</span>
 
 <span class="co">#estimate the average causal effects from the fitted AIPW_sl3 object </span>
 <span class="co"># AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation </span></pre></div>
-</div>
-<div id="check-the-balance-of-propensity-scores-by-exposure-status-after-truncation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#check-the-balance-of-propensity-scores-by-exposure-status-after-truncation" class="anchor"></a>Check the balance of propensity scores by exposure status after truncation</h4>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()</pre></div>
+<ul>
+<li><h5 id="check-the-balance-of-propensity-scores-by-exposure-status-after-truncation">Check the balance of propensity scores by exposure status after truncation</h5></li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb9"><pre class="r"><span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()</pre></div>
 <p><img src="reference/figures/ps_trunc-1.png"><!-- --></p>
 </div>
 </div>
