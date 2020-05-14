@@ -120,7 +120,7 @@ AIPW_SL$plot.p_score()
 #> ATE has not been calculated.
 ```
 
-![](README_files/figure-gfm/ps_raw-1.png)<!-- -->
+![](man/figures/ps_raw-1.png)<!-- -->
 
 #### Estimate the ATE with propensity scores truncation
 
@@ -142,4 +142,4 @@ AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation
 AIPW_SL$plot.p_score()
 ```
 
-![](README_files/figure-gfm/ps_trunc-1.png)<!-- -->
+![](man/figures/ps_trunc-1.png)<!-- -->

@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   fig.width = 6,
   fig.height = 4,
+  fig.path = "man/figures/",
   comment = "#>"
 )
 ```
