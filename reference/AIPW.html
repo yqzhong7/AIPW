@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -168,12 +168,14 @@
 
 <ul>
 <li><p><a href='#method-new'><code>AIPW$new()</code></a></p></li>
+<li><p><a href='#method-fit'><code>AIPW$fit()</code></a></p></li>
 <li><p><a href='#method-calculate_result'><code>AIPW$calculate_result()</code></a></p></li>
+<li><p><a href='#method-plot.p_score'><code>AIPW$plot.p_score()</code></a></p></li>
 <li><p><a href='#method-clone'><code>AIPW$clone()</code></a></p></li>
 </ul>
 <p><hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Create a new AIPW object.</p><h3>Usage</h3>
+<p>Create a new unfitted AIPW object.</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>new</span>(
   <span class='kw'>Y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>A</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -182,7 +184,6 @@
   <span class='kw'>Q.SL.library</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>g.SL.library</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>k_split</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre><p></div></p>
 
@@ -205,18 +206,35 @@ if k_split=1, no sample splitting;
 if k_split&gt;1, use similar technique of cross-validation
 (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)</p></dd>
 
-<dt><code>g.bound</code></dt><dd><p>value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></dd>
-
 <dt><code>verbose</code></dt><dd><p>whether to show progression bar (logical; Default = FALSE)</p></dd>
 
 </dl><p></div></p>
 <h3>Returns</h3>
 <p>A new <code>aipw</code> object.</p>
 <p><hr>
+<a id="method-fit"></a></p><h3>Method <code>fit()</code></h3>
+<p>Fitting the data into the AIPW object</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>fit</span>()</pre><p></div></p>
+
+<p><hr>
 <a id="method-calculate_result"></a></p><h3>Method <code>calculate_result()</code></h3>
 <p>Calculate average causal effects in RD, RR and OR</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>calculate_result</span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>)</pre><p></div></p>
 
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>g.bound</code></dt><dd><p>value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Average treatment effect estimations in RD, RR and OR</p>
+<p><hr>
+<a id="method-plot.p_score"></a></p><h3>Method <code>plot.p_score()</code></h3>
+<p>Plot and check the propensity scores by exposure status</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>plot.p_score</span>()</pre><p></div></p>
+
+<h3>Returns</h3>
+<p>A density plot of propensity scores by exposure status</p>
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>

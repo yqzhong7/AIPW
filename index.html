@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -94,13 +94,13 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<div id="setup-example-data" class="section level4">
-<h4 class="hasAnchor">
-<a href="#setup-example-data" class="anchor"></a>Setup example data</h4>
+<div id="setup-example-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#setup-example-data" class="anchor"></a>Setup example data</h3>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">888</span>)
 <span class="no">N</span> <span class="kw">&lt;-</span> <span class="fl">200</span>
 <span class="no">outcome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.3</span>)
-<span class="no">exposure</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.5</span>)
+<span class="no">exposure</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.2</span>)
 <span class="co">#covaraites for outcome model (Q)</span>
 <span class="no">covariates.Q</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.4</span>),
                                 <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="no">N</span>,<span class="kw">mean</span> <span class="kw">=</span> <span class="fl">0</span>,<span class="kw">sd</span><span class="kw">=</span><span class="fl">1</span>),
@@ -114,6 +114,9 @@
 
 <span class="co"># covariates.g &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></pre></div>
 </div>
+<div id="create-an-aipw-object" class="section level3">
+<h3 class="hasAnchor">
+<a href="#create-an-aipw-object" class="anchor"></a>Create an AIPW object</h3>
 <div id="use-superlearner-libraries-reference-guide-to-superlearner" class="section level4">
 <h4 class="hasAnchor">
 <a href="#use-superlearner-libraries-reference-guide-to-superlearner" class="anchor"></a>Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries (reference: <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">Guide to SuperLearner</a>)</h4>
@@ -130,15 +133,8 @@
                     <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
                     <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
-                    <span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>, <span class="co">#propensity score truncation </span>
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)
-<span class="co">#estimate the average causal effects</span>
-<span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>()
-<span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.150 0.0654 -0.2786 -0.0221 200</span>
-<span class="co">#&gt; Risk Ratio         0.631 0.6203  0.1872  2.1299 200</span>
-<span class="co">#&gt; Odds Ratio         0.504 1.3261  0.0374  6.7747 200</span></pre></div>
+                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></div>
 </div>
 <div id="use-sl3-libraries-reference-intro-to-sl3" class="section level4">
 <h4 class="hasAnchor">
@@ -163,15 +159,48 @@
                     <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
                     <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl3.lib</span>,
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl3.lib</span>,
-                    <span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>, <span class="co">#propensity score truncation </span>
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)
-<span class="co">#estimate the average causal effects</span>
-<span class="no">AIPW_sl3</span>$<span class="fu">calculate_result</span>()
-<span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.147 0.0659 -0.2763 -0.0179 200</span>
-<span class="co">#&gt; Risk Ratio         0.638 0.6216  0.1885  2.1559 200</span>
-<span class="co">#&gt; Odds Ratio         0.511 1.3356  0.0373  7.0037 200</span></pre></div>
+                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></div>
+</div>
+</div>
+<div id="fit-the-data-to-the-aipw-object" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fit-the-data-to-the-aipw-object" class="anchor"></a>Fit the data to the AIPW object</h3>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="co">#fit the AIPW_SL object</span>
+<span class="no">AIPW_SL</span>$<span class="fu">fit</span>()
+<span class="co"># #fit the AIPW_sl3 object</span>
+<span class="co"># AIPW_sl3$fit()</span></pre></div>
+</div>
+<div id="calculate-average-treatment-effects" class="section level3">
+<h3 class="hasAnchor">
+<a href="#calculate-average-treatment-effects" class="anchor"></a>Calculate average treatment effects</h3>
+<div id="check-the-balance-of-propensity-scores-by-exposure-status" class="section level4">
+<h4 class="hasAnchor">
+<a href="#check-the-balance-of-propensity-scores-by-exposure-status" class="anchor"></a>Check the balance of propensity scores by exposure status</h4>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()
+<span class="co">#&gt; ATE has not been calculated.</span></pre></div>
+<p><img src="README_files/figure-gfm/ps_raw-1.png"><!-- --></p>
+</div>
+<div id="estimate-the-ate-with-propensity-scores-truncation" class="section level4">
+<h4 class="hasAnchor">
+<a href="#estimate-the-ate-with-propensity-scores-truncation" class="anchor"></a>Estimate the ATE with propensity scores truncation</h4>
+<div class="sourceCode" id="cb7"><pre class="r"><span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
+<span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>) <span class="co">#propensity score truncation </span>
+<span class="co">#&gt;                 Estimate    SE 95% LCL  95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.267 0.132 -0.5250 -0.00817 200</span>
+<span class="co">#&gt; Risk Ratio         0.393 0.413  0.1748  0.88221 200</span>
+<span class="co">#&gt; Odds Ratio         0.266 0.616  0.0797  0.88957 200</span>
+
+<span class="co">#estimate the average causal effects from the fitted AIPW_sl3 object </span>
+<span class="co"># AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation </span></pre></div>
+</div>
+<div id="check-the-balance-of-propensity-scores-by-exposure-status-after-truncation" class="section level4">
+<h4 class="hasAnchor">
+<a href="#check-the-balance-of-propensity-scores-by-exposure-status-after-truncation" class="anchor"></a>Check the balance of propensity scores by exposure status after truncation</h4>
+<div class="sourceCode" id="cb8"><pre class="r"><span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()</pre></div>
+<p><img src="README_files/figure-gfm/ps_trunc-1.png"><!-- --></p>
+</div>
 </div>
 </div>
 </div>
