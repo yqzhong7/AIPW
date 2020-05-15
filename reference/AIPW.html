@@ -210,11 +210,28 @@ if k_split&gt;1, use similar technique of cross-validation
 
 </dl><p></div></p>
 <h3>Returns</h3>
-<p>A new <code>aipw</code> object.</p>
+<p>A new <code>AIPW</code> obejct</p>
+<h3>Examples</h3>
+<p><div class="r example copy"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='no'>aipw_sl</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</pre><p></div></p>
+
 <p><hr>
 <a id="method-fit"></a></p><h3>Method <code>fit()</code></h3>
-<p>Fitting the data into the AIPW object</p><h3>Usage</h3>
+<p>Fitting the data into the AIPW object with/without sample splitting</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>fit</span>()</pre><p></div></p>
+
+<h3>Returns</h3>
+<p>A fitted <code>AIPW</code> obejct</p>
+<h3>Examples</h3>
+<p><div class="r example copy"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='no'>aipw_sl</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+<span class='no'>aipw_sl</span>$<span class='fu'>fit</span>()</pre><p></div></p>
 
 <p><hr>
 <a id="method-calculate_result"></a></p><h3>Method <code>calculate_result()</code></h3>
@@ -227,14 +244,34 @@ if k_split&gt;1, use similar technique of cross-validation
 
 </dl><p></div></p>
 <h3>Returns</h3>
-<p>Average treatment effect estimations in RD, RR and OR</p>
+<p>An <code>AIPW</code> obejct with average treatment effect estimations in RD, RR and OR</p>
+<h3>Examples</h3>
+<p><div class="r example copy"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='no'>aipw_sl</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
+<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)</pre><p></div></p>
+
 <p><hr>
 <a id="method-plot.p_score"></a></p><h3>Method <code>plot.p_score()</code></h3>
 <p>Plot and check the propensity scores by exposure status</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>plot.p_score</span>()</pre><p></div></p>
 
 <h3>Returns</h3>
-<p>A density plot of propensity scores by exposure status</p>
+<p>A density plot of propensity scores by exposure status (<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density</a></code>)</p>
+<h3>Examples</h3>
+<p><div class="r example copy"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='no'>aipw_sl</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
+<span class='co'>#before average treatment effect calculation</span>
+<span class='no'>aipw_sl</span>$<span class='fu'>plot.p_score</span>()
+<span class='co'>#after calculation</span>
+<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</pre><p></div></p>
+
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
@@ -248,6 +285,57 @@ if k_split&gt;1, use similar technique of cross-validation
 
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'>## ------------------------------------------------</span>
+<span class='co'>## Method `AIPW$new`</span>
+<span class='co'>## ------------------------------------------------</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: nnls</span></div><div class='output co'>#&gt; <span class='message'>Super Learner</span></div><div class='output co'>#&gt; <span class='message'>Version: 2.0-26</span></div><div class='output co'>#&gt; <span class='message'>Package created on 2019-10-27</span></div><div class='input'><span class='no'>aipw_sl</span> <span class='kw'>&lt;-</span> <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+
+<span class='co'>## ------------------------------------------------</span>
+<span class='co'>## Method `AIPW$fit`</span>
+<span class='co'>## ------------------------------------------------</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='no'>aipw_sl</span> <span class='kw'>&lt;-</span> <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+<span class='no'>aipw_sl</span>$<span class='fu'>fit</span>()
+
+<span class='co'>## ------------------------------------------------</span>
+<span class='co'>## Method `AIPW$calculate_result`</span>
+<span class='co'>## ------------------------------------------------</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='no'>aipw_sl</span> <span class='kw'>&lt;-</span> <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
+<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)</div><div class='output co'>#&gt;                 Estimate    SE 95% LCL 95% UCL   N
+#&gt; Risk Difference   -0.130 0.119  -0.363   0.102 100
+#&gt; Risk Ratio         0.756 0.253   0.461   1.242 100
+#&gt; Odds Ratio         0.590 0.482   0.229   1.519 100</div><div class='input'>
+<span class='co'>## ------------------------------------------------</span>
+<span class='co'>## Method `AIPW$plot.p_score`</span>
+<span class='co'>## ------------------------------------------------</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='no'>aipw_sl</span> <span class='kw'>&lt;-</span> <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+                    <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
+<span class='co'>#before average treatment effect calculation</span>
+<span class='no'>aipw_sl</span>$<span class='fu'>plot.p_score</span>()</div><div class='output co'>#&gt; <span class='message'>ATE has not been calculated.</span></div><div class='img'><img src='AIPW-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>#after calculation</span>
+<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</div><div class='output co'>#&gt;                 Estimate    SE 95% LCL 95% UCL   N
+#&gt; Risk Difference    0.136 0.113 -0.0859   0.359 100
+#&gt; Risk Ratio         1.316 0.236  0.8282   2.090 100
+#&gt; Odds Ratio         1.731 0.460  0.7022   4.269 100</div><div class='img'><img src='AIPW-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
