@@ -29,13 +29,14 @@ Suggests:
     covr
 RoxygenNote: 7.1.0
 Imports: 
-    SuperLearner,
     stats,
     utils,
     R6,
+    SuperLearner,
     sl3,
     ggplot2
-Remotes: tlverse/sl3
+Remotes: 
+    github::tlverse/sl3
 URL: https://github.com/yqzhong7/AIPW
 BugReports: https://github.com/yqzhong7/AIPW/issues
 VignetteBuilder: knitr

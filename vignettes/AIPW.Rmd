@@ -10,31 +10,155 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  fig.width = 6,
   comment = "#>"
 )
 ```
 
-## Installation
-1. Install AIPW from GitHub
+-------
+
+Contents:
+
+  * [Installation](#Installation)
+  * [One-line version](#one_line)
+  * [Longer version](#details)
+    + [Create an AIPW object](#constructor)
+    + [Fit the object](#fit)
+    + [Calculate average treatment effects](#ate)
+
+
+## <a id="Installation"></a>Installation
+1. Install AIPW from [GitHub](https://github.com/yqzhong7/AIPW)
 
 ```{r, eval = FALSE}
 install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
-2. Install SuperLearner 
+2. Install [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html) or [sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
 
 ```{r, eval = FALSE}
+#SuperLearner
 install.packages("SuperLearner")
-```
-
-3. Install sl3
-
-```{r, eval = FALSE}
+#sl3
 remotes::install_github("tlverse/sl3")
 ```
 
-## Setup for analyses
-```{r setup}
+## Input data for analyses
+
+```{r example data}
+set.seed(888)
+N <- 200
+outcome <- rbinom(N,1,0.3)
+exposure <- rbinom(N,1,0.2)
+#covaraites for outcome model (Q)
+covariates.Q <- matrix(c(rbinom(N,1,0.4),
+                                rnorm(N,mean = 0,sd=1),
+                                rpois(N,lambda = 2)),
+                              ncol=3)
+#covariates for exposure model (g)
+covariates.g <- matrix(c(rbinom(N,1,0.4),
+                                rnorm(N,mean = 0,sd=1),
+                                rpois(N,lambda = 2)),
+                              ncol=3)
+
+# covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
+```
+
+## Using AIPW to estimate the average treatment effect
+### <a id="one_line"></a>One line version (Method chaining from R6class)
+
+```{r one_line}
 library(AIPW)
+library(SuperLearner)
+library(ggplot2)
+AIPW_SL <- AIPW$new(Y= outcome,
+                    A= exposure,
+                    W.Q=covariates.Q, 
+                    W.g=covariates.g,
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
+                    k_split = 3,
+                    verbose=FALSE)$
+  fit()$
+  calculate_result(g.bound = 0.25)$
+  plot.p_score()
+```
+
+### <a id="details"></a>A more detailed tutorial
+
+#### 1. <a id="constructor"></a>Create an AIPW object 
+
+  * ##### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries
+```{r SuperLearner, message=FALSE}
+library(AIPW)
+library(SuperLearner)
+
+#SuperLearner libraries for outcome (Q) and exposure models (g)
+sl.lib <- c("SL.mean","SL.glm")
+
+#construct an aipw object for later estimations 
+AIPW_SL <- AIPW$new(Y= outcome,
+                    A= exposure,
+                    W.Q=covariates.Q, 
+                    W.g=covariates.g,
+                    Q.SL.library = sl.lib,
+                    g.SL.library = sl.lib,
+                    k_split = 3,
+                    verbose=FALSE)
+```
+
+  * ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries 
+Metalearner is required to combine the estimates from stacklearner!
+```{r sl3}
+library(AIPW)
+library(sl3)
+
+##construct sl3 learners for outcome (Q) and exposure models (g)
+lrnr_glm <- Lrnr_glm$new()
+lrnr_mean <- Lrnr_mean$new()
+#stacking two learner (this will yield estimates for each learner)
+stacklearner <- Stack$new(lrnr_glm, lrnr_mean) 
+#metalearner is required to combine the estimates from stacklearner
+metalearner <- Lrnr_nnls$new()
+sl3.lib <- Lrnr_sl$new(learners = stacklearner,
+                      metalearner = metalearner)
+
+#construct an aipw object for later estimations 
+AIPW_sl3 <- AIPW$new(Y= outcome,
+                    A= exposure,
+                    W.Q=covariates.Q, 
+                    W.g=covariates.g,
+                    Q.SL.library = sl3.lib,
+                    g.SL.library = sl3.lib,
+                    k_split = 3,
+                    verbose=FALSE)
+```
+
+#### 2. <a id="fit"></a>Fit the AIPW object
+
+This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.
+
+```{r}
+#fit the AIPW_SL object
+AIPW_SL$fit()
+```
+
+#### 3. <a id="ate"></a>Calculate average treatment effects 
+
+  * ##### Check the balance of propensity scores by exposure status before ATE calculation
+```{r ps_raw, fig.width=4}
+library(ggplot2)
+AIPW_SL$plot.p_score()
+```
+
+  * ##### Estimate the ATE with propensity scores truncation
+```{r}
+#estimate the average causal effects from the fitted AIPW_SL object 
+AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
+```
+
+  * ##### Check the balance of propensity scores by exposure status after truncation
+```{r ps_trunc}
+AIPW_SL$plot.p_score()
 ```

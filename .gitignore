@@ -1,4 +1,5 @@
 /tests/manual_tests
+/tests/testthat/*.pdf
 /scripts
 .DS_Store
 
@@ -45,3 +46,4 @@ vignettes/*.pdf
 
 # pkgdown site
 docs/
+inst/doc

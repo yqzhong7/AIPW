@@ -60,7 +60,14 @@ AIPW <- R6::R6Class(
     #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
     #' @param verbose whether to show progression bar (logical; Default = FALSE)
     #'
-    #' @return A new `aipw` object.
+    #' @return A new `AIPW` obejct
+    #'
+    #' @examples
+    #' library(SuperLearner)
+    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+    #'                     k_split=1,verbose=FALSE)
     initialize = function(Y=NULL, A=NULL,W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL,g.SL.library=NULL,
                           k_split=1,verbose=FALSE){
@@ -134,8 +141,17 @@ AIPW <- R6::R6Class(
       }
     },
     #' @description
-    #' Fitting the data into the AIPW object
+    #' Fitting the data into the AIPW object with/without sample splitting
     #'
+    #' @return A fitted `AIPW` obejct
+    #'
+    #' @examples
+    #' library(SuperLearner)
+    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+    #'                     k_split=1,verbose=FALSE)
+    #' aipw_sl$fit()
     fit = function(){
       #create index for sample splitting
       k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
@@ -196,7 +212,15 @@ AIPW <- R6::R6Class(
     #'
     #' @param g.bound value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
     #'
-    #' @return Average treatment effect estimations in RD, RR and OR
+    #' @return An `AIPW` obejct with average treatment effect estimations in RD, RR and OR
+    #'
+    #' @examples
+    #' library(SuperLearner)
+    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+    #'                     k_split=1,verbose=FALSE)$fit()
+    #' aipw_sl$calculate_result(g.bound=0.025)
     calculate_result = function(g.bound=0.025){
       #p_score truncation
       private$g.bound=g.bound
@@ -235,10 +259,21 @@ AIPW <- R6::R6Class(
     #' @description
     #' Plot and check the propensity scores by exposure status
     #'
-    #' @return A density plot of propensity scores by exposure status
+    #' @return A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
+    #' @examples
+    #' library(SuperLearner)
+    #' library(ggplot2)
+    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+    #'                     k_split=1,verbose=FALSE)$fit()
+    #' #before average treatment effect calculation
+    #' aipw_sl$plot.p_score()
+    #' #after calculation
+    #' aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
     plot.p_score = function(){
       #input check
-      if (is.null(self$obs_est$raw_p_score)){
+      if (any(is.na(self$obs_est$raw_p_score))){
         stop("Propensity scores are not estimated.")
       } else if (is.null(self$obs_est$p_score)) {
       #p_score before truncation (estimated ps)

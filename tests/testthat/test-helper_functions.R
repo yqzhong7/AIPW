@@ -30,7 +30,7 @@ test_that("AIPW helper functions", {
                                                                 aipw_eif1 = vec),
                    matrix(rep(0,4),ncol=2))
   #get_RR
-  # sigma_covar <- matrix(c(0,1,1,0),ncol=2)
+  # sigma_covar <- matrix(c(0,0,0,0),ncol=2)
   # expect_identical(as.numeric(aipw$.__enclos_env__$private$get_RR(aipw_eif0 = vec,
   #                                                                 aipw_eif1 = vec,
   #                                                                 sigma_covar = sigma_covar,

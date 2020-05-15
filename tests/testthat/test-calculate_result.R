@@ -30,7 +30,7 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 5,verbose = FALSE)
+                    k_split = 2,verbose = FALSE)
   #correctly print output
   expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
   #check any null values after calculating results
