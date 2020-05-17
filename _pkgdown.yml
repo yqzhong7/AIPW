@@ -15,6 +15,7 @@ authors:
 template:
   params:
     bootswatch: simplex
+    ganalytics: UA-166939490-2
     docsearch:
       api_key: fdb17ce3606ec3425c318a7950c6cf48
       index_name: aipw

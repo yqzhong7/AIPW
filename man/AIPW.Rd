@@ -72,7 +72,7 @@ aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 
 \item{\code{libs}}{SuperLearner or sl3 libraries and their fitted objects}
 
-\item{\code{obs_est}}{estimates for each observation to calculate average causal effects}
+\item{\code{obs_est}}{components for estimating the influence functions of all observations to calculate average causal effects}
 
 \item{\code{estimates}}{risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation}
 
@@ -98,7 +98,7 @@ aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new unfitted AIPW object.
+Create a new \code{AIPW} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$new(
   Y = NULL,
@@ -156,7 +156,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
 \if{html}{\out{<a id="method-fit"></a>}}
 \if{latex}{\out{\hypertarget{method-fit}{}}}
 \subsection{Method \code{fit()}}{
-Fitting the data into the AIPW object with/without sample splitting
+Fitting the data into the \code{AIPW} object with/without sample splitting to estimate the influence functions
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$fit()}\if{html}{\out{</div>}}
 }
@@ -182,7 +182,7 @@ aipw_sl$fit()
 \if{html}{\out{<a id="method-calculate_result"></a>}}
 \if{latex}{\out{\hypertarget{method-calculate_result}{}}}
 \subsection{Method \code{calculate_result()}}{
-Calculate average causal effects in RD, RR and OR
+Calculate average causal effects in RD, RR and OR in the fitted \code{AIPW} obejct with the estimated influence functions
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$calculate_result(g.bound = 0.025)}\if{html}{\out{</div>}}
 }
@@ -215,7 +215,7 @@ aipw_sl$calculate_result(g.bound=0.025)
 \if{html}{\out{<a id="method-plot.p_score"></a>}}
 \if{latex}{\out{\hypertarget{method-plot.p_score}{}}}
 \subsection{Method \code{plot.p_score()}}{
-Plot and check the propensity scores by exposure status
+Plot and check the balance of propensity scores by exposure status
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$plot.p_score()}\if{html}{\out{</div>}}
 }

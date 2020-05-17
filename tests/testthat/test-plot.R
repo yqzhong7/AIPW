@@ -5,7 +5,6 @@
 #' 2020/05/15
 test_that("plot.p_score", {
   require(SuperLearner)
-  require(ggplot2)
   vec <- function() sample(0:1,100,replace = T)
   sl.lib <- c("SL.mean","SL.glm")
   aipw <-  AIPW$new(Y=vec(),
@@ -15,6 +14,8 @@ test_that("plot.p_score", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)
+  expect_error(aipw$plot.p_score(),regexp = "`ggplot2` package is not loaded.")
+  require(ggplot2)
   #before fitted
   expect_error(aipw$plot.p_score(),regexp = "Propensity scores are not estimated.")
   #after fitted

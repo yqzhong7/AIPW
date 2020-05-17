@@ -25,7 +25,7 @@ AIPW <- R6::R6Class(
                Q.fit = NULL,
                g.SL.library=NULL,
                g.fit = NULL),
-    #' @field obs_est estimates for each observation to calculate average causal effects
+    #' @field obs_est components for estimating the influence functions of all observations to calculate average causal effects
     obs_est = list(mu0 = NULL,
                    mu1 = NULL,
                    mu = NULL,
@@ -46,7 +46,7 @@ AIPW <- R6::R6Class(
     result = NULL,
 
     #' @description
-    #' Create a new unfitted AIPW object.
+    #' Create a new `AIPW` object.
     #'
     #' @param Y outcome (binary integer: 0 or 1)
     #' @param A exposure (binary integer: 0 or 1)
@@ -139,9 +139,13 @@ AIPW <- R6::R6Class(
       if (!is.logical(private$verbose)){
         stop("verbose is not valid")
       }
+      #check if SuperLearner and/or sl3 library is loaded
+      if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner","sl3"))){
+        warning("Either `SuperLearner` or `sl3` package is not loaded.")
+      }
     },
     #' @description
-    #' Fitting the data into the AIPW object with/without sample splitting
+    #' Fitting the data into the `AIPW` object with/without sample splitting to estimate the influence functions
     #'
     #' @return A fitted `AIPW` obejct
     #'
@@ -208,7 +212,7 @@ AIPW <- R6::R6Class(
       invisible(self)
     },
     #' @description
-    #' Calculate average causal effects in RD, RR and OR
+    #' Calculate average causal effects in RD, RR and OR in the fitted `AIPW` obejct with the estimated influence functions
     #'
     #' @param g.bound value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
     #'
@@ -257,7 +261,7 @@ AIPW <- R6::R6Class(
       invisible(self)
     },
     #' @description
-    #' Plot and check the propensity scores by exposure status
+    #' Plot and check the balance of propensity scores by exposure status
     #'
     #' @return A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
     #' @examples
@@ -272,6 +276,10 @@ AIPW <- R6::R6Class(
     #' #after calculation
     #' aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
     plot.p_score = function(){
+      #check if ggplot2 library is loaded
+      if (!any(names(sessionInfo()$otherPkgs) %in% c("ggplot2"))){
+        stop("`ggplot2` package is not loaded.")
+      }
       #input check
       if (any(is.na(self$obs_est$raw_p_score))){
         stop("Propensity scores are not estimated.")
