@@ -61,6 +61,16 @@
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-166939490-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-166939490-2');
+</script>
+
 
   </head>
 
@@ -150,7 +160,7 @@
 
 <dt><code>libs</code></dt><dd><p>SuperLearner or sl3 libraries and their fitted objects</p></dd>
 
-<dt><code>obs_est</code></dt><dd><p>estimates for each observation to calculate average causal effects</p></dd>
+<dt><code>obs_est</code></dt><dd><p>components for estimating the influence functions of all observations to calculate average causal effects</p></dd>
 
 <dt><code>estimates</code></dt><dd><p>risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation</p></dd>
 
@@ -175,7 +185,7 @@
 </ul>
 <p><hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Create a new unfitted AIPW object.</p><h3>Usage</h3>
+<p>Create a new <code>AIPW</code> object.</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>new</span>(
   <span class='kw'>Y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>A</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -220,7 +230,7 @@ if k_split&gt;1, use similar technique of cross-validation
 
 <p><hr>
 <a id="method-fit"></a></p><h3>Method <code>fit()</code></h3>
-<p>Fitting the data into the AIPW object with/without sample splitting</p><h3>Usage</h3>
+<p>Fitting the data into the <code>AIPW</code> object with/without sample splitting to estimate the influence functions</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>fit</span>()</pre><p></div></p>
 
 <h3>Returns</h3>
@@ -235,7 +245,7 @@ if k_split&gt;1, use similar technique of cross-validation
 
 <p><hr>
 <a id="method-calculate_result"></a></p><h3>Method <code>calculate_result()</code></h3>
-<p>Calculate average causal effects in RD, RR and OR</p><h3>Usage</h3>
+<p>Calculate average causal effects in RD, RR and OR in the fitted <code>AIPW</code> obejct with the estimated influence functions</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
@@ -255,7 +265,7 @@ if k_split&gt;1, use similar technique of cross-validation
 
 <p><hr>
 <a id="method-plot.p_score"></a></p><h3>Method <code>plot.p_score()</code></h3>
-<p>Plot and check the propensity scores by exposure status</p><h3>Usage</h3>
+<p>Plot and check the balance of propensity scores by exposure status</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>plot.p_score</span>()</pre><p></div></p>
 
 <h3>Returns</h3>
