@@ -216,7 +216,7 @@ if k_split=1, no sample splitting;
 if k_split&gt;1, use similar technique of cross-validation
 (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)</p></dd>
 
-<dt><code>verbose</code></dt><dd><p>whether to show progression bar (logical; Default = FALSE)</p></dd>
+<dt><code>verbose</code></dt><dd><p>whether to show progression bar and print the result (logical; Default = FALSE)</p></dd>
 
 </dl><p></div></p>
 <h3>Returns</h3>
@@ -326,10 +326,8 @@ if k_split&gt;1, use similar technique of cross-validation
                     <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
                     <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
                     <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
-<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)</div><div class='output co'>#&gt;                 Estimate    SE 95% LCL 95% UCL   N
-#&gt; Risk Difference   -0.130 0.119  -0.363   0.102 100
-#&gt; Risk Ratio         0.756 0.253   0.461   1.242 100
-#&gt; Odds Ratio         0.590 0.482   0.229   1.519 100</div><div class='input'>
+<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)
+
 <span class='co'>## ------------------------------------------------</span>
 <span class='co'>## Method `AIPW$plot.p_score`</span>
 <span class='co'>## ------------------------------------------------</span>
@@ -342,10 +340,7 @@ if k_split&gt;1, use similar technique of cross-validation
                     <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
 <span class='co'>#before average treatment effect calculation</span>
 <span class='no'>aipw_sl</span>$<span class='fu'>plot.p_score</span>()</div><div class='output co'>#&gt; <span class='message'>ATE has not been calculated.</span></div><div class='img'><img src='AIPW-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>#after calculation</span>
-<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</div><div class='output co'>#&gt;                 Estimate    SE 95% LCL 95% UCL   N
-#&gt; Risk Difference    0.136 0.113 -0.0859   0.359 100
-#&gt; Risk Ratio         1.316 0.236  0.8282   2.090 100
-#&gt; Odds Ratio         1.731 0.460  0.7022   4.269 100</div><div class='img'><img src='AIPW-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</div><div class='img'><img src='AIPW-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
