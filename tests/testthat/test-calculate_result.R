@@ -1,8 +1,8 @@
-#' @title Tesing calculate_result: SuperLeaner & k_split
+#' @title Testing calculate_result: SuperLeaner & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/13
+#' 2020/05/22
 test_that("AIPW calculate_result: SuperLeaner & k_split", {
   require(SuperLearner)
   ##k_split == 1: no sample splitting
@@ -14,7 +14,7 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 1,verbose = FALSE)
+                    k_split = 1,verbose = TRUE)
   #correctly print output
   expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
   #check any null values after calculating results
@@ -30,7 +30,7 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 2,verbose = FALSE)
+                    k_split = 2,verbose = TRUE)
   #correctly print output
   expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
   #check any null values after calculating results
@@ -40,11 +40,11 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
   expect_false(is.null(aipw$result))
 })
 
-#' @title Tesing calculate_result: sl3 & k_split
+#' @title Testing calculate_result: sl3 & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/13
+#' 2020/05/22
 test_that("AIPW calculate_result: sl3 & k_split", {
   require(sl3)
   ##k_split == 1: no sample splitting
@@ -61,7 +61,7 @@ test_that("AIPW calculate_result: sl3 & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
-                    k_split = 1,verbose = FALSE)
+                    k_split = 1,verbose = TRUE)
   #correctly print output
   expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
   #check any null values after calculating results
@@ -77,7 +77,7 @@ test_that("AIPW calculate_result: sl3 & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
-                    k_split = 2,verbose = FALSE)
+                    k_split = 2,verbose = TRUE)
   #correctly print output
   expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
   #check any null values after calculating results
@@ -88,3 +88,23 @@ test_that("AIPW calculate_result: sl3 & k_split", {
 })
 
 
+#' @title Testing calculate_result: verbose
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2020/05/22
+test_that("AIPW fit: verbose", {
+  require(SuperLearner)
+  ##k_split == 1: no sample splitting
+  vec <- function() sample(0:1,100,replace = T)
+  sl.lib <- c("SL.mean","SL.glm")
+  ##verbose==False
+  aipw <-  AIPW$new(Y=vec(),
+                    A=vec(),
+                    W.Q =vec(),
+                    W.g =vec(),
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 1,verbose = FALSE)
+  expect_equal(capture.output(aipw$fit()$calculate_result()),character(0))
+})

@@ -1,4 +1,4 @@
-#' @title Tesing plot.p_score
+#' @title Testing plot.p_score
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:

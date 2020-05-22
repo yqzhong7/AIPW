@@ -1,4 +1,4 @@
-#' @title Tesing sl.fit and sl.predict wrapper: SuperLearner
+#' @title Testing sl.fit and sl.predict wrapper: SuperLearner
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
@@ -25,7 +25,7 @@ test_that("sl.fit & sl.predict: SuperLearner", {
 
 
 
-#' @title Tesing sl.fit and sl.predict wrapper: sl3
+#' @title Testing sl.fit and sl.predict wrapper: sl3
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:

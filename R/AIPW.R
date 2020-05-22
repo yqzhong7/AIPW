@@ -58,7 +58,7 @@ AIPW <- R6::R6Class(
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
     #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
-    #' @param verbose whether to show progression bar (logical; Default = FALSE)
+    #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
     #'
     #' @return A new `AIPW` obejct
     #'
@@ -206,9 +206,7 @@ AIPW <- R6::R6Class(
           utils::setTxtProgressBar(pb,i)
         }
       }
-      if (private$verbose){
-        cat("\n Done! \n")
-      }
+
       invisible(self)
     },
     #' @description
@@ -257,7 +255,9 @@ AIPW <- R6::R6Class(
       self$result <- cbind(matrix(c(self$estimates$RD,self$estimates$RR,self$estimates$OR),nrow=3,byrow=T),self$n)
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
       row.names(self$result) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
-      print(self$result,digit=3)
+      if (private$verbose){
+        print(self$result,digit=3)
+      }
       invisible(self)
     },
     #' @description

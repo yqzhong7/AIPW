@@ -1,4 +1,4 @@
-#' @title Tesing AIPW constructor: input data dimension
+#' @title Testing AIPW constructor: input data dimension
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
@@ -67,7 +67,7 @@ test_that("AIPW constructor: input data dimension", {
 })
 
 
-#' @title Tesing AIPW constructor: SL libraries
+#' @title Testing AIPW constructor: SL libraries
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
@@ -145,7 +145,7 @@ test_that("AIPW constructor: SL libraries", {
 })
 
 
-#' @title Tesing AIPW constructor: k_split
+#' @title Testing AIPW constructor: k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
@@ -187,7 +187,7 @@ test_that("AIPW constructor: k_split", {
 })
 
 
-#' @title Tesing AIPW constructor: verbose
+#' @title Testing AIPW constructor: verbose
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:

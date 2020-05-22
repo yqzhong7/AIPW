@@ -1,4 +1,4 @@
-#' @title Tesing helper functions
+#' @title Testing helper functions
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:

@@ -132,7 +132,7 @@ if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
 (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)}
 
-\item{\code{verbose}}{whether to show progression bar (logical; Default = FALSE)}
+\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }

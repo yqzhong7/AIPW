@@ -1,4 +1,4 @@
-#' @title Tesing fit: SuperLeaner & k_split
+#' @title Testing fit: SuperLeaner & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
@@ -39,7 +39,7 @@ test_that("AIPW fit: SuperLeaner & k_split", {
   expect_true(is.null(aipw$estimate))
 })
 
-#' @title Tesing calculate_result: sl3 & k_split
+#' @title Testing calculate_result: sl3 & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
@@ -85,12 +85,12 @@ test_that("AIPW fit: sl3 & k_split", {
 })
 
 
-#' @title Tesing calculate_result: verbose
+#' @title Testing fit: verbose
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/13
-test_that("AIPW calculate_result: verbose", {
+#' 2020/05/22
+test_that("AIPW fit: verbose", {
   #verbose == TRUE: w/ progression bar & "Done!"
   vec <- function() sample(0:1,100,replace = T)
   sl.lib <- c("SL.mean","SL.glm")
@@ -101,6 +101,6 @@ test_that("AIPW calculate_result: verbose", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = T)
-  expect_output(aipw$fit(),regexp = "Done")
+  expect_output(aipw$fit(),regexp = "=====")
 })
 
