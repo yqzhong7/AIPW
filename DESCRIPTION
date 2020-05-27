@@ -34,7 +34,9 @@ Imports:
     R6,
     SuperLearner,
     sl3,
-    ggplot2
+    ggplot2,
+    future.apply,
+    progressr
 Remotes: 
     github::tlverse/sl3
 URL: https://github.com/yqzhong7/AIPW
