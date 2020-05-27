@@ -200,7 +200,8 @@ AIPW_SL$plot.p_score()
 
 #### 4\. <a id="par"></a>Parallelization with future.apply
 
-The current version of AIPW package supports parallel processing using
+The current version of AIPW package supports parallel processing
+implemented by
 [future.apply](https://github.com/HenrikBengtsson/future.apply) package
 under the [future](https://github.com/HenrikBengtsson/future) framework.
 Simply use `plan()` to enable this feature and `set.seed()` to take care
