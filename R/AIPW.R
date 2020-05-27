@@ -223,10 +223,9 @@ AIPW <- R6::R6Class(
     g.set=NULL,
     k_split=NULL,
     verbose=NULL,
-    g.bound=NULL,
     sl.pkg =NULL,
     #private methods
     #lapply or future_lapply
-    .f_lapply =NULL,
+    .f_lapply =NULL
   )
 )

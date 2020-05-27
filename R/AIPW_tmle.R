@@ -18,6 +18,14 @@ AIPW_tmle <- R6::R6Class(
   portable = TRUE,
   inherit = AIPW_base,
   public = list(
+    #' @description
+    #' Create a new `AIPW_tmle` object.
+    #'
+    #' @param Y outcome (binary integer: 0 or 1)
+    #' @param A exposure (binary integer: 0 or 1)
+    #' @param tmle_fit a fitted `tmle` object
+    #'
+    #' @return A new `AIPW_tmle` obejct
     initialize = function(Y=NULL,A=NULL,
                           tmle_fit = NULL){
       #initialize from AIPW_base class

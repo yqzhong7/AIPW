@@ -2,4 +2,5 @@
 
 export(AIPW)
 export(AIPW_base)
+export(AIPW_tmle)
 importFrom(R6,R6Class)

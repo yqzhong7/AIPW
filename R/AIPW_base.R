@@ -40,15 +40,8 @@ AIPW_base <- R6::R6Class(
     #'
     #' @param Y outcome (binary integer: 0 or 1)
     #' @param A exposure (binary integer: 0 or 1)
-    #' @param ... not used
-    #' @return A new `AIPW_base` obejct
     #'
-    #' @examples
-    #' library(SuperLearner)
-    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-    #'                     k_split=1,verbose=FALSE)
+    #' @return A new `AIPW_base` obejct
     initialize = function(Y=NULL, A=NULL){
       #save input into private fields
       private$Y=Y

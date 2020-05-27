@@ -17,16 +17,6 @@ Define a base R6Class for later subclasses inheritance of
 \examples{
 
 ## ------------------------------------------------
-## Method `AIPW_base$new`
-## ------------------------------------------------
-
-library(SuperLearner)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)
-
-## ------------------------------------------------
 ## Method `AIPW_base$calculate_result`
 ## ------------------------------------------------
 
@@ -89,26 +79,12 @@ Create a new \code{AIPW_base} object.
 \item{\code{Y}}{outcome (binary integer: 0 or 1)}
 
 \item{\code{A}}{exposure (binary integer: 0 or 1)}
-
-\item{\code{...}}{not used}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A new \code{AIPW_base} obejct
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{library(SuperLearner)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-calculate_result"></a>}}
