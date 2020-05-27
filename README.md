@@ -35,6 +35,7 @@ Conzuelo](https://github.com/gconzuelo)
         1.  [Create an AIPW object](#constructor)
         2.  [Fit the object](#fit)
         3.  [Calculate average treatment effects](#ate)
+        4.  [Parallelization](#par)
 
 -----
 
@@ -78,6 +79,7 @@ library(SuperLearner)
 #> Version: 2.0-26
 #> Package created on 2019-10-27
 library(ggplot2)
+library(progressr) #for the progress bar
 AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
                     W.Q=covariates.Q, 
@@ -89,10 +91,6 @@ AIPW_SL <- AIPW$new(Y= outcome,
   fit()$
   calculate_result(g.bound = 0.25)$
   plot.p_score()
-#>                 Estimate    SE 95% LCL  95% UCL   N
-#> Risk Difference   -0.267 0.132 -0.5250 -0.00817 200
-#> Risk Ratio         0.393 0.413  0.1748  0.88221 200
-#> Odds Ratio         0.266 0.616  0.0797  0.88957 200
 ```
 
 ![](man/figures/one_line-1.png)<!-- -->
@@ -185,10 +183,6 @@ AIPW_SL$plot.p_score()
 ``` r
 #estimate the average causal effects from the fitted AIPW_SL object 
 AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
-#>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.253 0.131 -0.5096 0.00366 200
-#> Risk Ratio         0.423 0.386  0.1986 0.90012 200
-#> Odds Ratio         0.291 0.591  0.0915 0.92867 200
 
 #estimate the average causal effects from the fitted AIPW_sl3 object 
 # AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation 
@@ -203,3 +197,24 @@ AIPW_SL$plot.p_score()
 ```
 
 ![](man/figures/ps_trunc-1.png)<!-- -->
+
+#### 4\. <a id="par"></a>Parallelization with future.apply
+
+The current version of AIPW package supports parallel processing using
+[future.apply](https://github.com/HenrikBengtsson/future.apply) package
+under the [future](https://github.com/HenrikBengtsson/future) framework.
+Simply use `plan()` to enable this feature:
+
+``` r
+# install.packages("future.apply")
+library(future.apply)
+plan(multiprocess, workers=5, gc=T)
+AIPW_SL <- AIPW$new(Y= outcome,
+                    A= exposure,
+                    W.Q=covariates.Q, 
+                    W.g=covariates.g,
+                    Q.SL.library = sl.lib,
+                    g.SL.library = sl.lib,
+                    k_split = 3,
+                    verbose=F)$fit()$calculate_result()
+```
