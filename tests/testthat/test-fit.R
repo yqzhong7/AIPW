@@ -89,7 +89,7 @@ test_that("AIPW fit: sl3 & k_split", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/22
+#' 2020/05/26
 test_that("AIPW fit: verbose", {
   #verbose == TRUE: w/ progression bar & "Done!"
   vec <- function() sample(0:1,100,replace = T)
@@ -101,6 +101,6 @@ test_that("AIPW fit: verbose", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = T)
-  expect_output(aipw$fit(),regexp = "=====")
+  expect_output(aipw$fit(),regexp = "Done!")
 })
 
