@@ -58,7 +58,8 @@ AIPW <- R6::R6Class(
     #' @param k_split number of splitting (integer; range: from 1 to number of observation-1):
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
-    #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
+    #'   (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
+    #'   NOTE: it's recommended to use sample splitting.
     #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
     #'
     #' @return A new `AIPW` obejct
@@ -71,7 +72,7 @@ AIPW <- R6::R6Class(
     #'                     k_split=1,verbose=FALSE)
     initialize = function(Y=NULL, A=NULL,W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL,g.SL.library=NULL,
-                          k_split=1,verbose=FALSE){
+                          k_split=10,verbose=FALSE){
       #save input into private fields
       private$Y=Y
       private$A=A
@@ -88,13 +89,22 @@ AIPW <- R6::R6Class(
         if (any(grepl("SL.",Q.SL.library)) & any(grepl("SL.",g.SL.library))){
           #change future package loading
           private$sl.pkg <- "SuperLearner"
+          #create a new local env for superlearner
+          private$sl.env = new.env()
+          #find the learners in global env and assign them into sl.env
+          private$sl.learners = grep("SL.",lsf.str(globalenv()),value = T)
+          lapply(private$sl.learners, function(x) assign(x=x,value=get(x,globalenv()),envir=private$sl.env))
           #change wrapper functions
           self$sl.fit = function(Y, X, SL.library){
-            fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family="binomial")
+            suppressMessages({
+              fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family="binomial",env=private$sl.env)
+            })
             return(fit)
           }
           self$sl.predict = function(fit, newdata){
-            pred <- as.numeric(predict(fit,newdata = newdata)$pred)
+            suppressMessages({
+              pred <- as.numeric(predict(fit,newdata = newdata)$pred)
+            })
             return(pred)
           }
         } else{
@@ -152,7 +162,9 @@ AIPW <- R6::R6Class(
       }
       #check if future.apply is loaded otherwise lapply would be used.
       if (any(names(sessionInfo()$otherPkgs) %in% c("future.apply"))){
-        private$.f_lapply = function(iter,func) future.apply::future_lapply(iter,func,future.seed = T,future.packages = private$sl.pkg)
+        private$.f_lapply = function(iter,func) {
+          future.apply::future_lapply(iter,func,future.seed = T,future.packages = private$sl.pkg,future.globals = TRUE)
+        }
       }else{
         private$.f_lapply = function(iter,func) lapply(iter,func)
         }
@@ -218,7 +230,7 @@ AIPW <- R6::R6Class(
             # predict on validation set
             raw_p_score  <- self$sl.predict(g.fit,newdata = validation_set.g)  #g_pred
 
-            pb(sprintf("Iteration=%g/%g", i,private$k_split))
+            pb(sprintf("No.%g iteration", i,private$k_split))
             output <- list(num_val_index,Q.fit,mu0,mu1,g.fit,raw_p_score)
             names(output) <- c("num_val_index","Q.fit","mu0","mu1","g.fit","raw_p_score")
             return(output)
@@ -348,6 +360,8 @@ AIPW <- R6::R6Class(
     verbose=NULL,
     g.bound=NULL,
     sl.pkg =NULL,
+    sl.env=NULL,
+    sl.learners = NULL,
     #private methods
     #lapply or future_lapply
     .f_lapply =NULL,

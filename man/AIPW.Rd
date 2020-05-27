@@ -107,7 +107,7 @@ Create a new \code{AIPW} object.
   W.g = NULL,
   Q.SL.library = NULL,
   g.SL.library = NULL,
-  k_split = 1,
+  k_split = 10,
   verbose = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -130,7 +130,8 @@ Create a new \code{AIPW} object.
 \item{\code{k_split}}{number of splitting (integer; range: from 1 to number of observation-1):
 if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
-(e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)}
+(e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
+NOTE: it's recommended to use sample splitting.}
 
 \item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 }
