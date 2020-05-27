@@ -203,12 +203,14 @@ AIPW_SL$plot.p_score()
 The current version of AIPW package supports parallel processing using
 [future.apply](https://github.com/HenrikBengtsson/future.apply) package
 under the [future](https://github.com/HenrikBengtsson/future) framework.
-Simply use `plan()` to enable this feature:
+Simply use `plan()` to enable this feature and `set.seed()` to take care
+of the random number generation (RNG) problem:
 
 ``` r
 # install.packages("future.apply")
 library(future.apply)
 plan(multiprocess, workers=5, gc=T)
+set.seed(888)
 AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
                     W.Q=covariates.Q, 
