@@ -34,6 +34,8 @@ AIPW_base <- R6::R6Class(
                      sigma_covar = NULL),
     #' @field result a matrix contains RD, RR and OR with their SE and 95%CI
     result = NULL,
+    #' @field g.plot a `ggplot` with the propensity score densities by exposure status
+    g.plot = NULL,
 
     #' @description
     #' Create a new `AIPW_base` object.
@@ -147,13 +149,13 @@ AIPW_base <- R6::R6Class(
                                      p_score= self$obs_est$p_score,
                                      trunc = "Truncated"))
       }
-      g.plot <-  ggplot2::ggplot(data = plot_data,ggplot2::aes(x = p_score, group = A, color = A, fill=A)) +
+      self$g.plot =  ggplot2::ggplot(data = plot_data,ggplot2::aes(x = p_score, group = A, color = A, fill=A)) +
         ggplot2::geom_density(alpha=0.5) +
         ggplot2::scale_x_continuous(limits = c(0,1)) +
         ggplot2::facet_wrap(~trunc) +
         ggtitle("Propensity scores by exposure status") +
         theme_bw()
-      print(g.plot)
+      print(self$g.plot)
       invisible(self)
     }
   ),

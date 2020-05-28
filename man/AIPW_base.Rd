@@ -52,6 +52,8 @@ aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 \item{\code{estimates}}{risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation}
 
 \item{\code{result}}{a matrix contains RD, RR and OR with their SE and 95\%CI}
+
+\item{\code{g.plot}}{a \code{ggplot} with the propensity score densities by exposure status}
 }
 \if{html}{\out{</div>}}
 }

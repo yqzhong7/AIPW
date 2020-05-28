@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/15
+#' 2020/05/27
 test_that("plot.p_score", {
   require(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
@@ -21,10 +21,10 @@ test_that("plot.p_score", {
   #after fitted
   aipw$fit()
   expect_message(g.plot <- aipw$plot.p_score(),regexp = "ATE has not been calculated.")
-  expect_true(inherits(g.plot, "ggplot"))
+  expect_true(inherits(aipw$g.plot, "ggplot"))
   #after truncation
-  capture.output(aipw$calculate_result())
+  capture.output(aipw$fit()$calculate_result())
   expect_silent(g.plot <- aipw$plot.p_score())
-  expect_true(inherits(g.plot, "ggplot"))
+  expect_true(inherits(aipw$g.plot, "ggplot"))
 })
 

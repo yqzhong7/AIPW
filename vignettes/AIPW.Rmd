@@ -115,8 +115,8 @@ AIPW_SL <- AIPW$new(Y= outcome,
 ```
 
   * ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries 
-Metalearner is libraryd to combine the estimates from stacklearner!
-```{r sl3}
+Metalearner is required to combine the estimates from stacklearner!
+```{r sl3, eval=F}
 library(AIPW)
 library(sl3)
 
@@ -173,10 +173,10 @@ AIPW_SL$plot.p_score()
 
 The current version of AIPW package supports parallel processing implemented by [future.apply](https://github.com/HenrikBengtsson/future.apply) package under the [future](https://github.com/HenrikBengtsson/future) framework. Simply use `plan()` to enable this feature and `set.seed()` to take care of the random number generation (RNG) problem:
 
-```{r parallel, eval=T}
+```{r parallel, eval=FALSE}
 # install.packages("future.apply")
 library(future.apply)
-plan(multiprocess, workers=5, gc=T)
+plan(multiprocess, workers=2, gc=T)
 set.seed(888)
 AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
@@ -254,17 +254,13 @@ a_tmle3<- AIPW_tmle$
 ```{r compare, echo=F, fig.width=12, collapse=FALSE}
 options(width = 12)
 library(knitr)
-library(kableExtra)
 cat("Native AIPW function with W.g != W.Q and sample splitting = 10")
-kable(AIPW_SL$result,digits=3) %>%
-  kable_styling(full_width = T, position = "left")
+kable(AIPW_SL$result,digits=3)
 
 cat("From tmle fit object with W.g == W.Q and no sample splitting")
-kable(a_tmle$result,digits=3) %>%
-  kable_styling(full_width = T, position = "left")
+kable(a_tmle$result,digits=3) 
 
 cat("From tmle3 fit object with W.g == W.Q and sample splitting = 10 (tmle3 default)")
-kable(a_tmle3$result,digits=3) %>%
-  kable_styling(full_width = T, position = "left")
+kable(a_tmle3$result,digits=3)
 ```
 
