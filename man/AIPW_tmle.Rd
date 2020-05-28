@@ -16,6 +16,43 @@ Define an R6Class aipw_tmle object whcih takes TMLE or tmle3 inputs
 \details{
 create an AIPW object
 }
+\examples{
+
+## ------------------------------------------------
+## Method `AIPW_tmle$new`
+## ------------------------------------------------
+
+\dontrun{
+vec <- function() sample(0:1,100,replace = TRUE)
+df <- data.frame(replicate(4,vec()))
+names(df) <- c("A","Y","W1","W2")
+
+## From tmle
+require(tmle)
+require(SuperLearner)
+tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
+                 Q.SL.library="SL.glm",
+                 g.SL.library="SL.glm",
+                 family="binomial")
+AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+
+
+## From tmle3
+# tmle3 simple implementation
+require(tmle3)
+require(sl3)
+node_list <- list(A = "A",Y = "Y",W = c("W1","W2"))
+or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
+tmle_task <- or_spec$make_tmle_task(df,node_list)
+lrnr_glm <- make_learner(Lrnr_glm)
+sl <- Lrnr_sl$new(learners = list(lrnr_glm))
+learner_list <- list(A = sl, Y = sl)
+tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
+
+# parse tmle3_fit into AIPW_tmle class
+AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+}
+}
 \section{Super class}{
 \code{\link[AIPW:AIPW_base]{AIPW::AIPW_base}} -> \code{AIPW_tmle}
 }
@@ -59,6 +96,43 @@ Create a new \code{AIPW_tmle} object.
 \subsection{Returns}{
 A new \code{AIPW_tmle} obejct
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+vec <- function() sample(0:1,100,replace = TRUE)
+df <- data.frame(replicate(4,vec()))
+names(df) <- c("A","Y","W1","W2")
+
+## From tmle
+require(tmle)
+require(SuperLearner)
+tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
+                 Q.SL.library="SL.glm",
+                 g.SL.library="SL.glm",
+                 family="binomial")
+AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+
+
+## From tmle3
+# tmle3 simple implementation
+require(tmle3)
+require(sl3)
+node_list <- list(A = "A",Y = "Y",W = c("W1","W2"))
+or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
+tmle_task <- or_spec$make_tmle_task(df,node_list)
+lrnr_glm <- make_learner(Lrnr_glm)
+sl <- Lrnr_sl$new(learners = list(lrnr_glm))
+learner_list <- list(A = sl, Y = sl)
+tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
+
+# parse tmle3_fit into AIPW_tmle class
+AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
