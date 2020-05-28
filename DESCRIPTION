@@ -40,7 +40,7 @@ Imports:
     future.apply,
     progressr
 Remotes: 
-    github::tlverse/sl3
+    github::tlverse/sl3,
     github::tlverse/tmle3
 URL: https://github.com/yqzhong7/AIPW
 BugReports: https://github.com/yqzhong7/AIPW/issues
