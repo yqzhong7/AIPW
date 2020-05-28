@@ -100,17 +100,10 @@
 <ul>
 <li><h6 id="setup-example-data"><a href="#data">Setup example data</a></h6></li>
 <li><h6 id="one-line-version"><a href="#one_line">One line version</a></h6></li>
-<li>
-<h6 id="longer-version"><a href="#details">Longer version</a></h6>
-<ol>
-<li><a href="#constructor">Create an AIPW object</a></li>
-<li><a href="#fit">Fit the object</a></li>
-<li><a href="#ate">Calculate average treatment effects</a></li>
-<li><a href="#par">Parallelization</a></li>
-</ol>
-</li>
 </ul>
 </li>
+<li><h5 id="parallelization"><a href="#par">Parallelization</a></h5></li>
+<li><h5 id="use-tmletmle3-as-input"><a href="#tmle">Use tmle/tmle3 as input</a></h5></li>
 </ul>
 <hr>
 </div>
@@ -161,112 +154,107 @@
                     <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)$
+                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">TRUE</span>)$
   <span class="fu">fit</span>()$
   <span class="fu">calculate_result</span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>)$
-  <span class="fu">plot.p_score</span>()</pre></div>
+  <span class="fu">plot.p_score</span>()
+<span class="co">#&gt; Done!</span>
+<span class="co">#&gt;                 Estimate    SE 95% LCL  95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.267 0.132 -0.5250 -0.00817 200</span>
+<span class="co">#&gt; Risk Ratio         0.393 0.413  0.1748  0.88221 200</span>
+<span class="co">#&gt; Odds Ratio         0.266 0.616  0.0797  0.88957 200</span></pre></div>
 <p><img src="reference/figures/one_line-1.png"><!-- --></p>
 </div>
-<div id="a-slightly-longer-version" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-slightly-longer-version" class="anchor"></a><a id="details"></a>A slightly longer version</h3>
-<div id="create-an-aipw-object" class="section level4">
-<h4 class="hasAnchor">
-<a href="#create-an-aipw-object" class="anchor"></a>1. <a id="constructor"></a>Create an AIPW object</h4>
-<ul>
-<li><h5 id="use-superlearner-libraries-reference-guide-to-superlearner">Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries (reference: <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">Guide to SuperLearner</a>)</h5></li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">SuperLearner</span>)
-
-<span class="co">#SuperLearner libraries for outcome (Q) and exposure models (g)</span>
-<span class="no">sl.lib</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>)
-
-<span class="co">#construct an aipw object for later estimations </span>
-<span class="no">AIPW_SL</span> <span class="kw">&lt;-</span> <span class="no">AIPW</span>$<span class="fu">new</span>(<span class="kw">Y</span><span class="kw">=</span> <span class="no">outcome</span>,
-                    <span class="kw">A</span><span class="kw">=</span> <span class="no">exposure</span>,
-                    <span class="kw">W.Q</span><span class="kw">=</span><span class="no">covariates.Q</span>,
-                    <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
-                    <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
-                    <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
-                    <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></div>
-<ul>
-<li><h5 id="use-sl3-libraries-reference-intro-to-sl3">Use <a href="https://tlverse.org/sl3/index.html">sl3</a> libraries (reference: <a href="https://tlverse.org/sl3/articles/intro_sl3.html">Intro to sl3</a>)</h5></li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>)
-
-<span class="co">##construct sl3 learners for outcome (Q) and exposure models (g)</span>
-<span class="no">lrnr_glm</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_glm</span>$<span class="fu">new</span>()
-<span class="no">lrnr_mean</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_mean</span>$<span class="fu">new</span>()
-<span class="co">#stacking two learner (this will yield estimates for each learner)</span>
-<span class="no">stacklearner</span> <span class="kw">&lt;-</span> <span class="no">Stack</span>$<span class="fu">new</span>(<span class="no">lrnr_glm</span>, <span class="no">lrnr_mean</span>)
-<span class="co">#metalearner is required to combine the estimates from stacklearner</span>
-<span class="no">metalearner</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_nnls</span>$<span class="fu">new</span>()
-<span class="no">sl3.lib</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_sl</span>$<span class="fu">new</span>(<span class="kw">learners</span> <span class="kw">=</span> <span class="no">stacklearner</span>,
-                      <span class="kw">metalearner</span> <span class="kw">=</span> <span class="no">metalearner</span>)
-
-<span class="co">#construct an aipw object for later estimations </span>
-<span class="no">AIPW_sl3</span> <span class="kw">&lt;-</span> <span class="no">AIPW</span>$<span class="fu">new</span>(<span class="kw">Y</span><span class="kw">=</span> <span class="no">outcome</span>,
-                    <span class="kw">A</span><span class="kw">=</span> <span class="no">exposure</span>,
-                    <span class="kw">W.Q</span><span class="kw">=</span><span class="no">covariates.Q</span>,
-                    <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
-                    <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl3.lib</span>,
-                    <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl3.lib</span>,
-                    <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></div>
 </div>
-<div id="fit-the-aipw-object" class="section level4">
-<h4 class="hasAnchor">
-<a href="#fit-the-aipw-object" class="anchor"></a>2. <a id="fit"></a>Fit the AIPW object</h4>
-<p>This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="co">#fit the AIPW_SL object</span>
-<span class="no">AIPW_SL</span>$<span class="fu">fit</span>()
-<span class="co"># #fit the AIPW_sl3 object</span>
-<span class="co"># AIPW_sl3$fit()</span></pre></div>
-</div>
-<div id="calculate-average-treatment-effects" class="section level4">
-<h4 class="hasAnchor">
-<a href="#calculate-average-treatment-effects" class="anchor"></a>3. <a id="ate"></a>Calculate average treatment effects</h4>
-<ul>
-<li><h5 id="check-the-balance-of-propensity-scores-by-exposure-status">Check the balance of propensity scores by exposure status</h5></li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()
-<span class="co">#&gt; ATE has not been calculated.</span></pre></div>
-<p><img src="reference/figures/ps_raw-1.png"><!-- --></p>
-<ul>
-<li><h5 id="estimate-the-ate-with-propensity-scores-truncation">Estimate the ATE with propensity scores truncation</h5></li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb8"><pre class="r"><span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
-<span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>) <span class="co">#propensity score truncation </span>
-
-<span class="co">#estimate the average causal effects from the fitted AIPW_sl3 object </span>
-<span class="co"># AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation </span></pre></div>
-<ul>
-<li><h5 id="check-the-balance-of-propensity-scores-by-exposure-status-after-truncation">Check the balance of propensity scores by exposure status after truncation</h5></li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb9"><pre class="r"><span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()</pre></div>
-<p><img src="reference/figures/ps_trunc-1.png"><!-- --></p>
-</div>
-<div id="parallelization-with-future-apply" class="section level4">
-<h4 class="hasAnchor">
-<a href="#parallelization-with-future-apply" class="anchor"></a>4. <a id="par"></a>Parallelization with future.apply</h4>
+<div id="parallelization-with-future-apply" class="section level2">
+<h2 class="hasAnchor">
+<a href="#parallelization-with-future-apply" class="anchor"></a><a id="par"></a>Parallelization with <code>future.apply</code>
+</h2>
 <p>The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future">future</a> framework. Simply use <code>plan()</code> to enable this feature and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
-<div class="sourceCode" id="cb10"><pre class="r"><span class="co"># install.packages("future.apply")</span>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="co"># install.packages("future.apply")</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">future.apply</span>)
-<span class="fu">plan</span>(<span class="no">multiprocess</span>, <span class="kw">workers</span><span class="kw">=</span><span class="fl">5</span>, <span class="kw">gc</span><span class="kw">=</span><span class="no">T</span>)
+<span class="co">#&gt; Loading required package: future</span>
+<span class="fu">plan</span>(<span class="no">multiprocess</span>, <span class="kw">workers</span><span class="kw">=</span><span class="fl">2</span>, <span class="kw">gc</span><span class="kw">=</span><span class="no">T</span>)
+<span class="co">#&gt; Warning: [ONE-TIME WARNING] Forked processing ('multicore') is disabled</span>
+<span class="co">#&gt; in future (&gt;= 1.13.0) when running R from RStudio, because it is</span>
+<span class="co">#&gt; considered unstable. Because of this, plan("multicore") will fall</span>
+<span class="co">#&gt; back to plan("sequential"), and plan("multiprocess") will fall back to</span>
+<span class="co">#&gt; plan("multisession") - not plan("multicore") as in the past. For more details,</span>
+<span class="co">#&gt; how to control forked processing or not, and how to silence this warning in</span>
+<span class="co">#&gt; future R sessions, see ?future::supportsMulticore</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">888</span>)
 <span class="no">AIPW_SL</span> <span class="kw">&lt;-</span> <span class="no">AIPW</span>$<span class="fu">new</span>(<span class="kw">Y</span><span class="kw">=</span> <span class="no">outcome</span>,
                     <span class="kw">A</span><span class="kw">=</span> <span class="no">exposure</span>,
                     <span class="kw">W.Q</span><span class="kw">=</span><span class="no">covariates.Q</span>,
                     <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
-                    <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
-                    <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
+                    <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
+                    <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="no">F</span>)$<span class="fu">fit</span>()$<span class="fu">calculate_result</span>()</pre></div>
+                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">TRUE</span>)$<span class="fu">fit</span>()$<span class="fu">calculate_result</span>()
+<span class="co">#&gt; Done!</span>
+<span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.304 0.170 -0.6367  0.0278 200</span>
+<span class="co">#&gt; Risk Ratio         0.378 0.475  0.1490  0.9605 200</span>
+<span class="co">#&gt; Odds Ratio         0.237 0.763  0.0531  1.0569 200</span></pre></div>
 </div>
+<div id="use-tmletmle3-fitted-object-as-input" class="section level2">
+<h2 class="hasAnchor">
+<a href="#use-tmletmle3-fitted-object-as-input" class="anchor"></a><a id="tmle"></a>Use <code>tmle</code>/<code>tmle3</code> fitted object as input</h2>
+<div id="tmle" class="section level4">
+<h4 class="hasAnchor">
+<a href="#tmle" class="anchor"></a><code>tmle</code>
+</h4>
+<p>As shown in the message, <a href="https://cran.r-project.org/web/packages/tmle/index.html">tmle</a> alone does not support sample splitting. In addition, <code>tmle</code> does not support different covariate sets for the exposure and the outcome models, respectively.</p>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">tmle</span>)
+<span class="co">#&gt; Loading required package: tmle</span>
+<span class="co">#&gt; Loading required package: glmnet</span>
+<span class="co">#&gt; Loading required package: Matrix</span>
+<span class="co">#&gt; Loaded glmnet 3.0-2</span>
+<span class="co">#&gt; Welcome to the tmle package, version 1.4.0.1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Use tmleNews() to see details on changes and bug fixes</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">SuperLearner</span>)
+<span class="no">tmle_fit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tmle/man/tmle.html">tmle</a></span>(<span class="kw">Y</span><span class="kw">=</span><span class="no">outcome</span>,<span class="kw">A</span><span class="kw">=</span><span class="no">exposure</span>,<span class="kw">W</span><span class="kw">=</span><span class="no">covariates.Q</span>,
+                 <span class="kw">Q.SL.library</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
+                 <span class="kw">g.SL.library</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
+                 <span class="kw">family</span><span class="kw">=</span><span class="st">"binomial"</span>)
+<span class="no">AIPW_tmle</span>$
+  <span class="fu">new</span>(<span class="kw">A</span><span class="kw">=</span><span class="no">exposure</span>,<span class="kw">Y</span><span class="kw">=</span><span class="no">outcome</span>,<span class="kw">tmle_fit</span> <span class="kw">=</span> <span class="no">tmle_fit</span>,<span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>)$
+  <span class="fu">calculate_result</span>(<span class="kw">g.bound</span><span class="kw">=</span><span class="fl">0.025</span>)
+<span class="co">#&gt; Sample splitting was not supported with a fitted tmle object</span>
+<span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.214 0.158 -0.5235  0.0961 200</span>
+<span class="co">#&gt; Risk Ratio         0.438 0.522  0.1575  1.2177 200</span>
+<span class="co">#&gt; Odds Ratio         0.326 0.752  0.0745  1.4231 200</span></pre></div>
+</div>
+<div id="tmle3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#tmle3" class="anchor"></a>2. <code>tmle3</code>
+</h4>
+<p>Similarly, <a href="https://github.com/tlverse/tmle3">tmle3</a> may not support different covariate sets for the exposure and the outcome models, respectively. However, <code>tmle3</code> conducts sample splitting and propensity truncation (0.025) by default.</p>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">tmle3</span>)
+<span class="co">#&gt; Loading required package: tmle3</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">sl3</span>)
+<span class="co">#&gt; Loading required package: sl3</span>
+<span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="no">exposure</span>,<span class="no">outcome</span>,<span class="no">covariates.Q</span>)
+<span class="no">node_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">A</span> <span class="kw">=</span> <span class="st">"exposure"</span>,<span class="kw">Y</span> <span class="kw">=</span> <span class="st">"outcome"</span>,<span class="kw">W</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">df</span>)[-<span class="fl">1</span>:-<span class="fl">2</span>])
+<span class="no">or_spec</span> <span class="kw">&lt;-</span> <span class="fu"><a href="http://tlverse.org/tmle3/reference/tmle_OR.html">tmle_OR</a></span>(<span class="kw">baseline_level</span> <span class="kw">=</span> <span class="st">"0"</span>,<span class="kw">contrast_level</span> <span class="kw">=</span> <span class="st">"1"</span>)
+<span class="no">tmle_task</span> <span class="kw">&lt;-</span> <span class="no">or_spec</span>$<span class="fu">make_tmle_task</span>(<span class="no">df</span>,<span class="no">node_list</span>)
+<span class="no">lrnr_glm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://tlverse.org/sl3/reference/Lrnr_base.html">make_learner</a></span>(<span class="no">Lrnr_glm</span>)
+<span class="no">lrnr_mean</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://tlverse.org/sl3/reference/Lrnr_base.html">make_learner</a></span>(<span class="no">Lrnr_mean</span>)
+<span class="no">sl</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_sl</span>$<span class="fu">new</span>(<span class="kw">learners</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="no">lrnr_glm</span>,<span class="no">lrnr_mean</span>))
+<span class="no">learner_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">A</span> <span class="kw">=</span> <span class="no">sl</span>, <span class="kw">Y</span> <span class="kw">=</span> <span class="no">sl</span>)
+<span class="no">tmle3_fit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="http://tlverse.org/tmle3/reference/tmle3.html">tmle3</a></span>(<span class="no">or_spec</span>, <span class="kw">data</span><span class="kw">=</span><span class="no">df</span>, <span class="no">node_list</span>, <span class="no">learner_list</span>)
+
+<span class="co"># parse tmle3_fit into AIPW_tmle class</span>
+<span class="no">AIPW_tmle</span>$
+  <span class="fu">new</span>(<span class="kw">A</span><span class="kw">=</span><span class="no">df</span>$<span class="no">exposure</span>,<span class="kw">Y</span><span class="kw">=</span><span class="no">df</span>$<span class="no">outcome</span>,<span class="kw">tmle_fit</span> <span class="kw">=</span> <span class="no">tmle3_fit</span>,<span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>)$
+  <span class="fu">calculate_result</span>()
+<span class="co">#&gt; Propensity scores from fitted tmle3 object are by default truncated (0.025)</span>
+<span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.213 0.158 -0.5236  0.0968 200</span>
+<span class="co">#&gt; Risk Ratio         0.438 0.524  0.1570  1.2240 200</span>
+<span class="co">#&gt; Odds Ratio         0.326 0.755  0.0743  1.4320 200</span></pre></div>
 </div>
 </div>
 </div>
