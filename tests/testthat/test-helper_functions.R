@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/09
+#' 2020/05/26
 test_that("AIPW helper functions", {
   #get CI
   expect_equal(AIPW:::get_ci(est=0,se=1,ratio = F),c(-1.96,1.96))
@@ -11,7 +11,7 @@ test_that("AIPW helper functions", {
 
   #private methods: get_RD, get_RR, get_OR, get_sigma_covar
   vec <- rep(1,100)
-  Z_norm = sqrt(length(vec))
+  root_n = sqrt(length(vec))
   sl.lib <- c("SL.mean","SL.glm")
   aipw <-  AIPW$new(Y=vec,
                     A=vec,
@@ -23,7 +23,7 @@ test_that("AIPW helper functions", {
   #get_RD
   expect_identical(as.numeric(aipw$.__enclos_env__$private$get_RD(aipw_eif0 = vec,
                                                                   aipw_eif1 = vec,
-                                                                  Z_norm=Z_norm)),
+                                                                  root_n=root_n)),
                rep(0,4))
   #get_sigma_covar
   expect_identical(aipw$.__enclos_env__$private$get_sigma_covar(aipw_eif0 = vec,

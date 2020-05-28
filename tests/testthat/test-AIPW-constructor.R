@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/15
+#' 2020/05/26
 test_that("AIPW constructor: input data dimension", {
   ##correct dimension
   #single column W.g
@@ -51,7 +51,7 @@ test_that("AIPW constructor: input data dimension", {
              Q.SL.library=sl.lib,
              g.SL.library=sl.lib,
              k_split = 1,verbose = FALSE),
-    regexp = "arguments imply differing number of rows"
+    regexp = "Please check the dimension of the data"
   )
   #multiple columns W.g
   expect_error(

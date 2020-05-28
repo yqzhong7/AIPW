@@ -38,49 +38,18 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
                     k_split=1,verbose=FALSE)
 aipw_sl$fit()
-
-## ------------------------------------------------
-## Method `AIPW$calculate_result`
-## ------------------------------------------------
-
-library(SuperLearner)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)$fit()
-aipw_sl$calculate_result(g.bound=0.025)
-
-## ------------------------------------------------
-## Method `AIPW$plot.p_score`
-## ------------------------------------------------
-
-library(SuperLearner)
-library(ggplot2)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)$fit()
-#before average treatment effect calculation
-aipw_sl$plot.p_score()
-#after calculation
-aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
+}
+\section{Super class}{
+\code{\link[AIPW:AIPW_base]{AIPW::AIPW_base}} -> \code{AIPW}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{n}}{number of observations}
-
 \item{\code{libs}}{SuperLearner or sl3 libraries and their fitted objects}
-
-\item{\code{obs_est}}{components for estimating the influence functions of all observations to calculate average causal effects}
-
-\item{\code{estimates}}{risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation}
 
 \item{\code{sl.fit}}{a wrapper for fitting SuperLearner or sl3}
 
 \item{\code{sl.predict}}{a wrapper using \code{sl.fit} to predict}
-
-\item{\code{result}}{a matrix contains RD, RR and OR with their SE and 95\%CI}
 }
 \if{html}{\out{</div>}}
 }
@@ -89,10 +58,16 @@ aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 \itemize{
 \item \href{#method-new}{\code{AIPW$new()}}
 \item \href{#method-fit}{\code{AIPW$fit()}}
-\item \href{#method-calculate_result}{\code{AIPW$calculate_result()}}
-\item \href{#method-plot.p_score}{\code{AIPW$plot.p_score()}}
 \item \href{#method-clone}{\code{AIPW$clone()}}
 }
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="calculate_result">}\href{../../AIPW/html/AIPW_base.html#method-calculate_result}{\code{AIPW::AIPW_base$calculate_result()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="plot.p_score">}\href{../../AIPW/html/AIPW_base.html#method-plot.p_score}{\code{AIPW::AIPW_base$plot.p_score()}}\out{</span>}
+}
+\out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
@@ -103,12 +78,12 @@ Create a new \code{AIPW} object.
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$new(
   Y = NULL,
   A = NULL,
+  verbose = FALSE,
   W.Q = NULL,
   W.g = NULL,
   Q.SL.library = NULL,
   g.SL.library = NULL,
-  k_split = 10,
-  verbose = FALSE
+  k_split = 10
 )}\if{html}{\out{</div>}}
 }
 
@@ -118,6 +93,8 @@ Create a new \code{AIPW} object.
 \item{\code{Y}}{outcome (binary integer: 0 or 1)}
 
 \item{\code{A}}{exposure (binary integer: 0 or 1)}
+
+\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 
 \item{\code{W.Q}}{covariates for outcome model (vector, matrix or data.frame)}
 
@@ -132,8 +109,6 @@ if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
 (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
 NOTE: it's recommended to use sample splitting.}
-
-\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }
@@ -173,69 +148,6 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
                     k_split=1,verbose=FALSE)
 aipw_sl$fit()
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-calculate_result"></a>}}
-\if{latex}{\out{\hypertarget{method-calculate_result}{}}}
-\subsection{Method \code{calculate_result()}}{
-Calculate average causal effects in RD, RR and OR in the fitted \code{AIPW} obejct with the estimated influence functions
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AIPW$calculate_result(g.bound = 0.025)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{g.bound}}{value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An \code{AIPW} obejct with average treatment effect estimations in RD, RR and OR
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{library(SuperLearner)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)$fit()
-aipw_sl$calculate_result(g.bound=0.025)
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot.p_score"></a>}}
-\if{latex}{\out{\hypertarget{method-plot.p_score}{}}}
-\subsection{Method \code{plot.p_score()}}{
-Plot and check the balance of propensity scores by exposure status
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AIPW$plot.p_score()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{library(SuperLearner)
-library(ggplot2)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)$fit()
-#before average treatment effect calculation
-aipw_sl$plot.p_score()
-#after calculation
-aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 }
 \if{html}{\out{</div>}}
 
