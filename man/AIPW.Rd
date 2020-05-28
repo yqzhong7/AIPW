@@ -78,12 +78,12 @@ Create a new \code{AIPW} object.
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$new(
   Y = NULL,
   A = NULL,
+  verbose = FALSE,
   W.Q = NULL,
   W.g = NULL,
   Q.SL.library = NULL,
   g.SL.library = NULL,
-  k_split = 1,
-  verbose = FALSE
+  k_split = 1
 )}\if{html}{\out{</div>}}
 }
 
@@ -93,6 +93,8 @@ Create a new \code{AIPW} object.
 \item{\code{Y}}{outcome (binary integer: 0 or 1)}
 
 \item{\code{A}}{exposure (binary integer: 0 or 1)}
+
+\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 
 \item{\code{W.Q}}{covariates for outcome model (vector, matrix or data.frame)}
 
@@ -106,8 +108,6 @@ Create a new \code{AIPW} object.
 if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
 (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)}
-
-\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }

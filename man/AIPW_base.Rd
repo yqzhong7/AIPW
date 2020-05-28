@@ -70,7 +70,7 @@ aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 \subsection{Method \code{new()}}{
 Create a new \code{AIPW_base} object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AIPW_base$new(Y = NULL, A = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AIPW_base$new(Y = NULL, A = NULL, verbose = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -79,6 +79,8 @@ Create a new \code{AIPW_base} object.
 \item{\code{Y}}{outcome (binary integer: 0 or 1)}
 
 \item{\code{A}}{exposure (binary integer: 0 or 1)}
+
+\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }

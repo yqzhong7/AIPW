@@ -34,6 +34,7 @@ AIPW <- R6::R6Class(
     #'
     #' @param Y outcome (binary integer: 0 or 1)
     #' @param A exposure (binary integer: 0 or 1)
+    #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
     #' @param W.Q covariates for outcome model (vector, matrix or data.frame)
     #' @param W.g covariates for exposure model (vector, matrix or data.frame)
     #' @param Q.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model
@@ -42,7 +43,6 @@ AIPW <- R6::R6Class(
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
     #'   (e.g., k_split=5, use 4/5 of the data to estimate and the remaining 1/5 leftover to predict)
-    #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
     #'
     #' @return A new `AIPW` obejct
     #'
@@ -52,16 +52,16 @@ AIPW <- R6::R6Class(
     #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
     #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
     #'                     k_split=1,verbose=FALSE)
-    initialize = function(Y=NULL, A=NULL,W.Q=NULL, W.g=NULL,
+    initialize = function(Y=NULL, A=NULL,verbose=FALSE,
+                          W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL,g.SL.library=NULL,
-                          k_split=1,verbose=FALSE){
+                          k_split=1){
       #initialize from AIPW_base class
-      super$initialize(Y=Y,A=A)
+      super$initialize(Y=Y,A=A,verbose=verbose)
       #save input into private fields
       private$Q.set=cbind(A, as.data.frame(W.Q))
       private$g.set=as.data.frame(W.g)
       private$k_split=k_split
-      private$verbose=verbose
       #check data length
       if (!(length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
         stop("Please check the dimension of the data")
@@ -222,7 +222,6 @@ AIPW <- R6::R6Class(
     Q.set=NULL,
     g.set=NULL,
     k_split=NULL,
-    verbose=NULL,
     sl.pkg =NULL,
     #private methods
     #lapply or future_lapply

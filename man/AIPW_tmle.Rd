@@ -40,7 +40,7 @@ create an AIPW object
 \subsection{Method \code{new()}}{
 Create a new \code{AIPW_tmle} object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AIPW_tmle$new(Y = NULL, A = NULL, tmle_fit = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AIPW_tmle$new(Y = NULL, A = NULL, tmle_fit = NULL, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -51,6 +51,8 @@ Create a new \code{AIPW_tmle} object.
 \item{\code{A}}{exposure (binary integer: 0 or 1)}
 
 \item{\code{tmle_fit}}{a fitted \code{tmle} object}
+
+\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }

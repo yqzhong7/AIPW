@@ -40,12 +40,14 @@ AIPW_base <- R6::R6Class(
     #'
     #' @param Y outcome (binary integer: 0 or 1)
     #' @param A exposure (binary integer: 0 or 1)
+    #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
     #'
     #' @return A new `AIPW_base` obejct
-    initialize = function(Y=NULL, A=NULL){
+    initialize = function(Y=NULL, A=NULL,verbose=FALSE){
       #save input into private fields
       private$Y=Y
       private$A=A
+      private$verbose=verbose
       #check data length
       if (!(length(private$Y)==length(private$A))){
         stop("Please check the dimension of the data")
@@ -158,6 +160,7 @@ AIPW_base <- R6::R6Class(
     #input
     Y=NULL,
     A=NULL,
+    verbose=NULL,
     g.bound=NULL,
     #private methods
     #Use individaul estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%
