@@ -83,13 +83,13 @@ Create a new \code{AIPW_tmle} object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{Y}}{outcome (binary integer: 0 or 1)}
+\item{\code{Y}}{Outcome (binary integer: 0 or 1)}
 
-\item{\code{A}}{exposure (binary integer: 0 or 1)}
+\item{\code{A}}{Exposure (binary integer: 0 or 1)}
 
-\item{\code{tmle_fit}}{a fitted \code{tmle} object}
+\item{\code{tmle_fit}}{A fitted \code{tmle} object}
 
-\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
+\item{\code{verbose}}{Whether to show progression bar and print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }

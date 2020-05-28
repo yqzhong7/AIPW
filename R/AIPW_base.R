@@ -17,9 +17,9 @@ AIPW_base <- R6::R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    #' @field n number of observations
+    #' @field n Number of observations
     n = NULL,
-    #' @field obs_est components for estimating the influence functions of all observations to calculate average causal effects
+    #' @field obs_est Components for estimating the influence functions of all observations to calculate average causal effects
     obs_est = list(mu0 = NULL,
                    mu1 = NULL,
                    mu = NULL,
@@ -27,22 +27,22 @@ AIPW_base <- R6::R6Class(
                    p_score = NULL,
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
-    #' @field estimates risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
+    #' @field estimates Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
     estimates = list(RD = NULL,
                      RR = NULL,
                      OR = NULL,
                      sigma_covar = NULL),
-    #' @field result a matrix contains RD, RR and OR with their SE and 95%CI
+    #' @field result A matrix contains RD, RR and OR with their SE and 95%CI
     result = NULL,
-    #' @field g.plot a `ggplot` with the propensity score densities by exposure status
+    #' @field g.plot A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
     g.plot = NULL,
 
     #' @description
     #' Create a new `AIPW_base` object.
     #'
-    #' @param Y outcome (binary integer: 0 or 1)
-    #' @param A exposure (binary integer: 0 or 1)
-    #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
+    #' @param Y Outcome (binary integer: 0 or 1)
+    #' @param A Exposure (binary integer: 0 or 1)
+    #' @param verbose Whether to show progression bar and print the result (logical; Default = FALSE)
     #'
     #' @return A new `AIPW_base` obejct
     initialize = function(Y=NULL, A=NULL,verbose=FALSE){
@@ -64,9 +64,9 @@ AIPW_base <- R6::R6Class(
     #' @description
     #' Calculate average causal effects in RD, RR and OR in the fitted `AIPW` obejct with the estimated influence functions
     #'
-    #' @param g.bound value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
+    #' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
     #'
-    #' @return An `AIPW` obejct with average treatment effect estimations in RD, RR and OR
+    #' @return An `AIPW` object with average treatment effect estimations in RD, RR and OR
     #'
     #' @examples
     #' library(SuperLearner)
@@ -115,7 +115,7 @@ AIPW_base <- R6::R6Class(
     #' @description
     #' Plot and check the balance of propensity scores by exposure status
     #'
-    #' @return A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
+    #' @return `g.plot` A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
     #' @examples
     #' library(SuperLearner)
     #' library(ggplot2)
@@ -166,7 +166,7 @@ AIPW_base <- R6::R6Class(
     verbose=NULL,
     g.bound=NULL,
     #private methods
-    #Use individaul estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%
+    #Use individual estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%
     get_RD = function(aipw_eif1,aipw_eif0,root_n){
       est <- mean(aipw_eif1 - aipw_eif0)
       se <- stats::sd(aipw_eif1 - aipw_eif0)/root_n

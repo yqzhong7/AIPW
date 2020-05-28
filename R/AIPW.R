@@ -24,22 +24,26 @@ AIPW <- R6::R6Class(
                g.SL.library=NULL,
                g.fit = NULL,
                num_val_index = NULL),
-    #' @field sl.fit a wrapper for fitting SuperLearner or sl3
+    #' @field sl.fit A wrapper function for fitting SuperLearner or sl3
     sl.fit = NULL,
-    #' @field sl.predict a wrapper using \code{sl.fit} to predict
+    #' @field sl.predict A wrapper using \code{sl.fit} to predict
     sl.predict = NULL,
 
     #' @description
     #' Create a new `AIPW` object.
     #'
-    #' @param Y outcome (binary integer: 0 or 1)
-    #' @param A exposure (binary integer: 0 or 1)
-    #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
-    #' @param W.Q covariates for outcome model (vector, matrix or data.frame)
-    #' @param W.g covariates for exposure model (vector, matrix or data.frame)
+    #' @param Y Outcome (binary integer: 0 or 1)
+    #' @param A Exposure (binary integer: 0 or 1)
+    #' @param verbose Whether to show progression bar and print the result (logical; Default = FALSE)
+    #' @param W covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
+    #' inputs from `W.Q` and `W.g`.
+    #' @param W.Q Only valid when `W` is null, otherwise it would be replaced by `W`.
+    #' covariates for outcome model (vector, matrix or data.frame).
+    #' @param W.g Only valid when `W` is null, otherwise it would be replaced by `W`.
+    #' covariates for exposure model (vector, matrix or data.frame)
     #' @param Q.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model
     #' @param g.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model
-    #' @param k_split number of splitting (integer; range: from 1 to number of observation-1):
+    #' @param k_split Number of splitting (integer; range: from 1 to number of observation-1):
     #'   if k_split=1, no sample splitting;
     #'   if k_split>1, use similar technique of cross-validation
     #'   (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
@@ -53,15 +57,25 @@ AIPW <- R6::R6Class(
     #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
     #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
     #'                     k_split=1,verbose=FALSE)
-    initialize = function(Y=NULL, A=NULL,verbose=FALSE,
-                          W.Q=NULL, W.g=NULL,
-                          Q.SL.library=NULL,g.SL.library=NULL,
+    initialize = function(Y=NULL, A=NULL, verbose=FALSE,
+                          W=NULL, W.Q=NULL, W.g=NULL,
+                          Q.SL.library=NULL, g.SL.library=NULL,
                           k_split=10){
       #initialize from AIPW_base class
       super$initialize(Y=Y,A=A,verbose=verbose)
+      #decide covariate set(s): W.Q and W.g only works when W is null.
+      if (is.null(W)){
+        if (any(is.null(W.Q),is.null(W.g))) {
+          stop("No sufficient covariates were provided.")
+        } else{
+          private$Q.set=cbind(A, as.data.frame(W.Q))
+          private$g.set=as.data.frame(W.g)
+        }
+      } else{
+        private$Q.set=cbind(A, as.data.frame(W))
+        private$g.set=as.data.frame(W)
+      }
       #save input into private fields
-      private$Q.set=cbind(A, as.data.frame(W.Q))
-      private$g.set=as.data.frame(W.g)
       private$k_split=k_split
       #check data length
       if (!(length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
@@ -125,11 +139,11 @@ AIPW <- R6::R6Class(
       self$libs$num_val_index <- rep(NA,self$n)
       #check k_split value
       if (private$k_split<1 | private$k_split>=self$n){
-        stop("k_split is not valid")
+        stop("`k_split` is not valid")
       }
       #check verbose value
       if (!is.logical(private$verbose)){
-        stop("verbose is not valid")
+        stop("`verbose` is not valid")
       }
       #check if SuperLearner and/or sl3 library is loaded
       if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner","sl3"))){
@@ -147,7 +161,7 @@ AIPW <- R6::R6Class(
     #' @description
     #' Fitting the data into the `AIPW` object with/without sample splitting to estimate the influence functions
     #'
-    #' @return A fitted `AIPW` obejct
+    #' @return A fitted `AIPW` object
     #'
     #' @examples
     #' library(SuperLearner)

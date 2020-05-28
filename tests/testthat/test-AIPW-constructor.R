@@ -2,19 +2,20 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/26
+#' 2020/05/28
 test_that("AIPW constructor: input data dimension", {
   ##correct dimension
   #single column W.g
   vec <- rep(1,100)
   sl.lib <- c("SL.mean","SL.glm")
   expect_warning(aipw <-  AIPW$new(Y=vec,
-             A=vec,
-             W.Q =vec,
-             W.g =vec,
-             Q.SL.library=sl.lib,
-             g.SL.library=sl.lib,
-             k_split = 1,verbose = FALSE))
+                                   A=vec,
+                                   W.Q =vec,
+                                   W.g =vec,
+                                   Q.SL.library=sl.lib,
+                                   g.SL.library=sl.lib,
+                                   k_split = 1,verbose = FALSE),
+                 info = "Either `SuperLearner` or `sl3` package is not loaded.")
   expect_equal(aipw$n,100)
   expect_equal(length(aipw$.__enclos_env__$private$A),100)
   expect_equal(length(aipw$.__enclos_env__$private$Y),100)
@@ -23,12 +24,13 @@ test_that("AIPW constructor: input data dimension", {
   #multiple columns W.g
   mat <- matrix(rep(1,200),ncol = 2)
   expect_warning(aipw <-  AIPW$new(Y=vec,
-                    A=vec,
-                    W.Q =vec,
-                    W.g =mat,
-                    Q.SL.library=sl.lib,
-                    g.SL.library=sl.lib,
-                    k_split = 1,verbose = FALSE))
+                                   A=vec,
+                                   W.Q =vec,
+                                   W.g =mat,
+                                   Q.SL.library=sl.lib,
+                                   g.SL.library=sl.lib,
+                                   k_split = 1,verbose = FALSE),
+                 info = "Either `SuperLearner` or `sl3` package is not loaded.")
   expect_equal(dim(aipw$.__enclos_env__$private$g.set),c(100,2))
   ##wrong dimension
   #single column W.g (A and W.Q have the same nrow)
@@ -66,6 +68,47 @@ test_that("AIPW constructor: input data dimension", {
   )
 })
 
+
+#' @title Testing AIPW constructor: W input logic
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2020/05/28
+test_that("AIPW constructor: W input logic", {
+  ##correct dimension
+  #single column W.g
+  vec <- rep(1,100)
+  sl.lib <- c("SL.mean","SL.glm")
+  expect_error(aipw <-  AIPW$new(Y=vec,
+                                 A=vec,
+                                 Q.SL.library=sl.lib,
+                                 g.SL.library=sl.lib,
+                                 k_split = 1,verbose = FALSE),
+               info="No sufficient covariates were provided.")
+  expect_warning(aipw <-  AIPW$new(Y=vec,
+                                   A=vec,
+                                   W=vec,
+                                   Q.SL.library=sl.lib,
+                                   g.SL.library=sl.lib,
+                                   k_split = 1,verbose = FALSE),
+                 info = "Either `SuperLearner` or `sl3` package is not loaded.")
+  expect_equal(aipw$n,100)
+  expect_equal(length(aipw$.__enclos_env__$private$A),100)
+  expect_equal(length(aipw$.__enclos_env__$private$Y),100)
+  expect_equal(dim(aipw$.__enclos_env__$private$g.set)[1],100)
+  expect_equal(dim(aipw$.__enclos_env__$private$Q.set),c(100,2))
+  #multicolumns
+  expect_warning(aipw <-  AIPW$new(Y=vec,
+                                   A=vec,
+                                   W=cbind(vec,vec),
+                                   Q.SL.library=sl.lib,
+                                   g.SL.library=sl.lib,
+                                   k_split = 1,verbose = FALSE),
+                 info = "Either `SuperLearner` or `sl3` package is not loaded.")
+  expect_equal(dim(aipw$.__enclos_env__$private$g.set),c(100,2))
+  expect_equal(dim(aipw$.__enclos_env__$private$Q.set),c(100,3))
+
+})
 
 #' @title Testing AIPW constructor: SL libraries
 #' @section Last Updated By:
@@ -172,7 +215,7 @@ test_that("AIPW constructor: k_split", {
              Q.SL.library=c("SL.mean","SL.glm"),
              g.SL.library=c("SL.mean","SL.glm"),
              k_split = -1,verbose = FALSE),
-    regexp = "k_split is not valid"
+    regexp = "`k_split` is not valid"
   )
   expect_error(
     AIPW$new(Y=rep(1,100),
@@ -182,7 +225,7 @@ test_that("AIPW constructor: k_split", {
              Q.SL.library=c("SL.mean","SL.glm"),
              g.SL.library=c("SL.mean","SL.glm"),
              k_split = 100,verbose = FALSE),
-    regexp = "k_split is not valid"
+    regexp = "`k_split` is not valid"
   )
 })
 
@@ -213,6 +256,6 @@ test_that("AIPW constructor: verbose", {
              Q.SL.library=c("SL.mean","SL.glm"),
              g.SL.library=c("SL.mean","SL.glm"),
              k_split = 5,verbose = -1),
-    regexp = "verbose is not valid"
+    regexp = "`verbose` is not valid"
   )
 })

@@ -45,15 +45,15 @@ aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{n}}{number of observations}
+\item{\code{n}}{Number of observations}
 
-\item{\code{obs_est}}{components for estimating the influence functions of all observations to calculate average causal effects}
+\item{\code{obs_est}}{Components for estimating the influence functions of all observations to calculate average causal effects}
 
-\item{\code{estimates}}{risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation}
+\item{\code{estimates}}{Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation}
 
-\item{\code{result}}{a matrix contains RD, RR and OR with their SE and 95\%CI}
+\item{\code{result}}{A matrix contains RD, RR and OR with their SE and 95\%CI}
 
-\item{\code{g.plot}}{a \code{ggplot} with the propensity score densities by exposure status}
+\item{\code{g.plot}}{A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})}
 }
 \if{html}{\out{</div>}}
 }
@@ -78,11 +78,11 @@ Create a new \code{AIPW_base} object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{Y}}{outcome (binary integer: 0 or 1)}
+\item{\code{Y}}{Outcome (binary integer: 0 or 1)}
 
-\item{\code{A}}{exposure (binary integer: 0 or 1)}
+\item{\code{A}}{Exposure (binary integer: 0 or 1)}
 
-\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
+\item{\code{verbose}}{Whether to show progression bar and print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }
@@ -102,12 +102,12 @@ Calculate average causal effects in RD, RR and OR in the fitted \code{AIPW} obej
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{g.bound}}{value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
+\item{\code{g.bound}}{Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-An \code{AIPW} obejct with average treatment effect estimations in RD, RR and OR
+An \code{AIPW} object with average treatment effect estimations in RD, RR and OR
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -133,7 +133,7 @@ Plot and check the balance of propensity scores by exposure status
 }
 
 \subsection{Returns}{
-A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})
+\code{g.plot} A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

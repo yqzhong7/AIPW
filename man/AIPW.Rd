@@ -47,9 +47,9 @@ aipw_sl$fit()
 \describe{
 \item{\code{libs}}{SuperLearner or sl3 libraries and their fitted objects}
 
-\item{\code{sl.fit}}{a wrapper for fitting SuperLearner or sl3}
+\item{\code{sl.fit}}{A wrapper function for fitting SuperLearner or sl3}
 
-\item{\code{sl.predict}}{a wrapper using \code{sl.fit} to predict}
+\item{\code{sl.predict}}{A wrapper using \code{sl.fit} to predict}
 }
 \if{html}{\out{</div>}}
 }
@@ -79,6 +79,7 @@ Create a new \code{AIPW} object.
   Y = NULL,
   A = NULL,
   verbose = FALSE,
+  W = NULL,
   W.Q = NULL,
   W.g = NULL,
   Q.SL.library = NULL,
@@ -90,21 +91,24 @@ Create a new \code{AIPW} object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{Y}}{outcome (binary integer: 0 or 1)}
+\item{\code{Y}}{Outcome (binary integer: 0 or 1)}
 
-\item{\code{A}}{exposure (binary integer: 0 or 1)}
+\item{\code{A}}{Exposure (binary integer: 0 or 1)}
 
-\item{\code{verbose}}{whether to show progression bar and print the result (logical; Default = FALSE)}
+\item{\code{verbose}}{Whether to show progression bar and print the result (logical; Default = FALSE)}
 
-\item{\code{W.Q}}{covariates for outcome model (vector, matrix or data.frame)}
+\item{\code{W}}{covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
+inputs from \code{W.Q} and \code{W.g}.}
 
-\item{\code{W.g}}{covariates for exposure model (vector, matrix or data.frame)}
+\item{\code{W.Q}}{Only works when \code{W} is null. covariates for outcome model (vector, matrix or data.frame).}
+
+\item{\code{W.g}}{Only works when \code{W} is null. covariates for exposure model (vector, matrix or data.frame)}
 
 \item{\code{Q.SL.library}}{SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model}
 
 \item{\code{g.SL.library}}{SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model}
 
-\item{\code{k_split}}{number of splitting (integer; range: from 1 to number of observation-1):
+\item{\code{k_split}}{Number of splitting (integer; range: from 1 to number of observation-1):
 if k_split=1, no sample splitting;
 if k_split>1, use similar technique of cross-validation
 (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
@@ -138,7 +142,7 @@ Fitting the data into the \code{AIPW} object with/without sample splitting to es
 }
 
 \subsection{Returns}{
-A fitted \code{AIPW} obejct
+A fitted \code{AIPW} object
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

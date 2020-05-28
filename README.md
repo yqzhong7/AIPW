@@ -3,15 +3,18 @@ AIPW: Augmented Inverse Probability Weighting
 
 <!-- badges: start -->
 
+[![Project Status: WIP – Initial development is in progress, but there
+has not yet been a stable, usable release suitable for the
+public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#WIP)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Codecov test
 coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
 [![Travis build
 status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-ci.com/yqzhong7/AIPW)
-[![Project Status: WIP – Initial development is in progress, but there
-has not yet been a stable, usable release suitable for the
-public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#WIP)
 [![R build
 status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
+
 <!-- badges: end -->
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -52,21 +55,16 @@ set.seed(888)
 N <- 200
 outcome <- rbinom(N,1,0.3)
 exposure <- rbinom(N,1,0.2)
-#covaraites for outcome model (Q)
-covariates.Q <- matrix(c(rbinom(N,1,0.4),
-                                rnorm(N,mean = 0,sd=1),
-                                rpois(N,lambda = 2)),
-                              ncol=3)
-#covariates for exposure model (g)
-covariates.g <- matrix(c(rbinom(N,1,0.4),
+#covariates for both outcome model (Q) and exposure model (g)
+covariates <- matrix(c(rbinom(N,1,0.4),
                                 rnorm(N,mean = 0,sd=1),
                                 rpois(N,lambda = 2)),
                               ncol=3)
 
-# covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
+# covariates <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
 
-### <a id="one_line"></a>One line version (Method chaining from R6class)
+### <a id="one_line"></a>One line version (`AIPW` class: method chaining from R6class)
 
 ``` r
 library(AIPW)
@@ -79,8 +77,7 @@ library(ggplot2)
 library(progressr) #for the progress bar
 AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
+                    W=covariates, 
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
@@ -89,28 +86,29 @@ AIPW_SL <- AIPW$new(Y= outcome,
   calculate_result(g.bound = 0.25)$
   plot.p_score()
 #> Done!
-#>                 Estimate    SE 95% LCL  95% UCL   N
-#> Risk Difference   -0.267 0.132 -0.5250 -0.00817 200
-#> Risk Ratio         0.393 0.413  0.1748  0.88221 200
-#> Odds Ratio         0.266 0.616  0.0797  0.88957 200
+#>                 Estimate    SE 95% LCL 95% UCL   N
+#> Risk Difference   -0.253 0.132 -0.5126   0.006 200
+#> Risk Ratio         0.417 0.394  0.1927   0.903 200
+#> Odds Ratio         0.288 0.600  0.0888   0.934 200
 ```
 
 ![](man/figures/one_line-1.png)<!-- -->
 
 ## <a id="par"></a>Parallelization with `future.apply`
 
+In default setting, the `AIPW$fit()` method will be run sequentially.
 The current version of AIPW package supports parallel processing
 implemented by
 [future.apply](https://github.com/HenrikBengtsson/future.apply) package
 under the [future](https://github.com/HenrikBengtsson/future) framework.
-Simply use `plan()` to enable this feature and `set.seed()` to take care
-of the random number generation (RNG) problem:
+Simply use `future::plan()` to enable parallelization and `set.seed()`
+to take care of the random number generation (RNG) problem:
 
 ``` r
 # install.packages("future.apply")
 library(future.apply)
 #> Loading required package: future
-plan(multiprocess, workers=2, gc=T)
+future::plan(multiprocess, workers=2, gc=T)
 #> Warning: [ONE-TIME WARNING] Forked processing ('multicore') is disabled
 #> in future (>= 1.13.0) when running R from RStudio, because it is
 #> considered unstable. Because of this, plan("multicore") will fall
@@ -121,22 +119,24 @@ plan(multiprocess, workers=2, gc=T)
 set.seed(888)
 AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
+                    W=covariates, 
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
                     verbose=TRUE)$fit()$calculate_result()
 #> Done!
 #>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.304 0.170 -0.6367  0.0278 200
-#> Risk Ratio         0.378 0.475  0.1490  0.9605 200
-#> Odds Ratio         0.237 0.763  0.0531  1.0569 200
+#> Risk Difference   -0.315 0.167 -0.6425  0.0116 200
+#> Risk Ratio         0.357 0.479  0.1395  0.9132 200
+#> Odds Ratio         0.220 0.759  0.0498  0.9766 200
 ```
 
-## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input
+## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input (`AIPW_tmle` class)
 
-#### `tmle`
+`AIPW_tmle` class is designed for using `tmle`/`tmle3` fitted object as
+input
+
+#### 1\. `tmle`
 
 As shown in the message,
 [tmle](https://cran.r-project.org/web/packages/tmle/index.html) alone
@@ -154,7 +154,7 @@ require(tmle)
 #> 
 #> Use tmleNews() to see details on changes and bug fixes
 require(SuperLearner)
-tmle_fit <- tmle(Y=outcome,A=exposure,W=covariates.Q,
+tmle_fit <- tmle(Y=outcome,A=exposure,W=covariates,
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial")
@@ -180,7 +180,7 @@ require(tmle3)
 #> Loading required package: tmle3
 require(sl3)
 #> Loading required package: sl3
-df <- data.frame(exposure,outcome,covariates.Q)
+df <- data.frame(exposure,outcome,covariates)
 node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])
 or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
 tmle_task <- or_spec$make_tmle_task(df,node_list)

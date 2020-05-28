@@ -21,10 +21,10 @@ AIPW_tmle <- R6::R6Class(
     #' @description
     #' Create a new `AIPW_tmle` object.
     #'
-    #' @param Y outcome (binary integer: 0 or 1)
-    #' @param A exposure (binary integer: 0 or 1)
-    #' @param verbose whether to show progression bar and print the result (logical; Default = FALSE)
-    #' @param tmle_fit a fitted `tmle` object
+    #' @param Y Outcome (binary integer: 0 or 1)
+    #' @param A Exposure (binary integer: 0 or 1)
+    #' @param verbose Whether to show progression bar and print the result (logical; Default = FALSE)
+    #' @param tmle_fit A fitted `tmle` object
     #'
     #' @return A new `AIPW_tmle` obejct
     #'
