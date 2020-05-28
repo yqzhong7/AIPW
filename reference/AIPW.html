@@ -161,9 +161,9 @@
     <p><div class="r6-fields"></p><dl'>
 <dt><code>libs</code></dt><dd><p>SuperLearner or sl3 libraries and their fitted objects</p></dd>
 
-<dt><code>sl.fit</code></dt><dd><p>a wrapper for fitting SuperLearner or sl3</p></dd>
+<dt><code>sl.fit</code></dt><dd><p>A wrapper function for fitting SuperLearner or sl3</p></dd>
 
-<dt><code>sl.predict</code></dt><dd><p>a wrapper using <code>sl.fit</code> to predict</p></dd>
+<dt><code>sl.predict</code></dt><dd><p>A wrapper using <code>sl.fit</code> to predict</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -190,6 +190,7 @@
   <span class='kw'>Y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>A</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>W</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>W.Q</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>W.g</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Q.SL.library</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -199,21 +200,24 @@
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
-<dt><code>Y</code></dt><dd><p>outcome (binary integer: 0 or 1)</p></dd>
+<dt><code>Y</code></dt><dd><p>Outcome (binary integer: 0 or 1)</p></dd>
 
-<dt><code>A</code></dt><dd><p>exposure (binary integer: 0 or 1)</p></dd>
+<dt><code>A</code></dt><dd><p>Exposure (binary integer: 0 or 1)</p></dd>
 
-<dt><code>verbose</code></dt><dd><p>whether to show progression bar and print the result (logical; Default = FALSE)</p></dd>
+<dt><code>verbose</code></dt><dd><p>Whether to show progression bar and print the result (logical; Default = FALSE)</p></dd>
 
-<dt><code>W.Q</code></dt><dd><p>covariates for outcome model (vector, matrix or data.frame)</p></dd>
+<dt><code>W</code></dt><dd><p>covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
+inputs from <code>W.Q</code> and <code>W.g</code>.</p></dd>
 
-<dt><code>W.g</code></dt><dd><p>covariates for exposure model (vector, matrix or data.frame)</p></dd>
+<dt><code>W.Q</code></dt><dd><p>Only works when <code>W</code> is null. covariates for outcome model (vector, matrix or data.frame).</p></dd>
+
+<dt><code>W.g</code></dt><dd><p>Only works when <code>W</code> is null. covariates for exposure model (vector, matrix or data.frame)</p></dd>
 
 <dt><code>Q.SL.library</code></dt><dd><p>SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model</p></dd>
 
 <dt><code>g.SL.library</code></dt><dd><p>SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model</p></dd>
 
-<dt><code>k_split</code></dt><dd><p>number of splitting (integer; range: from 1 to number of observation-1):
+<dt><code>k_split</code></dt><dd><p>Number of splitting (integer; range: from 1 to number of observation-1):
 if k_split=1, no sample splitting;
 if k_split&gt;1, use similar technique of cross-validation
 (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
@@ -235,7 +239,7 @@ NOTE: it's recommended to use sample splitting.</p></dd>
 <p><div class="r"></p><pre><span class='no'>AIPW</span>$<span class='fu'>fit</span>()</pre><p></div></p>
 
 <h3>Returns</h3>
-<p>A fitted <code>AIPW</code> obejct</p>
+<p>A fitted <code>AIPW</code> object</p>
 <h3>Examples</h3>
 <p><div class="r example copy"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
 <span class='no'>aipw_sl</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),

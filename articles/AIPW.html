@@ -146,11 +146,8 @@
                                 <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="no">N</span>,<span class="kw">mean</span> <span class="kw">=</span> <span class="fl">0</span>,<span class="kw">sd</span><span class="kw">=</span><span class="fl">1</span>),
                                 <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span>(<span class="no">N</span>,<span class="kw">lambda</span> <span class="kw">=</span> <span class="fl">2</span>)),
                               <span class="kw">ncol</span><span class="kw">=</span><span class="fl">3</span>)
-<span class="co">#covariates for exposure model (g)</span>
-<span class="no">covariates.g</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.4</span>),
-                                <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="no">N</span>,<span class="kw">mean</span> <span class="kw">=</span> <span class="fl">0</span>,<span class="kw">sd</span><span class="kw">=</span><span class="fl">1</span>),
-                                <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span>(<span class="no">N</span>,<span class="kw">lambda</span> <span class="kw">=</span> <span class="fl">2</span>)),
-                              <span class="kw">ncol</span><span class="kw">=</span><span class="fl">3</span>)
+<span class="co">#covariates for exposure model (g; assuming they are the same)</span>
+<span class="no">covariates.g</span> <span class="kw">&lt;-</span> <span class="no">covariates.Q</span>
 
 <span class="co"># covariates.g &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></pre></body></html></div>
 </div>
@@ -160,6 +157,7 @@
 <div id="one-line-version-method-chaining-from-r6class" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-line-version-method-chaining-from-r6class" class="anchor"></a><a id="one_line"></a>One line version (Method chaining from R6class)</h3>
+<p>Using native AIPW class allows users to define different covariate sets for the exposure and the outcome models, respectively.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">SuperLearner</span>)
 <span class="co">#&gt; Loading required package: nnls</span>
@@ -198,8 +196,7 @@
 <span class="co">#construct an aipw object for later estimations </span>
 <span class="no">AIPW_SL</span> <span class="kw">&lt;-</span> <span class="no">AIPW</span>$<span class="fu">new</span>(<span class="kw">Y</span><span class="kw">=</span> <span class="no">outcome</span>,
                     <span class="kw">A</span><span class="kw">=</span> <span class="no">exposure</span>,
-                    <span class="kw">W.Q</span><span class="kw">=</span><span class="no">covariates.Q</span>,
-                    <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
+                    <span class="kw">W</span><span class="kw">=</span><span class="no">covariates.Q</span>,
                     <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">10</span>,
@@ -217,7 +214,7 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <span class="no">lrnr_mean</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_mean</span>$<span class="fu">new</span>()
 <span class="co">#stacking two learner (this will yield estimates for each learner)</span>
 <span class="no">stacklearner</span> <span class="kw">&lt;-</span> <span class="no">Stack</span>$<span class="fu">new</span>(<span class="no">lrnr_glm</span>, <span class="no">lrnr_mean</span>)
-<span class="co">#metalearner is libraryd to combine the estimates from stacklearner</span>
+<span class="co">#metalearner is required to combine the estimates from stacklearner</span>
 <span class="no">metalearner</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_nnls</span>$<span class="fu">new</span>()
 <span class="no">sl3.lib</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_sl</span>$<span class="fu">new</span>(<span class="kw">learners</span> <span class="kw">=</span> <span class="no">stacklearner</span>,
                       <span class="kw">metalearner</span> <span class="kw">=</span> <span class="no">metalearner</span>)
@@ -243,21 +240,15 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <h4 class="hasAnchor">
 <a href="#calculate-average-treatment-effects" class="anchor"></a>3. <a id="ate"></a>Calculate average treatment effects</h4>
 <ul>
-<li><h5 id="check-the-balance-of-propensity-scores-by-exposure-status-before-ate-calculation">Check the balance of propensity scores by exposure status before ATE calculation</h5></li>
-</ul>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()
-<span class="co">#&gt; ATE has not been calculated.</span></pre></body></html></div>
-<p><img src="AIPW_files/figure-html/ps_raw-1.png" width="384"></p>
-<ul>
 <li><h5 id="estimate-the-ate-with-propensity-scores-truncation">Estimate the ATE with propensity scores truncation</h5></li>
 </ul>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
 <span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>) <span class="co">#propensity score truncation </span></pre></body></html></div>
 <ul>
 <li><h5 id="check-the-balance-of-propensity-scores-by-exposure-status-after-truncation">Check the balance of propensity scores by exposure status after truncation</h5></li>
 </ul>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()</pre></body></html></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<span class="no">AIPW_SL</span>$<span class="fu">plot.p_score</span>()</pre></body></html></div>
 <p><img src="AIPW_files/figure-html/ps_trunc-1.png" width="576"></p>
 </div>
 </div>
@@ -265,8 +256,8 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <div id="parallelization-with-future-apply" class="section level2">
 <h2 class="hasAnchor">
 <a href="#parallelization-with-future-apply" class="anchor"></a><a id="par"></a>Parallelization with future.apply</h2>
-<p>The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future">future</a> framework. Simply use <code>plan()</code> to enable this feature and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># install.packages("future.apply")</span>
+<p>In default setting, the <code>AIPW$fit()</code> method will be run sequentially. The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future">future</a> framework. Simply use <code><a href="https://rdrr.io/pkg/future/man/plan.html">future::plan()</a></code> to enable parallelization and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># install.packages("future.apply")</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">future.apply</span>)
 <span class="fu">plan</span>(<span class="no">multiprocess</span>, <span class="kw">workers</span><span class="kw">=</span><span class="fl">2</span>, <span class="kw">gc</span><span class="kw">=</span><span class="no">T</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">888</span>)
@@ -288,7 +279,7 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <a href="#tmle" class="anchor"></a>1. <a id="tmle"></a><code>tmle</code>
 </h4>
 <p>As shown in the message, <a href="https://cran.r-project.org/web/packages/tmle/index.html">tmle</a> alone does not support sample splitting. In addition, <code>tmle</code> does not support different covariate sets for the exposure and the outcome models, respectively.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmle</span>)
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmle</span>)
 <span class="co">#&gt; Loading required package: glmnet</span>
 <span class="co">#&gt; Loading required package: Matrix</span>
 <span class="co">#&gt; Loaded glmnet 4.0</span>
@@ -307,13 +298,13 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <span class="co">#&gt; Estimates from TMLE</span>
 <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="no">tmle_fit</span>$<span class="no">estimates</span>$<span class="no">ATE</span>)
 <span class="co">#&gt;          psi      var.psi          CI1          CI2       pvalue </span>
-<span class="co">#&gt; -0.215774179  0.004825062 -0.351921003 -0.079627356  0.001894232</span>
+<span class="co">#&gt; -0.216344005  0.004911103 -0.353699360 -0.078988651  0.002020971</span>
 <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="no">tmle_fit</span>$<span class="no">estimates</span>$<span class="no">RR</span>)
 <span class="co">#&gt;         psi         CI1         CI2      pvalue     log.psi var.log.psi </span>
-<span class="co">#&gt;  0.43322491  0.21224406  0.88428301  0.02157238 -0.83649827  0.13252577</span>
+<span class="co">#&gt;  0.43238856  0.21043989  0.88842409  0.02248936 -0.83843066  0.13499048</span>
 <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="no">tmle_fit</span>$<span class="no">estimates</span>$<span class="no">OR</span>)
 <span class="co">#&gt;         psi         CI1         CI2      pvalue     log.psi var.log.psi </span>
-<span class="co">#&gt;  0.32128357  0.13308299  0.77562980  0.01156859 -1.13543116  0.20220220</span>
+<span class="co">#&gt;  0.32038529  0.13162001  0.77987183  0.01214929 -1.13823097  0.20600728</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"\nEstimates from AIPW\n"</span>)
 <span class="co">#&gt; </span>
@@ -324,9 +315,9 @@ Metalearner is required to combine the estimates from stacklearner!</li>
   <span class="fu">plot.p_score</span>()
 <span class="co">#&gt; Sample splitting was not supported with a fitted tmle object</span>
 <span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.216 0.157  -0.524  0.0926 200</span>
-<span class="co">#&gt; Risk Ratio         0.433 0.520   0.156  1.2007 200</span>
-<span class="co">#&gt; Odds Ratio         0.321 0.749   0.074  1.3956 200</span></pre></body></html></div>
+<span class="co">#&gt; Risk Difference   -0.216 0.159 -0.5271  0.0945 200</span>
+<span class="co">#&gt; Risk Ratio         0.432 0.526  0.1544  1.2112 200</span>
+<span class="co">#&gt; Odds Ratio         0.320 0.757  0.0727  1.4129 200</span></pre></body></html></div>
 <p><img src="AIPW_files/figure-html/tmle-1.png" width="576"></p>
 </div>
 <div id="tmle3" class="section level4">
@@ -334,7 +325,7 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <a href="#tmle3" class="anchor"></a>2. <a id="tmle3"></a> <code>tmle3</code>
 </h4>
 <p>Similarly, <a href="https://github.com/tlverse/tmle3">tmle3</a> may not support different covariate sets for the exposure and the outcome models, respectively. However, <code>tmle3</code> conducts sample splitting and propensity truncation (0.025) by default.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmle3</span>)
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmle3</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>)
 
 <span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="no">exposure</span>,<span class="no">outcome</span>,<span class="no">covariates.Q</span>)
@@ -352,13 +343,13 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <span class="co">#&gt; Estimates from TMLE</span>
 <span class="no">tmle3_fit</span>$<span class="no">summary</span>
 <span class="co">#&gt;    type                     param   init_est   tmle_est         se       lower</span>
-<span class="co">#&gt; 1:  TSM                E[Y_{A=0}]  0.3575169  0.3797221 0.03882695  0.30362269</span>
-<span class="co">#&gt; 2:  TSM                E[Y_{A=1}]  0.2378190  0.1657522 0.05990979  0.04833116</span>
-<span class="co">#&gt; 3:   OR OR(E[Y_{A=1}]/E[Y_{A=0}]) -0.5785166 -1.1253088 0.46493830 -2.03657109</span>
+<span class="co">#&gt; 1:  TSM                E[Y_{A=0}]  0.3575772  0.3814505 0.03891927  0.30517016</span>
+<span class="co">#&gt; 2:  TSM                E[Y_{A=1}]  0.2375949  0.1722678 0.06188247  0.05098043</span>
+<span class="co">#&gt; 3:   OR OR(E[Y_{A=1}]/E[Y_{A=0}]) -0.5800158 -1.0862432 0.46450061 -1.99664764</span>
 <span class="co">#&gt;         upper psi_transformed lower_transformed upper_transformed</span>
-<span class="co">#&gt; 1:  0.4558215       0.3797221        0.30362269         0.4558215</span>
-<span class="co">#&gt; 2:  0.2831732       0.1657522        0.04833116         0.2831732</span>
-<span class="co">#&gt; 3: -0.2140464       0.3245522        0.13047533         0.8073109</span>
+<span class="co">#&gt; 1:  0.4577309       0.3814505        0.30517016         0.4577309</span>
+<span class="co">#&gt; 2:  0.2935552       0.1722678        0.05098043         0.2935552</span>
+<span class="co">#&gt; 3: -0.1758387       0.3374820        0.13578974         0.8387532</span>
 
 <span class="co"># parse tmle3_fit into AIPW_tmle class</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"\nEstimates from AIPW\n"</span>)
@@ -370,9 +361,9 @@ Metalearner is required to combine the estimates from stacklearner!</li>
   <span class="fu">plot.p_score</span>()
 <span class="co">#&gt; Propensity scores from fitted tmle3 object are by default truncated (0.025)</span>
 <span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.218 0.158 -0.5287  0.0922 200</span>
-<span class="co">#&gt; Risk Ratio         0.430 0.525  0.1539  1.2038 200</span>
-<span class="co">#&gt; Odds Ratio         0.318 0.756  0.0722  1.3996 200</span></pre></body></html></div>
+<span class="co">#&gt; Risk Difference   -0.210 0.160 -0.5240   0.103 200</span>
+<span class="co">#&gt; Risk Ratio         0.441 0.527  0.1569   1.240 200</span>
+<span class="co">#&gt; Odds Ratio         0.330 0.760  0.0743   1.463 200</span></pre></body></html></div>
 <p><img src="AIPW_files/figure-html/tmle3-1.png" width="576"></p>
 </div>
 <div id="compare-the-aipw-estimates-from-different-input-methods" class="section level4">
@@ -391,26 +382,26 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <tbody>
 <tr class="odd">
 <td>Risk Difference</td>
-<td align="right">-0.243</td>
-<td align="right">0.132</td>
-<td align="right">-0.502</td>
-<td align="right">0.015</td>
+<td align="right">-0.248</td>
+<td align="right">0.134</td>
+<td align="right">-0.511</td>
+<td align="right">0.014</td>
 <td align="right">200</td>
 </tr>
 <tr class="even">
 <td>Risk Ratio</td>
-<td align="right">0.423</td>
+<td align="right">0.420</td>
 <td align="right">0.402</td>
-<td align="right">0.192</td>
-<td align="right">0.930</td>
+<td align="right">0.191</td>
+<td align="right">0.924</td>
 <td align="right">200</td>
 </tr>
 <tr class="odd">
 <td>Odds Ratio</td>
-<td align="right">0.298</td>
-<td align="right">0.605</td>
-<td align="right">0.091</td>
-<td align="right">0.974</td>
+<td align="right">0.293</td>
+<td align="right">0.609</td>
+<td align="right">0.089</td>
+<td align="right">0.965</td>
 <td align="right">200</td>
 </tr>
 </tbody>
@@ -429,25 +420,25 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <tr class="odd">
 <td>Risk Difference</td>
 <td align="right">-0.216</td>
-<td align="right">0.157</td>
-<td align="right">-0.524</td>
-<td align="right">0.093</td>
+<td align="right">0.159</td>
+<td align="right">-0.527</td>
+<td align="right">0.094</td>
 <td align="right">200</td>
 </tr>
 <tr class="even">
 <td>Risk Ratio</td>
-<td align="right">0.433</td>
-<td align="right">0.520</td>
-<td align="right">0.156</td>
-<td align="right">1.201</td>
+<td align="right">0.432</td>
+<td align="right">0.526</td>
+<td align="right">0.154</td>
+<td align="right">1.211</td>
 <td align="right">200</td>
 </tr>
 <tr class="odd">
 <td>Odds Ratio</td>
-<td align="right">0.321</td>
-<td align="right">0.749</td>
-<td align="right">0.074</td>
-<td align="right">1.396</td>
+<td align="right">0.320</td>
+<td align="right">0.757</td>
+<td align="right">0.073</td>
+<td align="right">1.413</td>
 <td align="right">200</td>
 </tr>
 </tbody>
@@ -465,26 +456,26 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <tbody>
 <tr class="odd">
 <td>Risk Difference</td>
-<td align="right">-0.218</td>
-<td align="right">0.158</td>
-<td align="right">-0.529</td>
-<td align="right">0.092</td>
+<td align="right">-0.210</td>
+<td align="right">0.160</td>
+<td align="right">-0.524</td>
+<td align="right">0.103</td>
 <td align="right">200</td>
 </tr>
 <tr class="even">
 <td>Risk Ratio</td>
-<td align="right">0.430</td>
-<td align="right">0.525</td>
-<td align="right">0.154</td>
-<td align="right">1.204</td>
+<td align="right">0.441</td>
+<td align="right">0.527</td>
+<td align="right">0.157</td>
+<td align="right">1.240</td>
 <td align="right">200</td>
 </tr>
 <tr class="odd">
 <td>Odds Ratio</td>
-<td align="right">0.318</td>
-<td align="right">0.756</td>
-<td align="right">0.072</td>
-<td align="right">1.400</td>
+<td align="right">0.330</td>
+<td align="right">0.760</td>
+<td align="right">0.074</td>
+<td align="right">1.463</td>
 <td align="right">200</td>
 </tr>
 </tbody>

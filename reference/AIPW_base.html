@@ -155,15 +155,15 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
     <p><div class="r6-fields"></p><dl'>
-<dt><code>n</code></dt><dd><p>number of observations</p></dd>
+<dt><code>n</code></dt><dd><p>Number of observations</p></dd>
 
-<dt><code>obs_est</code></dt><dd><p>components for estimating the influence functions of all observations to calculate average causal effects</p></dd>
+<dt><code>obs_est</code></dt><dd><p>Components for estimating the influence functions of all observations to calculate average causal effects</p></dd>
 
-<dt><code>estimates</code></dt><dd><p>risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation</p></dd>
+<dt><code>estimates</code></dt><dd><p>Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation</p></dd>
 
-<dt><code>result</code></dt><dd><p>a matrix contains RD, RR and OR with their SE and 95%CI</p></dd>
+<dt><code>result</code></dt><dd><p>A matrix contains RD, RR and OR with their SE and 95%CI</p></dd>
 
-<dt><code>g.plot</code></dt><dd><p>a <code>ggplot</code> with the propensity score densities by exposure status</p></dd>
+<dt><code>g.plot</code></dt><dd><p>A density plot of propensity scores by exposure status (<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density</a></code>)</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -184,11 +184,11 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
-<dt><code>Y</code></dt><dd><p>outcome (binary integer: 0 or 1)</p></dd>
+<dt><code>Y</code></dt><dd><p>Outcome (binary integer: 0 or 1)</p></dd>
 
-<dt><code>A</code></dt><dd><p>exposure (binary integer: 0 or 1)</p></dd>
+<dt><code>A</code></dt><dd><p>Exposure (binary integer: 0 or 1)</p></dd>
 
-<dt><code>verbose</code></dt><dd><p>whether to show progression bar and print the result (logical; Default = FALSE)</p></dd>
+<dt><code>verbose</code></dt><dd><p>Whether to show progression bar and print the result (logical; Default = FALSE)</p></dd>
 
 </dl><p></div></p>
 <h3>Returns</h3>
@@ -200,11 +200,11 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
-<dt><code>g.bound</code></dt><dd><p>value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></dd>
+<dt><code>g.bound</code></dt><dd><p>Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></dd>
 
 </dl><p></div></p>
 <h3>Returns</h3>
-<p>An <code>AIPW</code> obejct with average treatment effect estimations in RD, RR and OR</p>
+<p>An <code>AIPW</code> object with average treatment effect estimations in RD, RR and OR</p>
 <h3>Examples</h3>
 <p><div class="r example copy"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
 <span class='no'>aipw_sl</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
@@ -219,7 +219,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
 <p><div class="r"></p><pre><span class='no'>AIPW_base</span>$<span class='fu'>plot.p_score</span>()</pre><p></div></p>
 
 <h3>Returns</h3>
-<p>A density plot of propensity scores by exposure status (<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density</a></code>)</p>
+<p><code>g.plot</code> A density plot of propensity scores by exposure status (<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density</a></code>)</p>
 <h3>Examples</h3>
 <p><div class="r example copy"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
