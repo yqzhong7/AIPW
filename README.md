@@ -29,13 +29,10 @@ Conzuelo](https://github.com/gconzuelo)
       - ###### [Setup example data](#data)
     
       - ###### [One line version](#one_line)
-    
-      - ###### [Longer version](#details)
-        
-        1.  [Create an AIPW object](#constructor)
-        2.  [Fit the object](#fit)
-        3.  [Calculate average treatment effects](#ate)
-        4.  [Parallelization](#par)
+
+  - ##### [Parallelization](#par)
+
+  - ##### [Use tmle/tmle3 as input](#tmle)
 
 -----
 
@@ -87,118 +84,20 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=FALSE)$
+                    verbose=TRUE)$
   fit()$
   calculate_result(g.bound = 0.25)$
   plot.p_score()
+#> Done!
+#>                 Estimate    SE 95% LCL  95% UCL   N
+#> Risk Difference   -0.267 0.132 -0.5250 -0.00817 200
+#> Risk Ratio         0.393 0.413  0.1748  0.88221 200
+#> Odds Ratio         0.266 0.616  0.0797  0.88957 200
 ```
 
 ![](man/figures/one_line-1.png)<!-- -->
 
-### <a id="details"></a>A slightly longer version
-
-#### 1\. <a id="constructor"></a>Create an AIPW object
-
-  - ##### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
-
-<!-- end list -->
-
-``` r
-library(AIPW)
-library(SuperLearner)
-
-#SuperLearner libraries for outcome (Q) and exposure models (g)
-sl.lib <- c("SL.mean","SL.glm")
-
-#construct an aipw object for later estimations 
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
-                    Q.SL.library = sl.lib,
-                    g.SL.library = sl.lib,
-                    k_split = 3,
-                    verbose=FALSE)
-```
-
-  - ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
-
-<!-- end list -->
-
-``` r
-library(AIPW)
-library(sl3)
-
-##construct sl3 learners for outcome (Q) and exposure models (g)
-lrnr_glm <- Lrnr_glm$new()
-lrnr_mean <- Lrnr_mean$new()
-#stacking two learner (this will yield estimates for each learner)
-stacklearner <- Stack$new(lrnr_glm, lrnr_mean) 
-#metalearner is required to combine the estimates from stacklearner
-metalearner <- Lrnr_nnls$new()
-sl3.lib <- Lrnr_sl$new(learners = stacklearner,
-                      metalearner = metalearner)
-
-#construct an aipw object for later estimations 
-AIPW_sl3 <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
-                    Q.SL.library = sl3.lib,
-                    g.SL.library = sl3.lib,
-                    k_split = 3,
-                    verbose=FALSE)
-```
-
-#### 2\. <a id="fit"></a>Fit the AIPW object
-
-This step will fit the data stored in the AIPW object to obtain
-estimates for later average treatment effect calculations.
-
-``` r
-#fit the AIPW_SL object
-AIPW_SL$fit()
-# #fit the AIPW_sl3 object
-# AIPW_sl3$fit()
-```
-
-#### 3\. <a id="ate"></a>Calculate average treatment effects
-
-  - ##### Check the balance of propensity scores by exposure status
-
-<!-- end list -->
-
-``` r
-library(ggplot2)
-AIPW_SL$plot.p_score()
-#> ATE has not been calculated.
-```
-
-![](man/figures/ps_raw-1.png)<!-- -->
-
-  - ##### Estimate the ATE with propensity scores truncation
-
-<!-- end list -->
-
-``` r
-#estimate the average causal effects from the fitted AIPW_SL object 
-AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
-
-#estimate the average causal effects from the fitted AIPW_sl3 object 
-# AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation 
-```
-
-  - ##### Check the balance of propensity scores by exposure status after truncation
-
-<!-- end list -->
-
-``` r
-AIPW_SL$plot.p_score()
-```
-
-![](man/figures/ps_trunc-1.png)<!-- -->
-
-#### 4\. <a id="par"></a>Parallelization with future.apply
+## <a id="par"></a>Parallelization with `future.apply`
 
 The current version of AIPW package supports parallel processing
 implemented by
@@ -210,14 +109,94 @@ of the random number generation (RNG) problem:
 ``` r
 # install.packages("future.apply")
 library(future.apply)
-plan(multiprocess, workers=5, gc=T)
+#> Loading required package: future
+plan(multiprocess, workers=2, gc=T)
+#> Warning: [ONE-TIME WARNING] Forked processing ('multicore') is disabled
+#> in future (>= 1.13.0) when running R from RStudio, because it is
+#> considered unstable. Because of this, plan("multicore") will fall
+#> back to plan("sequential"), and plan("multiprocess") will fall back to
+#> plan("multisession") - not plan("multicore") as in the past. For more details,
+#> how to control forked processing or not, and how to silence this warning in
+#> future R sessions, see ?future::supportsMulticore
 set.seed(888)
 AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
                     W.Q=covariates.Q, 
                     W.g=covariates.g,
-                    Q.SL.library = sl.lib,
-                    g.SL.library = sl.lib,
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=F)$fit()$calculate_result()
+                    verbose=TRUE)$fit()$calculate_result()
+#> Done!
+#>                 Estimate    SE 95% LCL 95% UCL   N
+#> Risk Difference   -0.304 0.170 -0.6367  0.0278 200
+#> Risk Ratio         0.378 0.475  0.1490  0.9605 200
+#> Odds Ratio         0.237 0.763  0.0531  1.0569 200
+```
+
+## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input
+
+#### `tmle`
+
+As shown in the message,
+[tmle](https://cran.r-project.org/web/packages/tmle/index.html) alone
+does not support sample splitting. In addition, `tmle` does not support
+different covariate sets for the exposure and the outcome models,
+respectively.
+
+``` r
+require(tmle)
+#> Loading required package: tmle
+#> Loading required package: glmnet
+#> Loading required package: Matrix
+#> Loaded glmnet 3.0-2
+#> Welcome to the tmle package, version 1.4.0.1
+#> 
+#> Use tmleNews() to see details on changes and bug fixes
+require(SuperLearner)
+tmle_fit <- tmle(Y=outcome,A=exposure,W=covariates.Q,
+                 Q.SL.library=c("SL.mean","SL.glm"),
+                 g.SL.library=c("SL.mean","SL.glm"),
+                 family="binomial")
+AIPW_tmle$
+  new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
+  calculate_result(g.bound=0.025)
+#> Sample splitting was not supported with a fitted tmle object
+#>                 Estimate    SE 95% LCL 95% UCL   N
+#> Risk Difference   -0.214 0.158 -0.5235  0.0961 200
+#> Risk Ratio         0.438 0.522  0.1575  1.2177 200
+#> Odds Ratio         0.326 0.752  0.0745  1.4231 200
+```
+
+#### 2\. `tmle3`
+
+Similarly, [tmle3](https://github.com/tlverse/tmle3) may not support
+different covariate sets for the exposure and the outcome models,
+respectively. However, `tmle3` conducts sample splitting and propensity
+truncation (0.025) by default.
+
+``` r
+require(tmle3)
+#> Loading required package: tmle3
+require(sl3)
+#> Loading required package: sl3
+df <- data.frame(exposure,outcome,covariates.Q)
+node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])
+or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
+tmle_task <- or_spec$make_tmle_task(df,node_list)
+lrnr_glm <- make_learner(Lrnr_glm)
+lrnr_mean <- make_learner(Lrnr_mean)
+sl <- Lrnr_sl$new(learners = list(lrnr_glm,lrnr_mean))
+learner_list <- list(A = sl, Y = sl)
+tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
+
+# parse tmle3_fit into AIPW_tmle class
+AIPW_tmle$
+  new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
+  calculate_result()
+#> Propensity scores from fitted tmle3 object are by default truncated (0.025)
+#>                 Estimate    SE 95% LCL 95% UCL   N
+#> Risk Difference   -0.213 0.158 -0.5236  0.0968 200
+#> Risk Ratio         0.438 0.524  0.1570  1.2240 200
+#> Odds Ratio         0.326 0.755  0.0743  1.4320 200
 ```

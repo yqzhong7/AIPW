@@ -34,7 +34,7 @@ tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
                  family="binomial")
-AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
 
 
 ## From tmle3
@@ -50,7 +50,7 @@ learner_list <- list(A = sl, Y = sl)
 tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
-AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
 }
 }
 \section{Super class}{
@@ -110,7 +110,7 @@ tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
                  family="binomial")
-AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
 
 
 ## From tmle3
@@ -126,7 +126,7 @@ learner_list <- list(A = sl, Y = sl)
 tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
-AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
 }
 }
 \if{html}{\out{</div>}}

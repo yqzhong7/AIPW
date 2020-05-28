@@ -41,7 +41,7 @@ AIPW_tmle <- R6::R6Class(
     #'                  Q.SL.library="SL.glm",
     #'                  g.SL.library="SL.glm",
     #'                  family="binomial")
-    #' AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+    #' AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
     #'
     #'
     #' ## From tmle3
@@ -57,7 +57,7 @@ AIPW_tmle <- R6::R6Class(
     #' tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
     #'
     #' # parse tmle3_fit into AIPW_tmle class
-    #' AIPW_tmle$new(A=df$Y,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+    #' AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
     #' }
     initialize = function(Y=NULL,A=NULL,tmle_fit = NULL,verbose=TRUE){
       #initialize from AIPW_base class

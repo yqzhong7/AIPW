@@ -31,11 +31,8 @@ knitr::opts_chunk$set(
   * ##### [Example](#Example)
     + ###### [Setup example data](#data)
     + ###### [One line version](#one_line)
-    + ###### [Longer version](#details)
-      1. [Create an AIPW object](#constructor)
-      2. [Fit the object](#fit)
-      3. [Calculate average treatment effects](#ate)
-      4. [Parallelization](#par)
+  * ##### [Parallelization](#par)
+  * ##### [Use tmle/tmle3 as input](#tmle)
 
 
 ---------
@@ -84,110 +81,73 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=FALSE)$
+                    verbose=TRUE)$
   fit()$
   calculate_result(g.bound = 0.25)$
   plot.p_score()
 ```
 
-
-### <a id="details"></a>A slightly longer version
-
-#### 1. <a id="constructor"></a>Create an AIPW object 
-
-  * ##### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries (reference: [Guide to SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html))
-```{r SuperLearner, message=FALSE}
-library(AIPW)
-library(SuperLearner)
-
-#SuperLearner libraries for outcome (Q) and exposure models (g)
-sl.lib <- c("SL.mean","SL.glm")
-
-#construct an aipw object for later estimations 
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
-                    Q.SL.library = sl.lib,
-                    g.SL.library = sl.lib,
-                    k_split = 3,
-                    verbose=FALSE)
-```
-
-  * ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries (reference: [Intro to sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
-```{r sl3}
-library(AIPW)
-library(sl3)
-
-##construct sl3 learners for outcome (Q) and exposure models (g)
-lrnr_glm <- Lrnr_glm$new()
-lrnr_mean <- Lrnr_mean$new()
-#stacking two learner (this will yield estimates for each learner)
-stacklearner <- Stack$new(lrnr_glm, lrnr_mean) 
-#metalearner is required to combine the estimates from stacklearner
-metalearner <- Lrnr_nnls$new()
-sl3.lib <- Lrnr_sl$new(learners = stacklearner,
-                      metalearner = metalearner)
-
-#construct an aipw object for later estimations 
-AIPW_sl3 <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
-                    Q.SL.library = sl3.lib,
-                    g.SL.library = sl3.lib,
-                    k_split = 3,
-                    verbose=FALSE)
-```
-
-#### 2. <a id="fit"></a>Fit the AIPW object
-
-This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.
-
-```{r}
-#fit the AIPW_SL object
-AIPW_SL$fit()
-# #fit the AIPW_sl3 object
-# AIPW_sl3$fit()
-```
-
-#### 3. <a id="ate"></a>Calculate average treatment effects 
-
-  * ##### Check the balance of propensity scores by exposure status
-```{r ps_raw}
-library(ggplot2)
-AIPW_SL$plot.p_score()
-```
-
-  * ##### Estimate the ATE with propensity scores truncation
-```{r}
-#estimate the average causal effects from the fitted AIPW_SL object 
-AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
-
-#estimate the average causal effects from the fitted AIPW_sl3 object 
-# AIPW_sl3$calculate_result(g.bound = 0.25) #propensity score truncation 
-```
-
-  * ##### Check the balance of propensity scores by exposure status after truncation
-```{r ps_trunc, fig.width=8}
-AIPW_SL$plot.p_score()
-```
-
-#### 4. <a id="par"></a>Parallelization with future.apply
+## <a id="par"></a>Parallelization with `future.apply`
 
 The current version of AIPW package supports parallel processing implemented by [future.apply](https://github.com/HenrikBengtsson/future.apply) package under the [future](https://github.com/HenrikBengtsson/future) framework. Simply use `plan()` to enable this feature and `set.seed()` to take care of the random number generation (RNG) problem:
 
-```{r parallel, eval=F}
+```{r parallel, eval=T}
 # install.packages("future.apply")
 library(future.apply)
-plan(multiprocess, workers=5, gc=T)
+plan(multiprocess, workers=2, gc=T)
 set.seed(888)
 AIPW_SL <- AIPW$new(Y= outcome,
                     A= exposure,
                     W.Q=covariates.Q, 
                     W.g=covariates.g,
-                    Q.SL.library = sl.lib,
-                    g.SL.library = sl.lib,
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=F)$fit()$calculate_result()
+                    verbose=TRUE)$fit()$calculate_result()
 ```
+
+## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input
+
+#### `tmle`
+
+As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) alone does not support sample splitting. In addition, `tmle` does not support different covariate sets for the exposure and the outcome models, respectively.
+
+```{r tmle}
+require(tmle)
+require(SuperLearner)
+tmle_fit <- tmle(Y=outcome,A=exposure,W=covariates.Q,
+                 Q.SL.library=c("SL.mean","SL.glm"),
+                 g.SL.library=c("SL.mean","SL.glm"),
+                 family="binomial")
+AIPW_tmle$
+  new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
+  calculate_result(g.bound=0.025)
+```
+
+#### 2. `tmle3`
+
+Similarly, [tmle3](https://github.com/tlverse/tmle3) may not support different covariate sets for the exposure and the outcome models, respectively. However, `tmle3` conducts sample splitting and propensity truncation (0.025) by default.
+
+```{r tmle3}
+require(tmle3)
+require(sl3)
+df <- data.frame(exposure,outcome,covariates.Q)
+node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])
+or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
+tmle_task <- or_spec$make_tmle_task(df,node_list)
+lrnr_glm <- make_learner(Lrnr_glm)
+lrnr_mean <- make_learner(Lrnr_mean)
+sl <- Lrnr_sl$new(learners = list(lrnr_glm,lrnr_mean))
+learner_list <- list(A = sl, Y = sl)
+tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
+
+# parse tmle3_fit into AIPW_tmle class
+AIPW_tmle$
+  new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
+  calculate_result()
+```
+
+
+
+
+

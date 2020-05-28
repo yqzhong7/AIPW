@@ -154,6 +154,7 @@ AIPW_base <- R6::R6Class(
         ggtitle("Propensity scores by exposure status") +
         theme_bw()
       print(g.plot)
+      invisible(self)
     }
   ),
   private = list(
