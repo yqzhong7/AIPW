@@ -23,7 +23,7 @@ AIPW <- R6::R6Class(
                Q.fit = NULL,
                g.SL.library=NULL,
                g.fit = NULL,
-               num_val_index = NULL),
+               validation_index = NULL),
     #' @field sl.fit A wrapper function for fitting SuperLearner or sl3
     sl.fit = NULL,
     #' @field sl.predict A wrapper using \code{sl.fit} to predict
@@ -38,9 +38,9 @@ AIPW <- R6::R6Class(
     #' @param W covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
     #' inputs from `W.Q` and `W.g`.
     #' @param W.Q Only valid when `W` is null, otherwise it would be replaced by `W`.
-    #' covariates for outcome model (vector, matrix or data.frame).
+    #' Covariates for outcome model (vector, matrix or data.frame).
     #' @param W.g Only valid when `W` is null, otherwise it would be replaced by `W`.
-    #' covariates for exposure model (vector, matrix or data.frame)
+    #' Covariates for exposure model (vector, matrix or data.frame)
     #' @param Q.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model
     #' @param g.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model
     #' @param k_split Number of splitting (integer; range: from 1 to number of observation-1):
@@ -61,7 +61,7 @@ AIPW <- R6::R6Class(
                           W=NULL, W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL, g.SL.library=NULL,
                           k_split=10){
-      #initialize from AIPW_base class
+      #-----initialize from AIPW_base class-----#
       super$initialize(Y=Y,A=A,verbose=verbose)
       #decide covariate set(s): W.Q and W.g only works when W is null.
       if (is.null(W)){
@@ -81,7 +81,7 @@ AIPW <- R6::R6Class(
       if (!(length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
         stop("Please check the dimension of the data")
       }
-      #determine SuperLearner or sl3 and change accordingly
+      #-----determine SuperLearner or sl3 and change accordingly-----#
       if (is.character(Q.SL.library) & is.character(g.SL.library)) {
         if (any(grepl("SL.",Q.SL.library)) & any(grepl("SL.",g.SL.library))){
           #change future package loading
@@ -92,9 +92,10 @@ AIPW <- R6::R6Class(
           private$sl.learners = grep("SL.",lsf.str(globalenv()),value = T)
           lapply(private$sl.learners, function(x) assign(x=x,value=get(x,globalenv()),envir=private$sl.env))
           #change wrapper functions
-          self$sl.fit = function(Y, X, SL.library){
+          self$sl.fit = function(Y, X, SL.library, CV){
             suppressMessages({
-              fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family="binomial",env=private$sl.env)
+              fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family="binomial",
+                                                env=private$sl.env, cvControl = CV)
             })
             return(fit)
           }
@@ -113,7 +114,7 @@ AIPW <- R6::R6Class(
           warning("Only using sl3::Stack may cause problem. Please consider using metalearners for the stacked libraries!")
         } else {
           #change wrapper functions
-          self$sl.fit = function(X, Y, SL.library){
+          self$sl.fit = function(X, Y, SL.library, CV){
             dat <- data.frame(cbind(Y,X))
             dat_colnames <- colnames(dat)
             task <- sl3::sl3_Task$new(dat, covariates = colnames(dat)[-1],
@@ -135,8 +136,7 @@ AIPW <- R6::R6Class(
       #input sl libraries
       self$libs$Q.SL.library=Q.SL.library
       self$libs$g.SL.library=g.SL.library
-      #validation set index
-      self$libs$num_val_index <- rep(NA,self$n)
+      #------input checking-----#
       #check k_split value
       if (private$k_split<1 | private$k_split>=self$n){
         stop("`k_split` is not valid")
@@ -149,7 +149,7 @@ AIPW <- R6::R6Class(
       if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner","sl3"))){
         warning("Either `SuperLearner` or `sl3` package is not loaded.")
       }
-      #check if future.apply is loaded otherwise lapply would be used.
+      #-------check if future.apply is loaded otherwise lapply would be used.------#
       if (any(names(sessionInfo()$otherPkgs) %in% c("future.apply"))){
         private$.f_lapply = function(iter,func) {
           future.apply::future_lapply(iter,func,future.seed = T,future.packages = private$sl.pkg,future.globals = TRUE)
@@ -171,28 +171,35 @@ AIPW <- R6::R6Class(
     #'                     k_split=1,verbose=FALSE)
     #' aipw_sl$fit()
     fit = function(){
-      #create index for sample splitting
-      k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
-      #progress bar setup
+      #----------create index for sample splitting---------#
+      private$cv$k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
+      private$cv$fold_index = split(1:self$n, private$cv$k_index)
+      private$cv$fold_length = sapply(private$cv$fold_index,length)
+      #----------------progress bar setup----------#
       progressr::handlers("progress")
       iter <- 1:private$k_split
       progressr::with_progress(enable = private$verbose,{
         #progress bar
         pb <- progressr::progressor(along = iter)
-        #parallelization with future.apply
+        #---------parallelization with future.apply------#
         fitted <- private$.f_lapply(
           iter=iter,
           func=function(i,...){
-            #check whether to split samples
             if (private$k_split==1){
-              train_index <- validation_index <- k_index==i
+              train_index <- validation_index <- as.numeric(unlist(private$cv$fold_index))
+              cv_param = list()
+            } else if (private$k_split==2){
+              train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
+              validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
+              cv_param = list()
             } else{
-              train_index <- k_index!=i
-              validation_index <- k_index==i
+              train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
+              validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
+              cv_param = list(V=private$k_split-1,
+                              validRows= private$.new_cv_index(val_fold=i))
             }
 
-            num_val_index <- which(validation_index)
-            names(num_val_index) <- rep(i,length(num_val_index))
+
             #split the sample based on the index
             #Q outcome set
             train_set.Q <- private$Q.set[train_index,]
@@ -205,8 +212,9 @@ AIPW <- R6::R6Class(
             #Q model(outcome model: g-comp)
             #fit with train set
             Q.fit <- self$sl.fit(Y = private$Y[train_index],
-                                           X = train_set.Q,
-                                           SL.library = self$libs$Q.SL.library)
+                                 X = train_set.Q,
+                                 SL.library = self$libs$Q.SL.library,
+                                 CV= cv_param)
             # predict on validation set
             mu0 <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 0)) #Q0_pred
             mu1  <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 1)) #Q1_pred
@@ -214,26 +222,33 @@ AIPW <- R6::R6Class(
             #g model(exposure model: propensity score)
             # fit with train set
             g.fit <- self$sl.fit(Y=private$A[train_index],
-                                           X=train_set.g,
-                                           SL.library = self$libs$g.SL.library)
+                                 X=train_set.g,
+                                 SL.library = self$libs$g.SL.library,
+                                 CV= cv_param)
             # predict on validation set
             raw_p_score  <- self$sl.predict(g.fit,newdata = validation_set.g)  #g_pred
 
+            #add metadata
+            names(validation_index) <- rep(i,length(validation_index))
+
             pb(sprintf("No.%g iteration", i,private$k_split))
-            output <- list(num_val_index,Q.fit,mu0,mu1,g.fit,raw_p_score)
-            names(output) <- c("num_val_index","Q.fit","mu0","mu1","g.fit","raw_p_score")
+            output <- list(validation_index,Q.fit,mu0,mu1,g.fit,raw_p_score)
+            names(output) <- c("validation_index","Q.fit","mu0","mu1","g.fit","raw_p_score")
             return(output)
           })
         })
 
       #store fitted values from future to member variables
-      self$libs$num_val_index <- unlist(lapply(fitted,function(x) x$num_val_index))
-      self$libs$Q.fit <- lapply(fitted,function(x) x$Q.fit)
-      self$libs$g.fit <- lapply(fitted,function(x) x$g.fit)
-      self$obs_est$mu0[self$libs$num_val_index] <- unlist(lapply(fitted,function(x) x$mu0))
-      self$obs_est$mu1[self$libs$num_val_index] <- unlist(lapply(fitted,function(x) x$mu1))
-      self$obs_est$raw_p_score[self$libs$num_val_index] <- unlist(lapply(fitted,function(x) x$raw_p_score))
-
+      for (i in fitted){
+        #add estimates based on the val index
+        self$obs_est$mu0[i$validation_index] <- i$mu0
+        self$obs_est$mu1[i$validation_index] <- i$mu1
+        self$obs_est$raw_p_score[i$validation_index] <- i$raw_p_score
+        #append fitted objects
+        self$libs$Q.fit = append(self$libs$Q.fit, i$Q.fit)
+        self$libs$g.fit = append(self$libs$g.fit, i$g.fit)
+        self$libs$validation_index = append(self$libs$validation_index, i$validation_index)
+      }
       self$obs_est$mu  <- (self$obs_est$mu0*(1-private$A) + self$obs_est$mu1*(private$A)) #Q_pred
 
       if (private$verbose){
@@ -248,11 +263,32 @@ AIPW <- R6::R6Class(
     Q.set=NULL,
     g.set=NULL,
     k_split=NULL,
+    cv = list(
+      #a vector stores the groups for splitting
+      k_index= NULL,
+      #a list of indices for each fold
+      fold_index= NULL,
+      #a vector of length(fold_index[[i]])
+      fold_length = NULL
+    ),
+    fitted=NULL,
     sl.pkg =NULL,
     sl.env=NULL,
     sl.learners = NULL,
     #private methods
     #lapply or future_lapply
-    .f_lapply =NULL
+    .f_lapply =NULL,
+    #create new index for training set
+    .new_cv_index = function(val_fold,fold_length=private$cv$fold_length, k_split=private$k_split){
+      train_fold_length = c(0,fold_length[-val_fold])
+      train_fold_cumsum = cumsum(train_fold_length)
+      new_train_index= lapply(1:(k_split-1),
+                              function(x) {
+                                (1:train_fold_length[[x+1]])+ train_fold_cumsum[[x]]
+                              }
+      )
+      names(new_train_index) = names(train_fold_length[-1])
+      return(new_train_index)
+    }
   )
 )

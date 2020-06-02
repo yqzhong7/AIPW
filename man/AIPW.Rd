@@ -101,10 +101,10 @@ Create a new \code{AIPW} object.
 inputs from \code{W.Q} and \code{W.g}.}
 
 \item{\code{W.Q}}{Only valid when \code{W} is null, otherwise it would be replaced by \code{W}.
-covariates for outcome model (vector, matrix or data.frame).}
+Covariates for outcome model (vector, matrix or data.frame).}
 
 \item{\code{W.g}}{Only valid when \code{W} is null, otherwise it would be replaced by \code{W}.
-covariates for exposure model (vector, matrix or data.frame)}
+Covariates for exposure model (vector, matrix or data.frame)}
 
 \item{\code{Q.SL.library}}{SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model}
 
