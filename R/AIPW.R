@@ -185,6 +185,7 @@ AIPW <- R6::R6Class(
         fitted <- private$.f_lapply(
           iter=iter,
           func=function(i,...){
+            #when k_split in 1:2, no cvControl will be used (same cv for k_split)
             if (private$k_split==1){
               train_index <- validation_index <- as.numeric(unlist(private$cv$fold_index))
               cv_param = list()
