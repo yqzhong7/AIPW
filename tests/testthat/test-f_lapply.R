@@ -36,9 +36,9 @@ test_that("AIPW .flappy: future_lapply", {
   expect_true(any(grepl("future_lapply",func_body)))
   #check whether run sucessfully with the same seed
   set.seed(888)
-  mat1 <- aipw$fit()$calculate_result()$result
+  mat1 <- aipw$fit()$summary()$result
   set.seed(888)
-  mat2 <- aipw$fit()$calculate_result()$result
+  mat2 <- aipw$fit()$summary()$result
   expect_output(print(mat1),regexp = "Estimate")
   expect_identical(mat1,mat2)
 })

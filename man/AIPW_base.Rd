@@ -12,12 +12,12 @@
 }
 \description{
 Define a base R6Class for later subclasses inheritance of
-\code{AIPW_base$calculate_result()} and \code{AIPW_base$plot.p_score()}
+\code{AIPW_base$summary()} and \code{AIPW_base$plot.p_score()}
 }
 \examples{
 
 ## ------------------------------------------------
-## Method `AIPW_base$calculate_result`
+## Method `AIPW_base$summary`
 ## ------------------------------------------------
 
 library(SuperLearner)
@@ -25,7 +25,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
                     k_split=1,verbose=FALSE)$fit()
-aipw_sl$calculate_result(g.bound=0.025)
+aipw_sl$summary(g.bound=0.025)
 
 ## ------------------------------------------------
 ## Method `AIPW_base$plot.p_score`
@@ -40,7 +40,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
 #before average treatment effect calculation
 aipw_sl$plot.p_score()
 #after calculation
-aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
+aipw_sl$summary(g.bound=0.025)$plot.p_score()
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -61,7 +61,7 @@ aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AIPW_base$new()}}
-\item \href{#method-calculate_result}{\code{AIPW_base$calculate_result()}}
+\item \href{#method-summary}{\code{AIPW_base$summary()}}
 \item \href{#method-plot.p_score}{\code{AIPW_base$plot.p_score()}}
 \item \href{#method-clone}{\code{AIPW_base$clone()}}
 }
@@ -91,12 +91,12 @@ A new \code{AIPW_base} obejct
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-calculate_result"></a>}}
-\if{latex}{\out{\hypertarget{method-calculate_result}{}}}
-\subsection{Method \code{calculate_result()}}{
+\if{html}{\out{<a id="method-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-summary}{}}}
+\subsection{Method \code{summary()}}{
 Calculate average causal effects in RD, RR and OR in the fitted \code{AIPW} obejct with the estimated influence functions
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AIPW_base$calculate_result(g.bound = 0.025)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AIPW_base$summary(g.bound = 0.025)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -116,7 +116,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
                     k_split=1,verbose=FALSE)$fit()
-aipw_sl$calculate_result(g.bound=0.025)
+aipw_sl$summary(g.bound=0.025)
 }
 \if{html}{\out{</div>}}
 
@@ -146,7 +146,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
 #before average treatment effect calculation
 aipw_sl$plot.p_score()
 #after calculation
-aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
+aipw_sl$summary(g.bound=0.025)$plot.p_score()
 }
 \if{html}{\out{</div>}}
 

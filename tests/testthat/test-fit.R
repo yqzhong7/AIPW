@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/13
+#' 2020/06/05
 test_that("AIPW fit: SuperLeaner & k_split", {
   require(SuperLearner)
   ##k_split == 1: no sample splitting
@@ -24,13 +24,23 @@ test_that("AIPW fit: SuperLeaner & k_split", {
   expect_true(is.null(aipw$estimate))
 
   ##k_split >0: sample splitting == k_split
+  expect_warning(aipw <-  AIPW$new(Y=vec(),
+                                   A=vec(),
+                                   W.Q =vec(),
+                                   W.g =vec(),
+                                   Q.SL.library=sl.lib,
+                                   g.SL.library=sl.lib,
+                                   k_split = 2,verbose = FALSE)
+                 ,info = "One fold cross-validation will be used.")
+
+
   aipw <-  AIPW$new(Y=vec(),
                     A=vec(),
                     W.Q =vec(),
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 2,verbose = FALSE)
+                    k_split = 3,verbose = FALSE)
   aipw$fit()
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score
@@ -39,11 +49,11 @@ test_that("AIPW fit: SuperLeaner & k_split", {
   expect_true(is.null(aipw$estimate))
 })
 
-#' @title Testing calculate_result: sl3 & k_split
+#' @title Testing summary: sl3 & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/09
+#' 2020/06/05
 test_that("AIPW fit: sl3 & k_split", {
   require(sl3)
   ##k_split == 1: no sample splitting
@@ -69,13 +79,14 @@ test_that("AIPW fit: sl3 & k_split", {
   expect_true(is.null(aipw$estimate))
 
   ##k_split >0: sample splitting == k_split
-  aipw <-  AIPW$new(Y=vec(),
-                    A=vec(),
-                    W.Q =vec(),
-                    W.g =vec(),
-                    Q.SL.library=sl3.lib,
-                    g.SL.library=sl3.lib,
-                    k_split = 2,verbose = FALSE)
+  expect_warning(aipw <-  AIPW$new(Y=vec(),
+                                   A=vec(),
+                                   W.Q =vec(),
+                                   W.g =vec(),
+                                   Q.SL.library=sl3.lib,
+                                   g.SL.library=sl3.lib,
+                                   k_split = 2,verbose = FALSE)
+                 ,info = "One fold cross-validation will be used.")
   aipw$fit()
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score

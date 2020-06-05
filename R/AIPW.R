@@ -49,7 +49,7 @@ AIPW <- R6::R6Class(
     #'   (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
     #'   NOTE: it's recommended to use sample splitting.
     #'
-    #' @return A new `AIPW` obejct
+    #' @return A new `AIPW` object
     #'
     #' @examples
     #' library(SuperLearner)
@@ -140,6 +140,8 @@ AIPW <- R6::R6Class(
       #check k_split value
       if (private$k_split<1 | private$k_split>=self$n){
         stop("`k_split` is not valid")
+      } else if (private$k_split %in% 2){
+        warning("One fold cross-validation will be used.")
       }
       #check verbose value
       if (!is.logical(private$verbose)){

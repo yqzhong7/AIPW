@@ -53,13 +53,13 @@ remotes::install_github("yqzhong7/AIPW")
 ```{r example data}
 set.seed(888)
 N <- 200
-outcome <- rbinom(N,1,0.3)
-exposure <- rbinom(N,1,0.2)
+outcome <- rbinom(N,1,0.4)
+exposure <- rbinom(N,1,0.3)
 #covariates for both outcome model (Q) and exposure model (g)
 covariates <- matrix(c(rbinom(N,1,0.4),
-                                rnorm(N,mean = 0,sd=1),
-                                rpois(N,lambda = 2)),
-                              ncol=3)
+                       rnorm(N,mean = 0,sd=1),
+                       rpois(N,lambda = 2)),
+                     ncol=3)
 
 # covariates <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
@@ -71,16 +71,32 @@ library(AIPW)
 library(SuperLearner)
 library(ggplot2)
 library(progressr) #for the progress bar
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W=covariates, 
+AIPW_SL <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=TRUE)$
+                    verbose=FALSE)$
   fit()$
-  calculate_result(g.bound = 0.25)$
+  summary(g.bound = 0.25)$
   plot.p_score()
+```
+
+To see the results, use `verbose = TRUE` option or:
+```{r res}
+AIPW_SL$result
+```
+
+You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and `summary()` together (also support method chaining):
+```{r wrapper, eval=F}
+AIPW_SL <- aipw_wrapper(Y = outcome,
+                        A = exposure,
+                        W = covariates, 
+                        Q.SL.library = c("SL.mean","SL.glm"),
+                        g.SL.library = c("SL.mean","SL.glm"),
+                        k_split = 3,
+                        verbose=TRUE)$plot.p_score()
 ```
 
 ## <a id="par"></a>Parallelization with `future.apply`
@@ -92,13 +108,13 @@ In default setting, the `AIPW$fit()` method will be run sequentially. The curren
 library(future.apply)
 future::plan(multiprocess, workers=2, gc=T)
 set.seed(888)
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W=covariates, 
+AIPW_SL <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=TRUE)$fit()$calculate_result()
+                    verbose=TRUE)$fit()$summary()
 ```
 
 ## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input (`AIPW_tmle` class)
@@ -112,13 +128,13 @@ As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/ind
 ```{r tmle}
 require(tmle)
 require(SuperLearner)
-tmle_fit <- tmle(Y=outcome,A=exposure,W=covariates,
+tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial")
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
-  calculate_result(g.bound=0.025)
+  summary(g.bound=0.025)
 ```
 
 #### 2. `tmle3`
@@ -141,7 +157,7 @@ tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 # parse tmle3_fit into AIPW_tmle class
 AIPW_tmle$
   new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
-  calculate_result()
+  summary()
 ```
 
 

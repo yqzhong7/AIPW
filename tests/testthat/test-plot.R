@@ -23,7 +23,7 @@ test_that("plot.p_score", {
   expect_message(g.plot <- aipw$plot.p_score(),regexp = "ATE has not been calculated.")
   expect_true(inherits(aipw$g.plot, "ggplot"))
   #after truncation
-  capture.output(aipw$fit()$calculate_result())
+  capture.output(aipw$fit()$summary())
   expect_silent(g.plot <- aipw$plot.p_score())
   expect_true(inherits(aipw$g.plot, "ggplot"))
 })

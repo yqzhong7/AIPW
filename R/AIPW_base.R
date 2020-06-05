@@ -1,7 +1,7 @@
 #' @title Augmented Inverse Probablity Weighting Base Class (AIPW_base)
 #'
 #' @description Define a base R6Class for later subclasses inheritance of
-#' \code{AIPW_base$calculate_result()} and \code{AIPW_base$plot.p_score()}
+#' \code{AIPW_base$summary()} and \code{AIPW_base$plot.p_score()}
 #'
 #' @docType class
 #'
@@ -74,8 +74,8 @@ AIPW_base <- R6::R6Class(
     #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
     #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
     #'                     k_split=1,verbose=FALSE)$fit()
-    #' aipw_sl$calculate_result(g.bound=0.025)
-    calculate_result = function(g.bound=0.025){
+    #' aipw_sl$summary(g.bound=0.025)
+    summary = function(g.bound=0.025){
       #p_score truncation
       private$g.bound=g.bound
       #check g.bound value
@@ -126,7 +126,7 @@ AIPW_base <- R6::R6Class(
     #' #before average treatment effect calculation
     #' aipw_sl$plot.p_score()
     #' #after calculation
-    #' aipw_sl$calculate_result(g.bound=0.025)$plot.p_score()
+    #' aipw_sl$summary(g.bound=0.025)$plot.p_score()
     plot.p_score = function(){
       #check if ggplot2 library is loaded
       if (!any(names(sessionInfo()$otherPkgs) %in% c("ggplot2"))){
