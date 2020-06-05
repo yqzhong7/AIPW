@@ -21,7 +21,7 @@ test_that("AIPW_tmle class: tmle", {
   expect_message(aipw_tmle <- AIPW_tmle$new(A=A,Y=Y,tmle_fit = tmle_fit,verbose = T),
                 info = "Sample splitting was not supported with a fitted tmle object")
   #correctly print output
-  expect_output(aipw_tmle$calculate_result(), regexp = "Estimate")
+  expect_output(aipw_tmle$summary(), regexp = "Estimate")
   #check any null values after calculating results
   expect_false(any(sapply(aipw_tmle$estimates, is.null)))
   expect_false(any(sapply(aipw_tmle$libs, is.null)))
@@ -54,7 +54,7 @@ test_that("AIPW_tmle class: tmle3", {
   expect_message(aipw_tmle <- AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = T),
                  info = "Propensity scores from fitted tmle3 object are by default truncated (0.025)")
   #correctly print output
-  expect_output(aipw_tmle$calculate_result(), regexp = "Estimate")
+  expect_output(aipw_tmle$summary(), regexp = "Estimate")
   #check any null values after calculating results
   expect_false(any(sapply(aipw_tmle$estimates, is.null)))
   expect_false(any(sapply(aipw_tmle$libs, is.null)))

@@ -34,7 +34,7 @@ tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
                  family="binomial")
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
 
 
 ## From tmle3
@@ -50,7 +50,7 @@ learner_list <- list(A = sl, Y = sl)
 tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
 }
 }
 \section{Super class}{
@@ -66,8 +66,8 @@ AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_resul
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="calculate_result">}\href{../../AIPW/html/AIPW_base.html#method-calculate_result}{\code{AIPW::AIPW_base$calculate_result()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="plot.p_score">}\href{../../AIPW/html/AIPW_base.html#method-plot.p_score}{\code{AIPW::AIPW_base$plot.p_score()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="summary">}\href{../../AIPW/html/AIPW_base.html#method-summary}{\code{AIPW::AIPW_base$summary()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -110,7 +110,7 @@ tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
                  family="binomial")
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
 
 
 ## From tmle3
@@ -126,7 +126,7 @@ learner_list <- list(A = sl, Y = sl)
 tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
 }
 }
 \if{html}{\out{</div>}}

@@ -1,9 +1,9 @@
-#' @title Testing calculate_result: SuperLeaner & k_split
+#' @title Testing summary: SuperLeaner & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
 #' 2020/05/22
-test_that("AIPW calculate_result: SuperLeaner & k_split", {
+test_that("AIPW summary: SuperLeaner & k_split", {
   require(SuperLearner)
   ##k_split == 1: no sample splitting
   vec <- function() sample(0:1,100,replace = T)
@@ -16,7 +16,7 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = TRUE)
   #correctly print output
-  expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
+  expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results
   expect_false(any(sapply(aipw$estimates, is.null)))
   expect_false(any(sapply(aipw$libs, is.null)))
@@ -30,9 +30,9 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 2,verbose = TRUE)
+                    k_split = 3,verbose = TRUE)
   #correctly print output
-  expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
+  expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results
   expect_false(any(sapply(aipw$estimates, is.null)))
   expect_false(any(sapply(aipw$libs, is.null)))
@@ -40,12 +40,12 @@ test_that("AIPW calculate_result: SuperLeaner & k_split", {
   expect_false(is.null(aipw$result))
 })
 
-#' @title Testing calculate_result: sl3 & k_split
+#' @title Testing summary: sl3 & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
 #' 2020/05/22
-test_that("AIPW calculate_result: sl3 & k_split", {
+test_that("AIPW summary: sl3 & k_split", {
   require(sl3)
   ##k_split == 1: no sample splitting
   vec <- function() sample(0:1,100,replace = T)
@@ -63,7 +63,7 @@ test_that("AIPW calculate_result: sl3 & k_split", {
                     g.SL.library=sl3.lib,
                     k_split = 1,verbose = TRUE)
   #correctly print output
-  expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
+  expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results
   expect_false(any(sapply(aipw$estimates, is.null)))
   expect_false(any(sapply(aipw$libs, is.null)))
@@ -77,9 +77,9 @@ test_that("AIPW calculate_result: sl3 & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
-                    k_split = 2,verbose = TRUE)
+                    k_split = 3,verbose = TRUE)
   #correctly print output
-  expect_output(aipw$fit()$calculate_result(), regexp = "Estimate")
+  expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results
   expect_false(any(sapply(aipw$estimates, is.null)))
   expect_false(any(sapply(aipw$libs, is.null)))
@@ -88,7 +88,7 @@ test_that("AIPW calculate_result: sl3 & k_split", {
 })
 
 
-#' @title Testing calculate_result: verbose
+#' @title Testing summary: verbose
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
@@ -106,5 +106,5 @@ test_that("AIPW fit: verbose", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)
-  expect_equal(capture.output(aipw$fit()$calculate_result()),character(0))
+  expect_equal(capture.output(aipw$fit()$summary()),character(0))
 })

@@ -47,3 +47,32 @@ test_that("AIPW helper functions", {
 
   }
   )
+
+
+#' @title Testing make new training index function
+#'
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2020/06/02
+test_that("make new training index: .new_cv_index",{
+  vec <- rep(1,100)
+  root_n = sqrt(length(vec))
+  sl.lib <- c("SL.mean","SL.glm")
+  aipw <-  AIPW$new(Y=vec,
+                    A=vec,
+                    W.Q =vec,
+                    W.g =vec,
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 3,verbose = FALSE)
+  suppressWarnings(aipw$fit())
+  fold_length = aipw$.__enclos_env__$private$cv$fold_length
+  expect_equal(sum(fold_length),100)
+  k_split = aipw$.__enclos_env__$private$k_split
+  for (i in 1:k_split){
+    new_index = aipw$.__enclos_env__$private$.new_cv_index(val_fold=i,fold_length = fold_length, k_split=k_split)
+    expect_equal(length(new_index),k_split-1) #same length of list
+    expect_equal(as.numeric(unlist(new_index)), 1:length(as.numeric(unlist(new_index)))) #consecutive index
+  }
+})

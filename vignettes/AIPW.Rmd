@@ -85,7 +85,7 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     k_split = 10,
                     verbose=FALSE)$
   fit()$
-  calculate_result(g.bound = 0.25)$
+  summary(g.bound = 0.25)$
   plot.p_score()
 ```
 
@@ -154,7 +154,7 @@ AIPW_SL$fit()
   * ##### Estimate the ATE with propensity scores truncation
 ```{r}
 #estimate the average causal effects from the fitted AIPW_SL object 
-AIPW_SL$calculate_result(g.bound = 0.25) #propensity score truncation 
+AIPW_SL$summary(g.bound = 0.25) #propensity score truncation 
 ```
 
   * ##### Check the balance of propensity scores by exposure status after truncation
@@ -165,7 +165,7 @@ AIPW_SL$plot.p_score()
 
 ## <a id="par"></a>Parallelization with future.apply
 
-In default setting, the `AIPW$fit()` method will be run sequentially. The current version of AIPW package supports parallel processing implemented by [future.apply](https://github.com/HenrikBengtsson/future.apply) package under the [future](https://github.com/HenrikBengtsson/future) framework. Simply use `future::plan()` to enable parallelization and `set.seed()` to take care of the random number generation (RNG) problem:
+In default setting, the `AIPW$fit()` method will be run sequentially. The current version of AIPW package supports parallel processing implemented by [future.apply](https://github.com/HenrikBengtsson/future.apply) package under the [future](https://github.com/HenrikBengtsson/future) framework. Before creating a `AIPW` object, simply use `future::plan()` to enable parallelization and `set.seed()` to take care of the random number generation (RNG) problem:
 
 ```{r parallel, eval=FALSE}
 # install.packages("future.apply")
@@ -179,7 +179,7 @@ AIPW_SL <- AIPW$new(Y= outcome,
                     Q.SL.library = sl.lib,
                     g.SL.library = sl.lib,
                     k_split = 10,
-                    verbose=F)$fit()$calculate_result()
+                    verbose=F)$fit()$summary()
 ```
 
 
@@ -209,7 +209,7 @@ unlist(tmle_fit$estimates$OR)
 cat("\nEstimates from AIPW\n")
 a_tmle <- AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
-  calculate_result(g.bound=0.025)$
+  summary(g.bound=0.025)$
   plot.p_score()
 ```
 
@@ -238,7 +238,7 @@ tmle3_fit$summary
 cat("\nEstimates from AIPW\n")
 a_tmle3<- AIPW_tmle$
   new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
-  calculate_result(g.bound=0)$
+  summary(g.bound=0)$
   plot.p_score()
 ```
 

@@ -53,13 +53,13 @@ remotes::install_github("yqzhong7/AIPW")
 ``` r
 set.seed(888)
 N <- 200
-outcome <- rbinom(N,1,0.3)
-exposure <- rbinom(N,1,0.2)
+outcome <- rbinom(N,1,0.4)
+exposure <- rbinom(N,1,0.3)
 #covariates for both outcome model (Q) and exposure model (g)
 covariates <- matrix(c(rbinom(N,1,0.4),
-                                rnorm(N,mean = 0,sd=1),
-                                rpois(N,lambda = 2)),
-                              ncol=3)
+                       rnorm(N,mean = 0,sd=1),
+                       rpois(N,lambda = 2)),
+                     ncol=3)
 
 # covariates <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
@@ -75,24 +75,42 @@ library(SuperLearner)
 #> Package created on 2019-10-27
 library(ggplot2)
 library(progressr) #for the progress bar
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W=covariates, 
+AIPW_SL <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=TRUE)$
+                    verbose=FALSE)$
   fit()$
-  calculate_result(g.bound = 0.25)$
+  summary(g.bound = 0.25)$
   plot.p_score()
-#> Done!
-#>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.253 0.132 -0.5126   0.006 200
-#> Risk Ratio         0.417 0.394  0.1927   0.903 200
-#> Odds Ratio         0.288 0.600  0.0888   0.934 200
 ```
 
 ![](man/figures/one_line-1.png)<!-- -->
+
+To see the results, use `verbose = TRUE` option or:
+
+``` r
+AIPW_SL$result
+#>                   Estimate        SE    95% LCL    95% UCL   N
+#> Risk Difference -0.1319084 0.1076637 -0.3429293 0.07911247 200
+#> Risk Ratio       0.7280326 0.2528325  0.4435427 1.19499521 200
+#> Odds Ratio       0.5795789 0.4451837  0.2421946 1.38694937 200
+```
+
+You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and
+`summary()` together (also support method chaining):
+
+``` r
+AIPW_SL <- aipw_wrapper(Y = outcome,
+                        A = exposure,
+                        W = covariates, 
+                        Q.SL.library = c("SL.mean","SL.glm"),
+                        g.SL.library = c("SL.mean","SL.glm"),
+                        k_split = 3,
+                        verbose=TRUE)$plot.p_score()
+```
 
 ## <a id="par"></a>Parallelization with `future.apply`
 
@@ -117,18 +135,18 @@ future::plan(multiprocess, workers=2, gc=T)
 #> how to control forked processing or not, and how to silence this warning in
 #> future R sessions, see ?future::supportsMulticore
 set.seed(888)
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W=covariates, 
+AIPW_SL <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
-                    verbose=TRUE)$fit()$calculate_result()
+                    verbose=TRUE)$fit()$summary()
 #> Done!
 #>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.315 0.167 -0.6425  0.0116 200
-#> Risk Ratio         0.357 0.479  0.1395  0.9132 200
-#> Odds Ratio         0.220 0.759  0.0498  0.9766 200
+#> Risk Difference   -0.153 0.112  -0.372  0.0665 200
+#> Risk Ratio         0.701 0.259   0.422  1.1640 200
+#> Odds Ratio         0.534 0.469   0.213  1.3377 200
 ```
 
 ## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input (`AIPW_tmle` class)
@@ -154,18 +172,18 @@ require(tmle)
 #> 
 #> Use tmleNews() to see details on changes and bug fixes
 require(SuperLearner)
-tmle_fit <- tmle(Y=outcome,A=exposure,W=covariates,
+tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial")
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
-  calculate_result(g.bound=0.025)
+  summary(g.bound=0.025)
 #> Sample splitting was not supported with a fitted tmle object
 #>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.214 0.158 -0.5235  0.0961 200
-#> Risk Ratio         0.438 0.522  0.1575  1.2177 200
-#> Odds Ratio         0.326 0.752  0.0745  1.4231 200
+#> Risk Difference   -0.129 0.106  -0.337  0.0778 200
+#> Risk Ratio         0.720 0.259   0.433  1.1975 200
+#> Odds Ratio         0.580 0.442   0.244  1.3809 200
 ```
 
 #### 2\. `tmle3`
@@ -193,10 +211,10 @@ tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 # parse tmle3_fit into AIPW_tmle class
 AIPW_tmle$
   new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
-  calculate_result()
+  summary()
 #> Propensity scores from fitted tmle3 object are by default truncated (0.025)
 #>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.213 0.158 -0.5236  0.0968 200
-#> Risk Ratio         0.438 0.524  0.1570  1.2240 200
-#> Odds Ratio         0.326 0.755  0.0743  1.4320 200
+#> Risk Difference   -0.129 0.106  -0.336  0.0784 200
+#> Risk Ratio         0.721 0.260   0.433  1.1997 200
+#> Odds Ratio         0.581 0.443   0.244  1.3843 200
 ```

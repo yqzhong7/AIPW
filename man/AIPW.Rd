@@ -64,8 +64,8 @@ aipw_sl$fit()
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="calculate_result">}\href{../../AIPW/html/AIPW_base.html#method-calculate_result}{\code{AIPW::AIPW_base$calculate_result()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="plot.p_score">}\href{../../AIPW/html/AIPW_base.html#method-plot.p_score}{\code{AIPW::AIPW_base$plot.p_score()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="summary">}\href{../../AIPW/html/AIPW_base.html#method-summary}{\code{AIPW::AIPW_base$summary()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -101,10 +101,10 @@ Create a new \code{AIPW} object.
 inputs from \code{W.Q} and \code{W.g}.}
 
 \item{\code{W.Q}}{Only valid when \code{W} is null, otherwise it would be replaced by \code{W}.
-covariates for outcome model (vector, matrix or data.frame).}
+Covariates for outcome model (vector, matrix or data.frame).}
 
 \item{\code{W.g}}{Only valid when \code{W} is null, otherwise it would be replaced by \code{W}.
-covariates for exposure model (vector, matrix or data.frame)}
+Covariates for exposure model (vector, matrix or data.frame)}
 
 \item{\code{Q.SL.library}}{SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model}
 
@@ -119,7 +119,7 @@ NOTE: it's recommended to use sample splitting.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \code{AIPW} obejct
+A new \code{AIPW} object
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
