@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
       </span>
     </div>
 
@@ -167,8 +167,8 @@
 </ul>
 <p><details open ><summary>Inherited methods</summary>
 <ul>
-<li><p><span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="calculate_result"><a href='../../AIPW/html/AIPW_base.html#method-calculate_result'><code>AIPW::AIPW_base$calculate_result()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="plot.p_score"><a href='../../AIPW/html/AIPW_base.html#method-plot.p_score'><code>AIPW::AIPW_base$plot.p_score()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="summary"><a href='../../AIPW/html/AIPW_base.html#method-summary'><code>AIPW::AIPW_base$summary()</code></a></span></p></li>
 </ul>
 </details>
 
@@ -203,7 +203,7 @@ tmle_fit &amp;lt;- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
                  family="binomial")
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
 
 
 ## From tmle3
@@ -219,7 +219,7 @@ learner_list &amp;lt;- list(A = sl, Y = sl)
 tmle3_fit &amp;lt;- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_result()
+AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
 }
 </pre><p></div></p>
 
@@ -254,7 +254,7 @@ AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_resul
                  <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.glm"</span>,
                  <span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.glm"</span>,
                  <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
-<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'>calculate_result</span>()
+<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()
 
 
 <span class='co'>## From tmle3</span>
@@ -270,7 +270,7 @@ AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$calculate_resul
 <span class='no'>tmle3_fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/tmle3/reference/tmle3.html'>tmle3</a></span>(<span class='no'>or_spec</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>df</span>, <span class='no'>node_list</span>, <span class='no'>learner_list</span>)
 
 <span class='co'># parse tmle3_fit into AIPW_tmle class</span>
-<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle3_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'>calculate_result</span>()
+<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle3_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

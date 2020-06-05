@@ -47,7 +47,7 @@
 
 <meta property="og:title" content="Augmented Inverse Probablity Weighting Base Class (AIPW_base) — AIPW_base" />
 <meta property="og:description" content="Define a base R6Class for later subclasses inheritance of
-AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
+AIPW_base$summary() and AIPW_base$plot.p_score()" />
 
 
 
@@ -89,7 +89,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
 
     <div class="ref-description">
     <p>Define a base R6Class for later subclasses inheritance of
-<code>AIPW_base$calculate_result()</code> and <code>AIPW_base$plot.p_score()</code></p>
+<code>AIPW_base$summary()</code> and <code>AIPW_base$plot.p_score()</code></p>
     </div>
 
 
@@ -173,7 +173,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
 
 <ul>
 <li><p><a href='#method-new'><code>AIPW_base$new()</code></a></p></li>
-<li><p><a href='#method-calculate_result'><code>AIPW_base$calculate_result()</code></a></p></li>
+<li><p><a href='#method-summary'><code>AIPW_base$summary()</code></a></p></li>
 <li><p><a href='#method-plot.p_score'><code>AIPW_base$plot.p_score()</code></a></p></li>
 <li><p><a href='#method-clone'><code>AIPW_base$clone()</code></a></p></li>
 </ul>
@@ -194,9 +194,9 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
 <h3>Returns</h3>
 <p>A new <code>AIPW_base</code> obejct</p>
 <p><hr>
-<a id="method-calculate_result"></a></p><h3>Method <code>calculate_result()</code></h3>
+<a id="method-summary"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code></h3>
 <p>Calculate average causal effects in RD, RR and OR in the fitted <code>AIPW</code> obejct with the estimated influence functions</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AIPW_base</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>AIPW_base</span>$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
@@ -211,7 +211,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
                     <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
                     <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
                     <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
-<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)</pre><p></div></p>
+<span class='no'>aipw_sl</span>$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-plot.p_score"></a></p><h3>Method <code>plot.p_score()</code></h3>
@@ -230,7 +230,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
 <span class='co'>#before average treatment effect calculation</span>
 <span class='no'>aipw_sl</span>$<span class='fu'>plot.p_score</span>()
 <span class='co'>#after calculation</span>
-<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</pre><p></div></p>
+<span class='no'>aipw_sl</span>$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</pre><p></div></p>
 
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
@@ -248,7 +248,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>## ------------------------------------------------</span>
-<span class='co'>## Method `AIPW_base$calculate_result`</span>
+<span class='co'>## Method `AIPW_base$summary`</span>
 <span class='co'>## ------------------------------------------------</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
@@ -256,7 +256,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
                     <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
                     <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
                     <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
-<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)
+<span class='no'>aipw_sl</span>$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)
 
 <span class='co'>## ------------------------------------------------</span>
 <span class='co'>## Method `AIPW_base$plot.p_score`</span>
@@ -270,7 +270,7 @@ AIPW_base$calculate_result() and AIPW_base$plot.p_score()" />
                     <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)$<span class='fu'>fit</span>()
 <span class='co'>#before average treatment effect calculation</span>
 <span class='no'>aipw_sl</span>$<span class='fu'>plot.p_score</span>()</div><div class='output co'>#&gt; <span class='message'>ATE has not been calculated.</span></div><div class='img'><img src='AIPW_base-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>#after calculation</span>
-<span class='no'>aipw_sl</span>$<span class='fu'>calculate_result</span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</div><div class='img'><img src='AIPW_base-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>aipw_sl</span>$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>g.bound</span><span class='kw'>=</span><span class='fl'>0.025</span>)$<span class='fu'>plot.p_score</span>()</div><div class='img'><img src='AIPW_base-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
