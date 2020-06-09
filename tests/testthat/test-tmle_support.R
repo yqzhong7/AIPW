@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/27
+#' 2020/06/08
 test_that("AIPW_tmle class: tmle", {
   require(tmle)
   require(SuperLearner)

@@ -151,10 +151,6 @@ AIPW <- R6::R6Class(
       if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner","sl3"))){
         warning("Either `SuperLearner` or `sl3` package is not loaded.")
       }
-      #check if SuperLearner and/or sl3 library is loaded
-      if (!any(names(sessionInfo()$otherPkgs) %in% c("progressr"))){
-        private$isLoaded_progressr = TRUE
-      }
       #-------check if future.apply is loaded otherwise lapply would be used.------#
       if (any(names(sessionInfo()$otherPkgs) %in% c("future.apply"))){
         private$.f_lapply = function(iter,func) {
@@ -184,7 +180,9 @@ AIPW <- R6::R6Class(
       iter <- 1:private$k_split
 
       #----------------progress bar setup----------#
-      if (private$isLoaded_progressr){
+      #check if progressr is loaded
+      if (!any(names(sessionInfo()$otherPkgs) %in% c("progressr"))){
+        private$isLoaded_progressr = TRUE
         pb <- progressr::progressor(along = iter)
       }
 
