@@ -17,7 +17,7 @@ Authors@R:
              role = c("aut"),
              email = "gabriel.conzuelo@pitt.edu"))
 Description: Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. 
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 Language: es
 LazyData: true
