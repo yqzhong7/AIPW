@@ -5,7 +5,7 @@
 #'
 #' @param Y Outcome (binary integer: 0 or 1)
 #' @param A Exposure (binary integer: 0 or 1)
-#' @param verbose Whether to show progression bar and print the result (logical; Default = FALSE)
+#' @param verbose Whether to print the result (logical; Default = FALSE)
 #' @param W covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
 #' inputs from `W.Q` and `W.g`.
 #' @param W.Q Only valid when `W` is null, otherwise it would be replaced by `W`.

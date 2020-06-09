@@ -33,7 +33,7 @@ Conzuelo](https://github.com/gconzuelo)
     
       - ###### [One line version](#one_line)
 
-  - ##### [Parallelization](#par)
+  - ##### [Parallelization and progress bar](#par)
 
   - ##### [Use tmle/tmle3 as input](#tmle)
 
@@ -74,7 +74,6 @@ library(SuperLearner)
 #> Version: 2.0-26
 #> Package created on 2019-10-27
 library(ggplot2)
-library(progressr) #for the progress bar
 AIPW_SL <- AIPW$new(Y = outcome,
                     A = exposure,
                     W = covariates, 
@@ -112,7 +111,7 @@ AIPW_SL <- aipw_wrapper(Y = outcome,
                         verbose=TRUE)$plot.p_score()
 ```
 
-## <a id="par"></a>Parallelization with `future.apply`
+## <a id="par"></a>Parallelization with `future.apply` and progress bar with `progressr`
 
 In default setting, the `AIPW$fit()` method will be run sequentially.
 The current version of AIPW package supports parallel processing
@@ -123,6 +122,7 @@ Simply use `future::plan()` to enable parallelization and `set.seed()`
 to take care of the random number generation (RNG) problem:
 
 ``` r
+###Additional steps for parallel processing###
 # install.packages("future.apply")
 library(future.apply)
 #> Loading required package: future
@@ -135,6 +135,8 @@ future::plan(multiprocess, workers=2, gc=T)
 #> how to control forked processing or not, and how to silence this warning in
 #> future R sessions, see ?future::supportsMulticore
 set.seed(888)
+
+###Same procedure for AIPW as described above###
 AIPW_SL <- AIPW$new(Y = outcome,
                     A = exposure,
                     W = covariates, 
@@ -147,6 +149,36 @@ AIPW_SL <- AIPW$new(Y = outcome,
 #> Risk Difference   -0.153 0.112  -0.372  0.0665 200
 #> Risk Ratio         0.701 0.259   0.422  1.1640 200
 #> Odds Ratio         0.534 0.469   0.213  1.3377 200
+```
+
+Progress bar that supports parallel processing is available in the
+`AIPW$fit()` method through the API from
+[progressr](https://github.com/HenrikBengtsson/progressr) package:
+
+``` r
+library(progressr)
+#define the type of progress bar
+handlers("progress")
+#reporting through progressr::with_progress() which is embedded in the AIPW$fit() method
+with_progress(
+  AIPW_SL <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
+                    k_split = 3,
+                    verbose=FALSE)$fit()$summary()
+)
+#also available for the wrapper
+with_progress(
+  AIPW_SL <- aipw_wrapper(Y = outcome,
+                        A = exposure,
+                        W = covariates, 
+                        Q.SL.library = c("SL.mean","SL.glm"),
+                        g.SL.library = c("SL.mean","SL.glm"),
+                        k_split = 3,
+                        verbose=FALSE)
+)
 ```
 
 ## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input (`AIPW_tmle` class)
@@ -167,7 +199,7 @@ require(tmle)
 #> Loading required package: tmle
 #> Loading required package: glmnet
 #> Loading required package: Matrix
-#> Loaded glmnet 3.0-2
+#> Loaded glmnet 4.0
 #> Welcome to the tmle package, version 1.4.0.1
 #> 
 #> Use tmleNews() to see details on changes and bug fixes

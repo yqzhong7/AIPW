@@ -33,7 +33,7 @@ knitr::opts_chunk$set(
   * ##### [Example](#Example)
     + ###### [Setup example data](#data)
     + ###### [One line version](#one_line)
-  * ##### [Parallelization](#par)
+  * ##### [Parallelization and progress bar](#par) 
   * ##### [Use tmle/tmle3 as input](#tmle)
 
 
@@ -70,7 +70,6 @@ covariates <- matrix(c(rbinom(N,1,0.4),
 library(AIPW)
 library(SuperLearner)
 library(ggplot2)
-library(progressr) #for the progress bar
 AIPW_SL <- AIPW$new(Y = outcome,
                     A = exposure,
                     W = covariates, 
@@ -99,15 +98,18 @@ AIPW_SL <- aipw_wrapper(Y = outcome,
                         verbose=TRUE)$plot.p_score()
 ```
 
-## <a id="par"></a>Parallelization with `future.apply`
+## <a id="par"></a>Parallelization with `future.apply` and progress bar with `progressr`
 
 In default setting, the `AIPW$fit()` method will be run sequentially. The current version of AIPW package supports parallel processing implemented by [future.apply](https://github.com/HenrikBengtsson/future.apply) package under the [future](https://github.com/HenrikBengtsson/future) framework. Simply use `future::plan()` to enable parallelization and `set.seed()` to take care of the random number generation (RNG) problem:
 
 ```{r parallel, eval=T}
+###Additional steps for parallel processing###
 # install.packages("future.apply")
 library(future.apply)
 future::plan(multiprocess, workers=2, gc=T)
 set.seed(888)
+
+###Same procedure for AIPW as described above###
 AIPW_SL <- AIPW$new(Y = outcome,
                     A = exposure,
                     W = covariates, 
@@ -115,6 +117,33 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
                     verbose=TRUE)$fit()$summary()
+```
+
+Progress bar that supports parallel processing is available in the `AIPW$fit()` method through the API from [progressr](https://github.com/HenrikBengtsson/progressr) package:
+```{r progressr, eval=F}
+library(progressr)
+#define the type of progress bar
+handlers("progress")
+#reporting through progressr::with_progress() which is embedded in the AIPW$fit() method
+with_progress(
+  AIPW_SL <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
+                    k_split = 3,
+                    verbose=FALSE)$fit()$summary()
+)
+#also available for the wrapper
+with_progress(
+  AIPW_SL <- aipw_wrapper(Y = outcome,
+                        A = exposure,
+                        W = covariates, 
+                        Q.SL.library = c("SL.mean","SL.glm"),
+                        g.SL.library = c("SL.mean","SL.glm"),
+                        k_split = 3,
+                        verbose=FALSE)
+)
 ```
 
 ## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input (`AIPW_tmle` class)

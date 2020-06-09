@@ -42,7 +42,7 @@ AIPW_base <- R6::R6Class(
     #'
     #' @param Y Outcome (binary integer: 0 or 1)
     #' @param A Exposure (binary integer: 0 or 1)
-    #' @param verbose Whether to show progression bar and print the result (logical; Default = FALSE)
+    #' @param verbose Whether to print the result (logical; Default = FALSE)
     #'
     #' @return A new `AIPW_base` obejct
     initialize = function(Y=NULL, A=NULL,verbose=FALSE){

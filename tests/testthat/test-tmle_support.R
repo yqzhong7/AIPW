@@ -7,18 +7,18 @@ test_that("AIPW_tmle class: tmle", {
   require(tmle)
   require(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
-  A <- vec()
-  Y <- vec()
-  tmle_fit <- tmle(Y=Y,
-              A=A,
-              W=vec(),
+  df <- data.frame(replicate(4,vec()))
+  names(df) <- c("A","Y","W1","W2")
+  tmle_fit <- tmle(Y=df$Y,
+              A=df$A,
+              W=df[,3:4],
               Q.SL.library="SL.glm",
               g.SL.library="SL.glm",
               family="binomial")
   #test constructor
-  expect_error(AIPW_tmle$new(A=A,Y=Y,tmle_fit = "tmle_fit",verbose = T),
+  expect_error(AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = "tmle_fit",verbose = T),
                info = "The tmle_fit is neither a `tmle` or `tmle3_Fit` object")
-  expect_message(aipw_tmle <- AIPW_tmle$new(A=A,Y=Y,tmle_fit = tmle_fit,verbose = T),
+  expect_message(aipw_tmle <- AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = T),
                 info = "Sample splitting was not supported with a fitted tmle object")
   #correctly print output
   expect_output(aipw_tmle$summary(), regexp = "Estimate")

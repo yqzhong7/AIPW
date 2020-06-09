@@ -82,7 +82,7 @@ Create a new \code{AIPW_base} object.
 
 \item{\code{A}}{Exposure (binary integer: 0 or 1)}
 
-\item{\code{verbose}}{Whether to show progression bar and print the result (logical; Default = FALSE)}
+\item{\code{verbose}}{Whether to print the result (logical; Default = FALSE)}
 }
 \if{html}{\out{</div>}}
 }

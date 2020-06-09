@@ -22,7 +22,7 @@ aipw_wrapper(
 
 \item{A}{Exposure (binary integer: 0 or 1)}
 
-\item{verbose}{Whether to show progression bar and print the result (logical; Default = FALSE)}
+\item{verbose}{Whether to print the result (logical; Default = FALSE)}
 
 \item{W}{covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
 inputs from \code{W.Q} and \code{W.g}.}

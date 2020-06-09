@@ -95,7 +95,7 @@ Create a new \code{AIPW} object.
 
 \item{\code{A}}{Exposure (binary integer: 0 or 1)}
 
-\item{\code{verbose}}{Whether to show progression bar and print the result (logical; Default = FALSE)}
+\item{\code{verbose}}{Whether to print the result (logical; Default = FALSE)}
 
 \item{\code{W}}{covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
 inputs from \code{W.Q} and \code{W.g}.}

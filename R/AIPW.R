@@ -34,7 +34,7 @@ AIPW <- R6::R6Class(
     #'
     #' @param Y Outcome (binary integer: 0 or 1)
     #' @param A Exposure (binary integer: 0 or 1)
-    #' @param verbose Whether to show progression bar and print the result (logical; Default = FALSE)
+    #' @param verbose Whether to print the result (logical; Default = FALSE)
     #' @param W covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
     #' inputs from `W.Q` and `W.g`.
     #' @param W.Q Only valid when `W` is null, otherwise it would be replaced by `W`.
@@ -151,6 +151,10 @@ AIPW <- R6::R6Class(
       if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner","sl3"))){
         warning("Either `SuperLearner` or `sl3` package is not loaded.")
       }
+      #check if SuperLearner and/or sl3 library is loaded
+      if (!any(names(sessionInfo()$otherPkgs) %in% c("progressr"))){
+        private$isLoaded_progressr = TRUE
+      }
       #-------check if future.apply is loaded otherwise lapply would be used.------#
       if (any(names(sessionInfo()$otherPkgs) %in% c("future.apply"))){
         private$.f_lapply = function(iter,func) {
@@ -177,68 +181,69 @@ AIPW <- R6::R6Class(
       private$cv$k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
       private$cv$fold_index = split(1:self$n, private$cv$k_index)
       private$cv$fold_length = sapply(private$cv$fold_index,length)
-      #----------------progress bar setup----------#
-      progressr::handlers("progress")
       iter <- 1:private$k_split
-      progressr::with_progress(enable = private$verbose,{
-        #progress bar
+
+      #----------------progress bar setup----------#
+      if (private$isLoaded_progressr){
         pb <- progressr::progressor(along = iter)
-        #---------parallelization with future.apply------#
-        fitted <- private$.f_lapply(
-          iter=iter,
-          func=function(i,...){
-            #when k_split in 1:2, no cvControl will be used (same cv for k_split)
-            if (private$k_split==1){
-              train_index <- validation_index <- as.numeric(unlist(private$cv$fold_index))
-              cv_param = list()
-            } else if (private$k_split==2){
-              train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
-              validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
-              cv_param = list()
-            } else{
-              train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
-              validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
-              cv_param = list(V=private$k_split-1,
-                              validRows= private$.new_cv_index(val_fold=i))
-            }
+      }
 
+      #---------parallelization with future.apply------#
+      fitted <- private$.f_lapply(
+        iter=iter,
+        func=function(i,...){
+          #when k_split in 1:2, no cvControl will be used (same cv for k_split)
+          if (private$k_split==1){
+            train_index <- validation_index <- as.numeric(unlist(private$cv$fold_index))
+            cv_param = list()
+          } else if (private$k_split==2){
+            train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
+            validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
+            cv_param = list()
+          } else{
+            train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
+            validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
+            cv_param = list(V=private$k_split-1,
+                            validRows= private$.new_cv_index(val_fold=i))
+          }
 
-            #split the sample based on the index
-            #Q outcome set
-            train_set.Q <- private$Q.set[train_index,]
-            validation_set.Q <- private$Q.set[validation_index,]
-            #g exposure set
-            train_set.g <- data.frame(private$g.set[train_index,])
-            validation_set.g <- data.frame(private$g.set[validation_index,])
-            colnames(train_set.g)=colnames(validation_set.g)=colnames(private$g.set) #make to g df colnames consistent
+          #split the sample based on the index
+          #Q outcome set
+          train_set.Q <- private$Q.set[train_index,]
+          validation_set.Q <- private$Q.set[validation_index,]
+          #g exposure set
+          train_set.g <- data.frame(private$g.set[train_index,])
+          validation_set.g <- data.frame(private$g.set[validation_index,])
+          colnames(train_set.g)=colnames(validation_set.g)=colnames(private$g.set) #make to g df colnames consistent
 
-            #Q model(outcome model: g-comp)
-            #fit with train set
-            Q.fit <- self$sl.fit(Y = private$Y[train_index],
-                                 X = train_set.Q,
-                                 SL.library = self$libs$Q.SL.library,
-                                 CV= cv_param)
-            # predict on validation set
-            mu0 <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 0)) #Q0_pred
-            mu1  <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 1)) #Q1_pred
+          #Q model(outcome model: g-comp)
+          #fit with train set
+          Q.fit <- self$sl.fit(Y = private$Y[train_index],
+                               X = train_set.Q,
+                               SL.library = self$libs$Q.SL.library,
+                               CV= cv_param)
+          # predict on validation set
+          mu0 <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 0)) #Q0_pred
+          mu1  <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 1)) #Q1_pred
 
-            #g model(exposure model: propensity score)
-            # fit with train set
-            g.fit <- self$sl.fit(Y=private$A[train_index],
-                                 X=train_set.g,
-                                 SL.library = self$libs$g.SL.library,
-                                 CV= cv_param)
-            # predict on validation set
-            raw_p_score  <- self$sl.predict(g.fit,newdata = validation_set.g)  #g_pred
+          #g model(exposure model: propensity score)
+          # fit with train set
+          g.fit <- self$sl.fit(Y=private$A[train_index],
+                               X=train_set.g,
+                               SL.library = self$libs$g.SL.library,
+                               CV= cv_param)
+          # predict on validation set
+          raw_p_score  <- self$sl.predict(g.fit,newdata = validation_set.g)  #g_pred
 
-            #add metadata
-            names(validation_index) <- rep(i,length(validation_index))
+          #add metadata
+          names(validation_index) <- rep(i,length(validation_index))
 
+          if (private$isLoaded_progressr){
             pb(sprintf("No.%g iteration", i,private$k_split))
-            output <- list(validation_index,Q.fit,mu0,mu1,g.fit,raw_p_score)
-            names(output) <- c("validation_index","Q.fit","mu0","mu1","g.fit","raw_p_score")
-            return(output)
-          })
+          }
+          output <- list(validation_index,Q.fit,mu0,mu1,g.fit,raw_p_score)
+          names(output) <- c("validation_index","Q.fit","mu0","mu1","g.fit","raw_p_score")
+          return(output)
         })
 
       #store fitted values from future to member variables
@@ -278,6 +283,7 @@ AIPW <- R6::R6Class(
     sl.pkg =NULL,
     sl.env=NULL,
     sl.learners = NULL,
+    isLoaded_progressr = FALSE,
     #private methods
     #lapply or future_lapply
     .f_lapply =NULL,

@@ -1,6 +1,6 @@
 Package: AIPW
 Title: Augmented Inverse Probability Weighting (AIPW) for binary exposure and binary outcome
-Version: 0.5.1.9000
+Version: 0.5.2.9000
 Authors@R: 
     c(person(given = "Yongqi",
              family = "Zhong",
