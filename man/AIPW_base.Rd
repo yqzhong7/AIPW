@@ -72,7 +72,7 @@ aipw_sl$summary(g.bound=0.025)$plot.p_score()
 \subsection{Method \code{new()}}{
 Create a new \code{AIPW_base} object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AIPW_base$new(Y = NULL, A = NULL, verbose = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AIPW_base$new(Y = NULL, A = NULL, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -82,7 +82,7 @@ Create a new \code{AIPW_base} object.
 
 \item{\code{A}}{Exposure (binary integer: 0 or 1)}
 
-\item{\code{verbose}}{Whether to print the result (logical; Default = FALSE)}
+\item{\code{verbose}}{Whether to print the result (logical; Default = TRUE)}
 }
 \if{html}{\out{</div>}}
 }

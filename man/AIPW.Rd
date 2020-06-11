@@ -78,7 +78,7 @@ Create a new \code{AIPW} object.
 \if{html}{\out{<div class="r">}}\preformatted{AIPW$new(
   Y = NULL,
   A = NULL,
-  verbose = FALSE,
+  verbose = TRUE,
   W = NULL,
   W.Q = NULL,
   W.g = NULL,
@@ -95,7 +95,7 @@ Create a new \code{AIPW} object.
 
 \item{\code{A}}{Exposure (binary integer: 0 or 1)}
 
-\item{\code{verbose}}{Whether to print the result (logical; Default = FALSE)}
+\item{\code{verbose}}{Whether to print the result (logical; Default = TRUE)}
 
 \item{\code{W}}{covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
 inputs from \code{W.Q} and \code{W.g}.}

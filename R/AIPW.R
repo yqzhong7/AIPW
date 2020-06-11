@@ -34,7 +34,7 @@ AIPW <- R6::R6Class(
     #'
     #' @param Y Outcome (binary integer: 0 or 1)
     #' @param A Exposure (binary integer: 0 or 1)
-    #' @param verbose Whether to print the result (logical; Default = FALSE)
+    #' @param verbose Whether to print the result (logical; Default = TRUE)
     #' @param W covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
     #' inputs from `W.Q` and `W.g`.
     #' @param W.Q Only valid when `W` is null, otherwise it would be replaced by `W`.
@@ -57,7 +57,7 @@ AIPW <- R6::R6Class(
     #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
     #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
     #'                     k_split=1,verbose=FALSE)
-    initialize = function(Y=NULL, A=NULL, verbose=FALSE,
+    initialize = function(Y=NULL, A=NULL, verbose=TRUE,
                           W=NULL, W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL, g.SL.library=NULL,
                           k_split=10){
