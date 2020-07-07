@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/06/08
+#' 2020/07/07
 test_that("AIPW_tmle class: tmle", {
   require(tmle)
   require(SuperLearner)
@@ -30,8 +30,10 @@ test_that("AIPW_tmle class: tmle", {
 })
 
 test_that("AIPW_tmle class: tmle3", {
-  require(tmle3)
-  require(sl3)
+  suppressWarnings({
+    require(tmle3,quietly = TRUE)
+    require(sl3,quietly = TRUE)
+  })
   vec <- function() sample(0:1,100,replace = T)
   df <- data.frame(replicate(4,vec()))
   names(df) <- c("A","Y","W1","W2")

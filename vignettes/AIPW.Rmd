@@ -218,8 +218,8 @@ a_tmle <- AIPW_tmle$
 Similarly, [tmle3](https://github.com/tlverse/tmle3) may not support different covariate sets for the exposure and the outcome models, respectively. However, `tmle3` conducts sample splitting and propensity truncation (0.025) by default.
 
 ```{r tmle3}
-library(tmle3)
-library(sl3)
+library(tmle3,quietly = TRUE)
+library(sl3,quietly = TRUE)
 
 df <- data.frame(exposure,outcome,covariates.Q)
 node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])

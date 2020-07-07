@@ -28,8 +28,8 @@ df <- data.frame(replicate(4,vec()))
 names(df) <- c("A","Y","W1","W2")
 
 ## From tmle
-require(tmle)
-require(SuperLearner)
+library(tmle)
+library(SuperLearner)
 tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
@@ -39,8 +39,9 @@ AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
 
 ## From tmle3
 # tmle3 simple implementation
-require(tmle3)
-require(sl3)
+\dontrun{
+library(tmle3)
+library(sl3)
 node_list <- list(A = "A",Y = "Y",W = c("W1","W2"))
 or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
 tmle_task <- or_spec$make_tmle_task(df,node_list)
@@ -51,6 +52,8 @@ tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
 AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
+}
+
 }
 }
 \section{Super class}{
@@ -104,8 +107,8 @@ df <- data.frame(replicate(4,vec()))
 names(df) <- c("A","Y","W1","W2")
 
 ## From tmle
-require(tmle)
-require(SuperLearner)
+library(tmle)
+library(SuperLearner)
 tmle_fit <- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
@@ -115,8 +118,9 @@ AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
 
 ## From tmle3
 # tmle3 simple implementation
-require(tmle3)
-require(sl3)
+\dontrun{
+library(tmle3)
+library(sl3)
 node_list <- list(A = "A",Y = "Y",W = c("W1","W2"))
 or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
 tmle_task <- or_spec$make_tmle_task(df,node_list)
@@ -127,6 +131,8 @@ tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
 AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
+}
+
 }
 }
 \if{html}{\out{</div>}}

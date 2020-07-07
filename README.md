@@ -23,6 +23,18 @@ status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https
 Naimi](https://github.com/ainaimi), [Gabriel
 Conzuelo](https://github.com/gconzuelo)
 
+-----
+
+Augmented inverse probability weighting (AIPW) is a doubly robust
+estimator for causal inference. The `AIPW` package is designed for
+estimating the average treatment effect of a binary exposure on a binary
+outcome in risk difference (RD), risk ratio (RR) and odds ratio (OR),
+under the nonparametric structural equations (NPSEM) or structural
+causal model (SCM) framework. Users need to examine causal assumptions
+(e.g., consistency) before using this package.
+
+-----
+
 ## Contents:
 
   - ##### [Installation](#Installation)
@@ -36,6 +48,8 @@ Conzuelo](https://github.com/gconzuelo)
   - ##### [Parallelization and progress bar](#par)
 
   - ##### [Use tmle/tmle3 as input](#tmle)
+
+  - ##### [References](#ref)
 
 -----
 
@@ -88,7 +102,7 @@ AIPW_SL <- AIPW$new(Y = outcome,
 
 ![](man/figures/one_line-1.png)<!-- -->
 
-To see the results, use `verbose = TRUE` option or:
+To see the results, set `verbose = TRUE`(default) or:
 
 ``` r
 AIPW_SL$result
@@ -226,10 +240,8 @@ respectively. However, `tmle3` conducts sample splitting and propensity
 truncation (0.025) by default.
 
 ``` r
-require(tmle3)
-#> Loading required package: tmle3
-require(sl3)
-#> Loading required package: sl3
+library(sl3)
+library(tmle3)
 df <- data.frame(exposure,outcome,covariates)
 node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])
 or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
@@ -244,9 +256,18 @@ tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
 AIPW_tmle$
   new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
   summary()
-#> Propensity scores from fitted tmle3 object are by default truncated (0.025)
-#>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.129 0.106  -0.336  0.0784 200
-#> Risk Ratio         0.721 0.260   0.433  1.1997 200
-#> Odds Ratio         0.581 0.443   0.244  1.3843 200
 ```
+
+-----
+
+### <a id="ref"></a>References:
+
+Robins, J.M., Rotnitzky, A. and Zhao, L.P., 1994. Estimation of
+regression coefficients when some regressors are not always observed.
+Journal of the American statistical Association, 89(427), pp.846-866.
+
+Glynn, A.N. and Quinn, K.M., 2010. An introduction to the augmented
+inverse propensity weighted estimator. Political analysis, 18(1),
+pp.36-56.
+
+Pearl, J., 2009. Causality. Cambridge university press.

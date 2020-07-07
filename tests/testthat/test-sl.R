@@ -32,9 +32,11 @@ test_that("sl.fit & sl.predict: SuperLearner", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/09
+#' 2020/07/07
 test_that("sl.fit & sl.predict: sl3", {
-  require(sl3)
+  suppressWarnings({
+  library(sl3,quietly = T)
+  })
   vec <- function() sample(0:1,100,replace = T)
   #sl3 libs
   lrnr_glm <- sl3::Lrnr_glm$new()
