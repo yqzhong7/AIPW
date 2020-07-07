@@ -197,8 +197,8 @@ df &amp;lt;- data.frame(replicate(4,vec()))
 names(df) &amp;lt;- c("A","Y","W1","W2")
 
 ## From tmle
-require(tmle)
-require(SuperLearner)
+library(tmle)
+library(SuperLearner)
 tmle_fit &amp;lt;- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
                  Q.SL.library="SL.glm",
                  g.SL.library="SL.glm",
@@ -208,8 +208,9 @@ AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
 
 ## From tmle3
 # tmle3 simple implementation
-require(tmle3)
-require(sl3)
+\dontrun{
+library(tmle3)
+library(sl3)
 node_list &amp;lt;- list(A = "A",Y = "Y",W = c("W1","W2"))
 or_spec &amp;lt;- tmle_OR(baseline_level = "0",contrast_level = "1")
 tmle_task &amp;lt;- or_spec$make_tmle_task(df,node_list)
@@ -220,6 +221,8 @@ tmle3_fit &amp;lt;- tmle3(or_spec, data=df, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
 AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
+}
+
 }
 </pre><p></div></p>
 
@@ -237,41 +240,7 @@ AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>## ------------------------------------------------</span>
-<span class='co'>## Method `AIPW_tmle$new`</span>
-<span class='co'>## ------------------------------------------------</span>
-
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>vec</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>0</span>:<span class='fl'>1</span>,<span class='fl'>100</span>,<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>4</span>,<span class='fu'>vec</span>()))
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>df</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"Y"</span>,<span class='st'>"W1"</span>,<span class='st'>"W2"</span>)
-
-<span class='co'>## From tmle</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>tmle</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>SuperLearner</span>)
-<span class='no'>tmle_fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/tmle/man/tmle.html'>tmle</a></span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>W</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>df</span>,<span class='kw'>select</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"W1"</span>,<span class='st'>"W2"</span>)),
-                 <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.glm"</span>,
-                 <span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.glm"</span>,
-                 <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
-<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()
-
-
-<span class='co'>## From tmle3</span>
-<span class='co'># tmle3 simple implementation</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>tmle3</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>sl3</span>)
-<span class='no'>node_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='st'>"A"</span>,<span class='kw'>Y</span> <span class='kw'>=</span> <span class='st'>"Y"</span>,<span class='kw'>W</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"W1"</span>,<span class='st'>"W2"</span>))
-<span class='no'>or_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/tmle3/reference/tmle_OR.html'>tmle_OR</a></span>(<span class='kw'>baseline_level</span> <span class='kw'>=</span> <span class='st'>"0"</span>,<span class='kw'>contrast_level</span> <span class='kw'>=</span> <span class='st'>"1"</span>)
-<span class='no'>tmle_task</span> <span class='kw'>&lt;-</span> <span class='no'>or_spec</span>$<span class='fu'>make_tmle_task</span>(<span class='no'>df</span>,<span class='no'>node_list</span>)
-<span class='no'>lrnr_glm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tlverse.org/sl3/reference/Lrnr_base.html'>make_learner</a></span>(<span class='no'>Lrnr_glm</span>)
-<span class='no'>sl</span> <span class='kw'>&lt;-</span> <span class='no'>Lrnr_sl</span>$<span class='fu'>new</span>(<span class='kw'>learners</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>lrnr_glm</span>))
-<span class='no'>learner_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='no'>sl</span>, <span class='kw'>Y</span> <span class='kw'>=</span> <span class='no'>sl</span>)
-<span class='no'>tmle3_fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/tmle3/reference/tmle3.html'>tmle3</a></span>(<span class='no'>or_spec</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>df</span>, <span class='no'>node_list</span>, <span class='no'>learner_list</span>)
-
-<span class='co'># parse tmle3_fit into AIPW_tmle class</span>
-<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle3_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()
-}</div></pre>
+    <pre class="examples"></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

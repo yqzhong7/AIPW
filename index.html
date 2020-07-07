@@ -91,6 +91,9 @@
 <!-- badges: end -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><strong>Authors:</strong> <a href="https://github.com/yqzhong7">Yongqi Zhong</a>, <a href="https://github.com/ainaimi">Ashley Naimi</a>, <a href="https://github.com/gconzuelo">Gabriel Conzuelo</a></p>
+<hr>
+<p>Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The <code>AIPW</code> package is designed for estimating the average treatment effect of a binary exposure on a binary outcome in risk difference (RD), risk ratio (RR) and odds ratio (OR), under the nonparametric structural equations (NPSEM) or structural causal model (SCM) framework. Users need to examine causal assumptions (e.g., consistency) before using this package.</p>
+<hr>
 <div id="contents" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contents" class="anchor"></a>Contents:</h2>
@@ -105,6 +108,7 @@
 </li>
 <li><h5 id="parallelization-and-progress-bar"><a href="#par">Parallelization and progress bar</a></h5></li>
 <li><h5 id="use-tmletmle3-as-input"><a href="#tmle">Use tmle/tmle3 as input</a></h5></li>
+<li><h5 id="references"><a href="#ref">References</a></h5></li>
 </ul>
 <hr>
 </div>
@@ -153,7 +157,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>)$
   <span class="fu">plot.p_score</span>()</pre></div>
 <p><img src="reference/figures/one_line-1.png"><!-- --></p>
-<p>To see the results, use <code>verbose = TRUE</code> option or:</p>
+<p>To see the results, set <code>verbose = TRUE</code>(default) or:</p>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="no">AIPW_SL</span>$<span class="no">result</span>
 <span class="co">#&gt;                   Estimate        SE    95% LCL    95% UCL   N</span>
 <span class="co">#&gt; Risk Difference -0.1319084 0.1076637 -0.3429293 0.07911247 200</span>
@@ -262,10 +266,8 @@
 <a href="#tmle3" class="anchor"></a>2. <code>tmle3</code>
 </h4>
 <p>Similarly, <a href="https://github.com/tlverse/tmle3">tmle3</a> may not support different covariate sets for the exposure and the outcome models, respectively. However, <code>tmle3</code> conducts sample splitting and propensity truncation (0.025) by default.</p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">tmle3</span>)
-<span class="co">#&gt; Loading required package: tmle3</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">sl3</span>)
-<span class="co">#&gt; Loading required package: sl3</span>
+<div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmle3</span>)
 <span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="no">exposure</span>,<span class="no">outcome</span>,<span class="no">covariates</span>)
 <span class="no">node_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">A</span> <span class="kw">=</span> <span class="st">"exposure"</span>,<span class="kw">Y</span> <span class="kw">=</span> <span class="st">"outcome"</span>,<span class="kw">W</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">df</span>)[-<span class="fl">1</span>:-<span class="fl">2</span>])
 <span class="no">or_spec</span> <span class="kw">&lt;-</span> <span class="fu"><a href="http://tlverse.org/tmle3/reference/tmle_OR.html">tmle_OR</a></span>(<span class="kw">baseline_level</span> <span class="kw">=</span> <span class="st">"0"</span>,<span class="kw">contrast_level</span> <span class="kw">=</span> <span class="st">"1"</span>)
@@ -279,12 +281,15 @@
 <span class="co"># parse tmle3_fit into AIPW_tmle class</span>
 <span class="no">AIPW_tmle</span>$
   <span class="fu">new</span>(<span class="kw">A</span><span class="kw">=</span><span class="no">df</span>$<span class="no">exposure</span>,<span class="kw">Y</span><span class="kw">=</span><span class="no">df</span>$<span class="no">outcome</span>,<span class="kw">tmle_fit</span> <span class="kw">=</span> <span class="no">tmle3_fit</span>,<span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>)$
-  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()
-<span class="co">#&gt; Propensity scores from fitted tmle3 object are by default truncated (0.025)</span>
-<span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.129 0.106  -0.336  0.0784 200</span>
-<span class="co">#&gt; Risk Ratio         0.721 0.260   0.433  1.1997 200</span>
-<span class="co">#&gt; Odds Ratio         0.581 0.443   0.244  1.3843 200</span></pre></div>
+  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()</pre></div>
+<hr>
+</div>
+<div id="references-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#references-1" class="anchor"></a><a id="ref"></a>References:</h3>
+<p>Robins, J.M., Rotnitzky, A. and Zhao, L.P., 1994. Estimation of regression coefficients when some regressors are not always observed. Journal of the American statistical Association, 89(427), pp.846-866.</p>
+<p>Glynn, A.N. and Quinn, K.M., 2010. An introduction to the augmented inverse propensity weighted estimator. Political analysis, 18(1), pp.36-56.</p>
+<p>Pearl, J., 2009. Causality. Cambridge university press.</p>
 </div>
 </div>
 </div>

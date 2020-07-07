@@ -325,8 +325,8 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <a href="#tmle3" class="anchor"></a>2. <a id="tmle3"></a> <code>tmle3</code>
 </h4>
 <p>Similarly, <a href="https://github.com/tlverse/tmle3">tmle3</a> may not support different covariate sets for the exposure and the outcome models, respectively. However, <code>tmle3</code> conducts sample splitting and propensity truncation (0.025) by default.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmle3</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>)
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmle3</span>,<span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>,<span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 
 <span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="no">exposure</span>,<span class="no">outcome</span>,<span class="no">covariates.Q</span>)
 <span class="no">node_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">A</span> <span class="kw">=</span> <span class="st">"exposure"</span>,<span class="kw">Y</span> <span class="kw">=</span> <span class="st">"outcome"</span>,<span class="kw">W</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">df</span>)[-<span class="fl">1</span>:-<span class="fl">2</span>])
