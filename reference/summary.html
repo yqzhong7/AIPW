@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4.9000</span>
       </span>
     </div>
 
@@ -142,15 +142,10 @@
     <p>Calculate average causal effects in RD, RR and OR in the fitted <code>AIPW</code> obejct with the estimated influence functions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summary.AIPW_base</span>(<span class='no'>object</span>, <span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td><p>An object of <a href='AIPW.html'>AIPW</a> or <a href='AIPW_tmle.html'>AIPW_tmle</a> class  efficient influence functions</p></td>
-    </tr>
     <tr>
       <th>g.bound</th>
       <td><p>Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></td>
@@ -165,6 +160,9 @@
     
 
 <p><code>$summary(g.bound = 0.025)</code></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='AIPW.html'>AIPW</a> and <a href='AIPW_tmle.html'>AIPW_tmle</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
