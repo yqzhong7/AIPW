@@ -14,7 +14,7 @@
 <script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Augmented Inverse Probability Weighting (AIPW) for binary exposure and binary outcome">
-<meta property="og:description" content="Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. ">
+<meta property="og:description" content="Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. This pacakge implement the AIPW estimator for an binary exposure on a binary outcome with user-defined stacked machine learning algorithms.  ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -153,9 +153,9 @@
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
                     <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)$
-  <span class="fu">fit</span>()$
-  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>)$
-  <span class="fu">plot.p_score</span>()</pre></div>
+  <span class="fu"><a href="reference/fit.html">fit</a></span>()$
+  <span class="fu"><a href="reference/summary.html">summary</a></span>(<span class="kw">g.bound</span> <span class="kw">=</span> <span class="fl">0.25</span>)$
+  <span class="fu"><a href="reference/plot.p_score.html">plot.p_score</a></span>()</pre></div>
 <p><img src="reference/figures/one_line-1.png"><!-- --></p>
 <p>To see the results, set <code>verbose = TRUE</code>(default) or:</p>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="no">AIPW_SL</span>$<span class="no">result</span>
@@ -163,14 +163,14 @@
 <span class="co">#&gt; Risk Difference -0.1319084 0.1076637 -0.3429293 0.07911247 200</span>
 <span class="co">#&gt; Risk Ratio       0.7280326 0.2528325  0.4435427 1.19499521 200</span>
 <span class="co">#&gt; Odds Ratio       0.5795789 0.4451837  0.2421946 1.38694937 200</span></pre></div>
-<p>You can also use the <code><a href="reference/aipw_wrapper.html">aipw_wrapper()</a></code> to wrap <code>new()</code>, <code>fit()</code> and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> together (also support method chaining):</p>
+<p>You can also use the <code><a href="reference/aipw_wrapper.html">aipw_wrapper()</a></code> to wrap <code>new()</code>, <code><a href="reference/fit.html">fit()</a></code> and <code><a href="reference/summary.html">summary()</a></code> together (also support method chaining):</p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="no">AIPW_SL</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/aipw_wrapper.html">aipw_wrapper</a></span>(<span class="kw">Y</span> <span class="kw">=</span> <span class="no">outcome</span>,
                         <span class="kw">A</span> <span class="kw">=</span> <span class="no">exposure</span>,
                         <span class="kw">W</span> <span class="kw">=</span> <span class="no">covariates</span>,
                         <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                         <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                         <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                        <span class="kw">verbose</span><span class="kw">=</span><span class="fl">TRUE</span>)$<span class="fu">plot.p_score</span>()</pre></div>
+                        <span class="kw">verbose</span><span class="kw">=</span><span class="fl">TRUE</span>)$<span class="fu"><a href="reference/plot.p_score.html">plot.p_score</a></span>()</pre></div>
 </div>
 </div>
 <div id="parallelization-with-future-apply-and-progress-bar-with-progressr" class="section level2">
@@ -199,7 +199,7 @@
                     <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">TRUE</span>)$<span class="fu">fit</span>()$<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()
+                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">TRUE</span>)$<span class="fu"><a href="reference/fit.html">fit</a></span>()$<span class="fu"><a href="reference/summary.html">summary</a></span>()
 <span class="co">#&gt; Done!</span>
 <span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
 <span class="co">#&gt; Risk Difference   -0.153 0.112  -0.372  0.0665 200</span>
@@ -217,7 +217,7 @@
                     <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>),
                     <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)$<span class="fu">fit</span>()$<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()
+                    <span class="kw">verbose</span><span class="kw">=</span><span class="fl">FALSE</span>)$<span class="fu"><a href="reference/fit.html">fit</a></span>()$<span class="fu"><a href="reference/summary.html">summary</a></span>()
 )
 <span class="co">#also available for the wrapper</span>
 <span class="fu"><a href="https://rdrr.io/pkg/progressr/man/with_progress.html">with_progress</a></span>(
@@ -254,7 +254,7 @@
                  <span class="kw">family</span><span class="kw">=</span><span class="st">"binomial"</span>)
 <span class="no">AIPW_tmle</span>$
   <span class="fu">new</span>(<span class="kw">A</span><span class="kw">=</span><span class="no">exposure</span>,<span class="kw">Y</span><span class="kw">=</span><span class="no">outcome</span>,<span class="kw">tmle_fit</span> <span class="kw">=</span> <span class="no">tmle_fit</span>,<span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>)$
-  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">g.bound</span><span class="kw">=</span><span class="fl">0.025</span>)
+  <span class="fu"><a href="reference/summary.html">summary</a></span>(<span class="kw">g.bound</span><span class="kw">=</span><span class="fl">0.025</span>)
 <span class="co">#&gt; Sample splitting was not supported with a fitted tmle object</span>
 <span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
 <span class="co">#&gt; Risk Difference   -0.129 0.106  -0.337  0.0778 200</span>
@@ -281,7 +281,7 @@
 <span class="co"># parse tmle3_fit into AIPW_tmle class</span>
 <span class="no">AIPW_tmle</span>$
   <span class="fu">new</span>(<span class="kw">A</span><span class="kw">=</span><span class="no">df</span>$<span class="no">exposure</span>,<span class="kw">Y</span><span class="kw">=</span><span class="no">df</span>$<span class="no">outcome</span>,<span class="kw">tmle_fit</span> <span class="kw">=</span> <span class="no">tmle3_fit</span>,<span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>)$
-  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()</pre></div>
+  <span class="fu"><a href="reference/summary.html">summary</a></span>()</pre></div>
 <hr>
 </div>
 <div id="references-1" class="section level3">

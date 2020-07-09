@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AIPW wrapper function — aipw_wrapper • AIPW</title>
+<title>Fit the data to the <a href='AIPW.html'>AIPW</a> object — fit • AIPW</title>
 
 
 <!-- jquery -->
@@ -45,8 +45,8 @@
 
 
 
-<meta property="og:title" content="AIPW wrapper function — aipw_wrapper" />
-<meta property="og:description" content="A wrapper function for AIPW$new()$fit()$summary()" />
+<meta property="og:title" content="Fit the data to the <a href='AIPW.html'>AIPW</a> object — fit" />
+<meta property="og:description" content="Fitting the data into the AIPW object with/without sample splitting to estimate the influence functions" />
 
 
 
@@ -133,93 +133,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>AIPW wrapper function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/yqzhong7/AIPW/blob/master/R/aipw_wrapper.R'><code>R/aipw_wrapper.R</code></a></small>
-    <div class="hidden name"><code>aipw_wrapper.Rd</code></div>
+    <h1>Fit the data to the <a href='AIPW.html'>AIPW</a> object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yqzhong7/AIPW/blob/master/R/AIPW.R'><code>R/AIPW.R</code></a></small>
+    <div class="hidden name"><code>fit.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A wrapper function for <code>AIPW$new()$fit()$summary()</code></p>
+    <p>Fitting the data into the <a href='AIPW.html'>AIPW</a> object with/without sample splitting to estimate the influence functions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>aipw_wrapper</span>(
-  <span class='no'>Y</span>,
-  <span class='no'>A</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>W</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>W.Q</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>W.g</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>Q.SL.library</span>,
-  <span class='no'>g.SL.library</span>,
-  <span class='kw'>k_split</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>g.bound</span> <span class='kw'>=</span> <span class='fl'>0.025</span>
-)</pre>
+    <pre class="usage"><span class='fu'>fit</span>(<span class='no'>object</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Y</th>
-      <td><p>Outcome (binary integer: 0 or 1)</p></td>
-    </tr>
-    <tr>
-      <th>A</th>
-      <td><p>Exposure (binary integer: 0 or 1)</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Whether to print the result (logical; Default = FALSE)</p></td>
-    </tr>
-    <tr>
-      <th>W</th>
-      <td><p>covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
-inputs from <code>W.Q</code> and <code>W.g</code>.</p></td>
-    </tr>
-    <tr>
-      <th>W.Q</th>
-      <td><p>Only valid when <code>W</code> is null, otherwise it would be replaced by <code>W</code>.
-Covariates for outcome model (vector, matrix or data.frame).</p></td>
-    </tr>
-    <tr>
-      <th>W.g</th>
-      <td><p>Only valid when <code>W</code> is null, otherwise it would be replaced by <code>W</code>.
-Covariates for exposure model (vector, matrix or data.frame)</p></td>
-    </tr>
-    <tr>
-      <th>Q.SL.library</th>
-      <td><p>SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model</p></td>
-    </tr>
-    <tr>
-      <th>g.SL.library</th>
-      <td><p>SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model</p></td>
-    </tr>
-    <tr>
-      <th>k_split</th>
-      <td><p>Number of splitting (integer; range: from 1 to number of observation-1):
-if k_split=1, no sample splitting;
-if k_split&gt;1, use similar technique of cross-validation
-(e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
-NOTE: it's recommended to use sample splitting.</p></td>
-    </tr>
-    <tr>
-      <th>g.bound</th>
-      <td><p>Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></td>
+      <th>object</th>
+      <td><p>An object of <a href='AIPW.html'>AIPW</a> class</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A fitted <code>AIPW</code> object with summarised results</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>A fitted <a href='AIPW.html'>AIPW</a> object</p>
+    <h2 class="hasAnchor" id="r-usage"><a class="anchor" href="#r-usage"></a>R6 Usage</h2>
 
-    <div class='dont-index'><p><a href='AIPW.html'>AIPW</a></p></div>
+    
+
+<p><code>$fit()</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
-<span class='no'>aipw_sl</span> <span class='kw'>&lt;-</span> <span class='fu'>aipw_wrapper</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
+<span class='no'>aipw_sl</span> <span class='kw'>&lt;-</span> <span class='no'>AIPW</span>$<span class='fu'>new</span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>A</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
                     <span class='kw'>W.Q</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>), <span class='kw'>W.g</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span>(<span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span>),
                     <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,<span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.mean"</span>,
-                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</div></pre>
+                    <span class='kw'>k_split</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+<span class='no'>aipw_sl</span>$<span class='fu'>fit</span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

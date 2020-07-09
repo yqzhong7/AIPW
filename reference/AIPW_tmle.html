@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Augmented Inverse Probablity Weighting (AIPW) take TMLE or tmle3 inputs — AIPW_tmle • AIPW</title>
+<title>Augmented Inverse Probability Weighting (AIPW) uses tmle or tmle3 as inputs — AIPW_tmle • AIPW</title>
 
 
 <!-- jquery -->
@@ -45,8 +45,8 @@
 
 
 
-<meta property="og:title" content="Augmented Inverse Probablity Weighting (AIPW) take TMLE or tmle3 inputs — AIPW_tmle" />
-<meta property="og:description" content="Define an R6Class aipw_tmle object whcih takes TMLE or tmle3 inputs" />
+<meta property="og:title" content="Augmented Inverse Probability Weighting (AIPW) uses tmle or tmle3 as inputs — AIPW_tmle" />
+<meta property="og:description" content="AIPW_tmle class uses a fitted tmle or tmle3 object as input" />
 
 
 
@@ -133,114 +133,98 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Augmented Inverse Probablity Weighting (AIPW) take TMLE or tmle3 inputs</h1>
+    <h1>Augmented Inverse Probability Weighting (AIPW) uses tmle or tmle3 as inputs</h1>
     <small class="dont-index">Source: <a href='https://github.com/yqzhong7/AIPW/blob/master/R/AIPW_tmle.R'><code>R/AIPW_tmle.R</code></a></small>
     <div class="hidden name"><code>AIPW_tmle.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Define an R6Class aipw_tmle object whcih takes TMLE or tmle3 inputs</p>
+    <p><code>AIPW_tmle</code> class uses a fitted <code>tmle</code> or <code>tmle3</code> object as input</p>
     </div>
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><code>R6Class</code> object.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>AIPW</code> object</p>
+    <p><code>AIPW_tmle</code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>create an AIPW object</p>
-    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
-
-    <p><code><a href='AIPW_base.html'>AIPW::AIPW_base</a></code> -&gt; <code>AIPW_tmle</code></p>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+    <p>Create an AIPW_tmle object that uses the estimated efficient influence function from a fitted <code>tmle</code> or <code>tmle3</code> object</p>
+    <h2 class="hasAnchor" id="constructor"><a class="anchor" href="#constructor"></a>Constructor</h2>
 
     
-<h3>Public methods</h3>
 
-<ul>
-<li><p><a href='#method-new'><code>AIPW_tmle$new()</code></a></p></li>
-<li><p><a href='#method-clone'><code>AIPW_tmle$clone()</code></a></p></li>
-</ul>
-<p><details open ><summary>Inherited methods</summary>
-<ul>
-<li><p><span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="plot.p_score"><a href='../../AIPW/html/AIPW_base.html#method-plot.p_score'><code>AIPW::AIPW_base$plot.p_score()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="AIPW" data-topic="AIPW_base" data-id="summary"><a href='../../AIPW/html/AIPW_base.html#method-summary'><code>AIPW::AIPW_base$summary()</code></a></span></p></li>
-</ul>
-</details>
+<p><code>AIPW$new(Y = NULL, A = NULL, tmle_fit = NULL, verbose = TRUE)</code></p>
+    <h2 class="hasAnchor" id="constructor-arguments"><a class="anchor" href="#constructor-arguments"></a>Constructor Arguments</h2>
 
-<hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Create a new <code>AIPW_tmle</code> object.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>Y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>A</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre><p></div></p>
+    
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
-<dt><code>Y</code></dt><dd><p>Outcome (binary integer: 0 or 1)</p></dd>
-
-<dt><code>A</code></dt><dd><p>Exposure (binary integer: 0 or 1)</p></dd>
-
-<dt><code>tmle_fit</code></dt><dd><p>A fitted <code>tmle</code> object</p></dd>
-
-<dt><code>verbose</code></dt><dd><p>Whether to show progression bar and print the result (logical; Default = FALSE)</p></dd>
-
-</dl><p></div></p>
-<h3>Returns</h3>
-<p>A new <code>AIPW_tmle</code> obejct</p>
-<h3>Examples</h3>
-<p><div class="r example copy"></p><pre>\dontrun{
-vec &amp;lt;- function() sample(0:1,100,replace = TRUE)
-df &amp;lt;- data.frame(replicate(4,vec()))
-names(df) &amp;lt;- c("A","Y","W1","W2")
-
-## From tmle
-library(tmle)
-library(SuperLearner)
-tmle_fit &amp;lt;- tmle(Y=df$Y,A=df$A,W=subset(df,select=c("W1","W2")),
-                 Q.SL.library="SL.glm",
-                 g.SL.library="SL.glm",
-                 family="binomial")
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
+<table class='table'>
+<tr><td><strong>Argument</strong></td><td><strong>Type</strong></td><td><strong>Details</strong></td></tr>
+<tr><td><code>Y</code></td><td>Integer</td><td>A vector of outcomes (0 or 1)</td></tr>
+<tr><td><code>A</code></td><td>Integer</td><td>A vector ofExposure (0 or 1)</td></tr>
+<tr><td><code>tmle_fit</code></td><td>Object</td><td>A fitted <code>tmle</code> or <code>tmle3</code> object</td></tr>
+<tr><td><code>verbose</code></td><td>Logical</td><td>Whether to print the result (Default = TRUE)</td></tr>
+</table>
 
 
-## From tmle3
-# tmle3 simple implementation
-\dontrun{
-library(tmle3)
-library(sl3)
-node_list &amp;lt;- list(A = "A",Y = "Y",W = c("W1","W2"))
-or_spec &amp;lt;- tmle_OR(baseline_level = "0",contrast_level = "1")
-tmle_task &amp;lt;- or_spec$make_tmle_task(df,node_list)
-lrnr_glm &amp;lt;- make_learner(Lrnr_glm)
-sl &amp;lt;- Lrnr_sl$new(learners = list(lrnr_glm))
-learner_list &amp;lt;- list(A = sl, Y = sl)
-tmle3_fit &amp;lt;- tmle3(or_spec, data=df, node_list, learner_list)
+    <h2 class="hasAnchor" id="public-methods"><a class="anchor" href="#public-methods"></a>Public Methods</h2>
 
-# parse tmle3_fit into AIPW_tmle class
-AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle3_fit,verbose = TRUE)$summary()
-}
+    
 
-}
-</pre><p></div></p>
+<table class='table'>
+<tr><td><strong>Methods</strong></td><td><strong>Link</strong></td></tr>
+<tr><td><code><a href='summary.html'>summary()</a></code></td><td><code><a href='summary.html'>summary.AIPW_base</a></code></td></tr>
+<tr><td><code><a href='plot.p_score.html'>plot.p_score()</a></code></td><td><code><a href='plot.p_score.html'>plot.p_score</a></code></td></tr>
+</table>
 
-<p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AIPW_tmle</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
-<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+    <h2 class="hasAnchor" id="public-variables"><a class="anchor" href="#public-variables"></a>Public Variables</h2>
 
-</dl><p></div></p>
+    
+
+<table class='table'>
+<tr><td><strong>Variable</strong></td><td><strong>Return</strong></td></tr>
+<tr><td><code>n</code></td><td>Number of observations</td></tr>
+<tr><td><code>obs_est</code></td><td>Components for estimating the efficient influence functions to calculate average causal effects</td></tr>
+<tr><td><code>estimates</code></td><td>Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation</td></tr>
+<tr><td><code>result</code></td><td>A matrix contains RD, RR and OR with their SE and 95%CI</td></tr>
+<tr><td><code>g.plot</code></td><td>A density plot of propensity scores by exposure status (<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density</a></code>)</td></tr>
+</table>
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>vec</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>0</span>:<span class='fl'>1</span>,<span class='fl'>100</span>,<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>4</span>,<span class='fu'>vec</span>()))
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>df</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"Y"</span>,<span class='st'>"W1"</span>,<span class='st'>"W2"</span>)
+
+<span class='co'>## From tmle</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tmle</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>SuperLearner</span>)
+<span class='no'>tmle_fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/tmle/man/tmle.html'>tmle</a></span>(<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>W</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>df</span>,<span class='kw'>select</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"W1"</span>,<span class='st'>"W2"</span>)),
+                 <span class='kw'>Q.SL.library</span><span class='kw'>=</span><span class='st'>"SL.glm"</span>,
+                 <span class='kw'>g.SL.library</span><span class='kw'>=</span><span class='st'>"SL.glm"</span>,
+                 <span class='kw'>family</span><span class='kw'>=</span><span class='st'>"binomial"</span>)
+<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='summary.html'>summary</a></span>()
+
+
+<span class='co'>## From tmle3</span>
+<span class='co'># tmle3 simple implementation</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tmle3</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sl3</span>)
+<span class='no'>node_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='st'>"A"</span>,<span class='kw'>Y</span> <span class='kw'>=</span> <span class='st'>"Y"</span>,<span class='kw'>W</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"W1"</span>,<span class='st'>"W2"</span>))
+<span class='no'>or_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/tmle3/reference/tmle_OR.html'>tmle_OR</a></span>(<span class='kw'>baseline_level</span> <span class='kw'>=</span> <span class='st'>"0"</span>,<span class='kw'>contrast_level</span> <span class='kw'>=</span> <span class='st'>"1"</span>)
+<span class='no'>tmle_task</span> <span class='kw'>&lt;-</span> <span class='no'>or_spec</span>$<span class='fu'>make_tmle_task</span>(<span class='no'>df</span>,<span class='no'>node_list</span>)
+<span class='no'>lrnr_glm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tlverse.org/sl3/reference/Lrnr_base.html'>make_learner</a></span>(<span class='no'>Lrnr_glm</span>)
+<span class='no'>sl</span> <span class='kw'>&lt;-</span> <span class='no'>Lrnr_sl</span>$<span class='fu'>new</span>(<span class='kw'>learners</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>lrnr_glm</span>))
+<span class='no'>learner_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='no'>sl</span>, <span class='kw'>Y</span> <span class='kw'>=</span> <span class='no'>sl</span>)
+<span class='no'>tmle3_fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/tmle3/reference/tmle3.html'>tmle3</a></span>(<span class='no'>or_spec</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>df</span>, <span class='no'>node_list</span>, <span class='no'>learner_list</span>)
+
+<span class='co'># parse tmle3_fit into AIPW_tmle class</span>
+<span class='no'>AIPW_tmle</span>$<span class='fu'>new</span>(<span class='kw'>A</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>A</span>,<span class='kw'>Y</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>Y</span>,<span class='kw'>tmle_fit</span> <span class='kw'>=</span> <span class='no'>tmle3_fit</span>,<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='summary.html'>summary</a></span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
