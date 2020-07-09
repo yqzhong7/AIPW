@@ -1,6 +1,6 @@
 Package: AIPW
 Title: Augmented Inverse Probability Weighting (AIPW) for binary exposure and binary outcome
-Version: 0.5.3.9000
+Version: 0.5.4.9000
 Authors@R: 
     c(person(given = "Yongqi",
              family = "Zhong",
@@ -38,8 +38,7 @@ Imports:
     sl3,
     ggplot2,
     future.apply,
-    progressr,
-    R62S3 (>= 1.4.0)
+    progressr
 Remotes: 
     github::tlverse/sl3,
     github::tlverse/tmle3

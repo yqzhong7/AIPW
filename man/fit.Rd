@@ -4,12 +4,6 @@
 \alias{fit}
 \alias{fit.AIPW}
 \title{Fit the data to the \link{AIPW} object}
-\usage{
-fit(object)
-}
-\arguments{
-\item{object}{An object of \link{AIPW} class}
-}
 \value{
 A fitted \link{AIPW} object
 }
@@ -28,4 +22,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
                     k_split=1,verbose=FALSE)
 aipw_sl$fit()
+}
+\seealso{
+\link{AIPW}
 }

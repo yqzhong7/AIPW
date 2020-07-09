@@ -3,12 +3,6 @@
 \name{plot.p_score}
 \alias{plot.p_score}
 \title{Plot propensity scores by exposure status}
-\usage{
-plot.p_score(object)
-}
-\arguments{
-\item{object}{An object of \link{AIPW} or \link{AIPW_tmle} class with estimated efficient influence functions}
-}
 \value{
 \code{g.plot} A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})
 }
@@ -31,4 +25,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
 aipw_sl$plot.p_score()
 #after calculation
 aipw_sl$summary(g.bound=0.025)$plot.p_score()
+}
+\seealso{
+\link{AIPW} and \link{AIPW_tmle}
 }

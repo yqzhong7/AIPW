@@ -5,7 +5,7 @@
 #'
 #' @details An AIPW object is constructed by `new()` with users' inputs of data and causal structures, then it `fit()` the data using the
 #' libraries in `Q.SL.library` and `g.SL.library` with `k_split` sample splitting, and provides results via the `summary()` method.
-#' After using `fit()` and/or `summary()` methods, the propensity scores by exposure status can be examined with `plot.p_plot()`.
+#' After using `fit()` and/or `summary()` methods, the propensity scores by exposure status can be examined with `plot.p_score()`.
 #' See examples for illustration.
 #'
 #' @section Constructor:
@@ -334,14 +334,12 @@ AIPW <- R6::R6Class(
 #' @description
 #' Fitting the data into the [AIPW] object with/without sample splitting to estimate the influence functions
 #'
-#' @usage fit(object)
-#'
-#' @param object An object of [AIPW] class
-#'
 #' @section R6 Usage:
 #' \code{$fit()}
 #'
 #' @return A fitted [AIPW] object
+#'
+#' @seealso [AIPW]
 #'
 #' @examples
 #' library(SuperLearner)

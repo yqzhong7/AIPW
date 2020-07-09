@@ -4,12 +4,7 @@
 \alias{summary}
 \alias{summary.AIPW_base}
 \title{Summary of the average treatment effects from AIPW}
-\usage{
-summary.AIPW_base(object, g.bound = 0.025)
-}
 \arguments{
-\item{object}{An object of \link{AIPW} or \link{AIPW_tmle} class  efficient influence functions}
-
 \item{g.bound}{Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
 }
 \value{
@@ -30,4 +25,7 @@ aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
                     k_split=1,verbose=FALSE)$fit()
 aipw_sl$summary(g.bound=0.025)
+}
+\seealso{
+\link{AIPW} and \link{AIPW_tmle}
 }

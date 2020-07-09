@@ -192,13 +192,12 @@ AIPW_base <- R6::R6Class(
 #' @description
 #' Calculate average causal effects in RD, RR and OR in the fitted `AIPW` obejct with the estimated influence functions
 #'
-#' @usage summary.AIPW_base(object, g.bound = 0.025)
-#'
-#' @param object An object of [AIPW] or [AIPW_tmle] class  efficient influence functions
-#' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
-#'
 #' @section R6 Usage:
 #' \code{$summary(g.bound = 0.025)}
+#'
+#' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
+#'
+#' @seealso [AIPW] and [AIPW_tmle]
 #'
 #' @return Summaries of the average treatment effect estimations in RD, RR and OR
 #'
@@ -219,12 +218,10 @@ NULL
 #' @description
 #' Plot and check the balance of propensity scores by exposure status
 #'
-#' @usage plot.p_score(object)
-#'
-#' @param object An object of [AIPW] or [AIPW_tmle] class with estimated efficient influence functions
-#'
 #' @section R6 Usage:
 #' \code{$plot.p_plot()}
+#'
+#' @seealso [AIPW] and [AIPW_tmle]
 #'
 #' @return `g.plot` A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
 #'
