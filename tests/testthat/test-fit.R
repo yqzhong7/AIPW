@@ -96,13 +96,14 @@ test_that("AIPW fit: sl3 & k_split", {
 })
 
 
-#' @title Testing fit: verbose
+#' @title Testing fit: verbose and progressr
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/26
+#' 2020/07/09
 test_that("AIPW fit: verbose", {
-  #verbose == TRUE: w/ progression bar & "Done!"
+  #verbose == TRUE: "Done!"
+  library(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
   sl.lib <- c("SL.mean","SL.glm")
   aipw <-  AIPW$new(Y=vec(),
@@ -113,5 +114,14 @@ test_that("AIPW fit: verbose", {
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = T)
   expect_output(aipw$fit(),regexp = "Done!")
+
+  ##progressr
+  #when progressr not loaded
+  expect_false(aipw$.__enclos_env__$private$isLoaded_progressr)
+  #when loaded
+  library(progressr)
+  aipw$fit()
+  expect_true(aipw$.__enclos_env__$private$isLoaded_progressr)
 })
+
 

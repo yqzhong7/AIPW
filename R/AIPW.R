@@ -205,7 +205,7 @@ AIPW <- R6::R6Class(
 
       #----------------progress bar setup----------#
       #check if progressr is loaded
-      if (!any(names(sessionInfo()$otherPkgs) %in% c("progressr"))){
+      if (any(names(sessionInfo()$otherPkgs) %in% c("progressr"))){
         private$isLoaded_progressr = TRUE
         pb <- progressr::progressor(along = iter)
       }
