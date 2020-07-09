@@ -8,7 +8,7 @@
 A fitted \link{AIPW} object
 }
 \description{
-Fitting the data into the \link{AIPW} object with/without sample splitting to estimate the influence functions
+Fitting the data into the \link{AIPW} object with/without sample splitting to estimate the efficient influence functions
 }
 \section{R6 Usage}{
 

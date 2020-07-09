@@ -21,8 +21,8 @@ Create an AIPW_tmle object that uses the estimated efficient influence function 
 
 \tabular{lll}{
 \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
-\code{Y}               \tab   Integer    \tab     A vector of outcomes (0 or 1) \cr
-\code{A}               \tab   Integer    \tab     A vector ofExposure (0 or 1) \cr
+\code{Y}               \tab   Integer    \tab     A vector of outcome (0 or 1) \cr
+\code{A}               \tab   Integer    \tab     A vector of exposure (0 or 1) \cr
 \code{tmle_fit}        \tab   Object             \tab    A fitted \code{tmle} or \code{tmle3} object \cr
 \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE)
 }
@@ -42,7 +42,8 @@ Create an AIPW_tmle object that uses the estimated efficient influence function 
 \tabular{ll}{
 \strong{Variable}     \tab   \strong{Return} \cr
 \code{n}              \tab   Number of observations \cr
-\code{obs_est}        \tab   Components for estimating the efficient influence functions to calculate average causal effects \cr
+\code{obs_est}        \tab   Components calculating average causal effects,
+including propensity scores, counterfactual predictions and efficient influence functions \cr
 \code{estimates}      \tab   Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation \cr
 \code{result}         \tab   A matrix contains RD, RR and OR with their SE and 95\%CI \cr
 \code{g.plot}         \tab   A density plot of propensity scores by exposure status (\code{ggplot2::geom_density}) \cr

@@ -135,7 +135,7 @@ AIPW_base <- R6::R6Class(
     verbose=NULL,
     g.bound=NULL,
     #private methods
-    #Use individual estimates (obs_est$aipw_eif0 & obs_est$aipw_eif0 ) to calcualte RD, RR and OR with SE and 95CI%
+    #Use individual estimates of efficient influence functions (obs_est$aipw_eif0 & obs_est$aipw_eif0) to calculate RD, RR and OR with SE and 95CI%
     get_RD = function(aipw_eif1,aipw_eif0,root_n){
       est <- mean(aipw_eif1 - aipw_eif0)
       se <- stats::sd(aipw_eif1 - aipw_eif0)/root_n
@@ -190,7 +190,7 @@ AIPW_base <- R6::R6Class(
 #' @title Summary of the average treatment effects from AIPW
 #'
 #' @description
-#' Calculate average causal effects in RD, RR and OR in the fitted `AIPW` obejct with the estimated influence functions
+#' Calculate average causal effects in RD, RR and OR in the fitted [AIPW] or [AIPW_tmle] object using the estimated efficient influence functions
 #'
 #' @section R6 Usage:
 #' \code{$summary(g.bound = 0.025)}
@@ -199,7 +199,7 @@ AIPW_base <- R6::R6Class(
 #'
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
-#' @return Summaries of the average treatment effect estimations in RD, RR and OR
+#' @return Summarize the average treatment effect in RD, RR and OR
 #'
 #' @examples
 #' library(SuperLearner)
@@ -213,7 +213,7 @@ NULL
 
 
 #' @name plot.p_score
-#' @title Plot propensity scores by exposure status
+#' @title Plot the propensity scores by exposure status
 #'
 #' @description
 #' Plot and check the balance of propensity scores by exposure status

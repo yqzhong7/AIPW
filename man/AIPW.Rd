@@ -25,18 +25,18 @@ See examples for illustration.
 
 \tabular{lll}{
 \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
-\code{Y}               \tab   Integer    \tab     A vector of outcomes (0 or 1) \cr
-\code{A}               \tab   Integer    \tab     A vector ofExposure (0 or 1) \cr
+\code{Y}               \tab   Integer           \tab     A vector of outcome (0 or 1) \cr
+\code{A}               \tab   Integer           \tab     A vector of exposure (0 or 1) \cr
 \code{W}               \tab   Data              \tab    Vector, matrix or data.frame of covariates for both exposure and outcome models.
 If NULL, this function will seek for inputs from \code{W.Q} and \code{W.g}. \cr
 \code{W.Q}             \tab   Data              \tab    Vector, matrix or data.frame of covariates for the outcome model (Q).
 Only valid when \code{W} is NULL, otherwise it would be replaced by \code{W}. \cr
 \code{W.g}             \tab   Data              \tab    Vector, matrix or data.frame of covariates for the exposure model (g).
-nly valid when \code{W} is NULL, otherwise it would be replaced by \code{W}. \cr
+Only valid when \code{W} is NULL, otherwise it would be replaced by \code{W}. \cr
 \code{Q.SL.library}    \tab   SL.library        \tab    \link{SuperLearner} libraries or \code{sl3} learner object (Lrnr_base) of algorithms used for the outcome model (Q). \cr
-\code{g.SL.library}    \tab   SL.library        \tab    \link{SuperLearner} libraries or \code{sl3} learner object (Lrnr_base) of algorithms used for the outcome model (g). \cr
-\code{k_split}         \tab   Integer           \tab    Number of splitting (Default = 10; range: from 1 to number of observation-1
-if k_split=1, no sample splitting; if k_split>1, use similar technique as cross-validation
+\code{g.SL.library}    \tab   SL.library        \tab    \link{SuperLearner} libraries or \code{sl3} learner object (Lrnr_base) of algorithms used for the exposure model (g). \cr
+\code{k_split}         \tab   Integer           \tab    Number of splitting (Default = 10; range: from 1 to number of observation-1).
+If k_split=1, no sample splitting; if k_split>1, use similar technique as cross-validation
 (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict
 \strong{NOTE: it's recommended to use sample splitting.} \cr
 \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE) \cr
@@ -58,12 +58,13 @@ if k_split=1, no sample splitting; if k_split>1, use similar technique as cross-
 \tabular{ll}{
 \strong{Variable}     \tab   \strong{Return} \cr
 \code{n}              \tab   Number of observations \cr
-\code{obs_est}        \tab   Components for estimating the efficient influence functions to calculate average causal effects \cr
+\code{obs_est}        \tab   Components calculating average causal effects,
+including propensity scores, counterfactual predictions and efficient influence functions \cr
 \code{estimates}      \tab   Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation \cr
 \code{result}         \tab   A matrix contains RD, RR and OR with their SE and 95\%CI \cr
 \code{g.plot}         \tab   A density plot of propensity scores by exposure status (\code{ggplot2::geom_density}) \cr
-\code{libs}           \tab   SuperLearner or sl3 libraries and their fitted objects \cr
-\code{sl.fit}         \tab   A wrapper function for fitting SuperLearner or sl3 \cr
+\code{libs}           \tab   \link{SuperLearner} or sl3 libraries and their fitted objects \cr
+\code{sl.fit}         \tab   A wrapper function for fitting \link{SuperLearner} or sl3 \cr
 \code{sl.predict}     \tab   A wrapper function using \code{sl.fit} to predict \cr
 }
 }

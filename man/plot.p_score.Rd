@@ -2,7 +2,7 @@
 % Please edit documentation in R/AIPW_base.R
 \name{plot.p_score}
 \alias{plot.p_score}
-\title{Plot propensity scores by exposure status}
+\title{Plot the propensity scores by exposure status}
 \value{
 \code{g.plot} A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})
 }
