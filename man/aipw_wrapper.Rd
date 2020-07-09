@@ -46,7 +46,7 @@ NOTE: it's recommended to use sample splitting.}
 \item{g.bound}{Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
 }
 \value{
-A fitted \code{AIPW} obeject with summarised results
+A fitted \code{AIPW} object with summarised results
 }
 \description{
 A wrapper function for \code{AIPW$new()$fit()$summary()}
@@ -57,4 +57,7 @@ aipw_sl <- aipw_wrapper(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
                     k_split=1,verbose=FALSE)
+}
+\seealso{
+\link{AIPW}
 }

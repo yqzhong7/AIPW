@@ -12,3 +12,4 @@
 ^README\.Rmd$
 ^README_files$
 ^tests\testthat\*.pdf$
+^\.Rd2pdf87414$

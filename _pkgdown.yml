@@ -19,3 +19,21 @@ template:
     docsearch:
       api_key: fdb17ce3606ec3425c318a7950c6cf48
       index_name: aipw
+
+reference:
+- title: AIPW Class
+  desc:  Estimation with user-defined data, SL.library and causal structure
+- contents:
+  - AIPW
+  - starts_with("fit")
+  - aipw_wrapper
+- title: AIPW_tmle Class
+  desc:  Using a fitted tmle or tmle3 object as input
+- contents:
+  - AIPW_tmle
+- title: Common methods and base class
+  desc: Methods available for both AIPW and AIPW_tmle classes
+- contents:
+  - AIPW_base
+  - starts_with("summary")
+  - plot.p_score

@@ -1,25 +1,24 @@
-#' @title Augmented Inverse Probablity Weighting Base Class (AIPW_base)
+#' @title Augmented Inverse Probability Weighting Base Class (AIPW_base)
 #'
-#' @description Define a base R6Class for later subclasses inheritance of
-#' \code{AIPW_base$summary()} and \code{AIPW_base$plot.p_score()}
+#' @description A base class for AIPW that implements the common methods, such as \code{summary()} and \code{plot.p_score()}, inheritted by [AIPW] and [AIPW_tmle] class
 #'
 #' @docType class
 #'
 #' @importFrom R6 R6Class
 #'
-#' @export
-#'
 #' @return \code{AIPW} base object
-#'
+#' @seealso [AIPW] and [AIPW_tmle]
 #' @format \code{\link{R6Class}} object.
+#' @export
 AIPW_base <- R6::R6Class(
   "AIPW_base",
   portable = TRUE,
   class = TRUE,
   public = list(
-    #' @field n Number of observations
+    #-------------------------public fields-----------------------------#
+    #Number of observations
     n = NULL,
-    #' @field obs_est Components for estimating the influence functions of all observations to calculate average causal effects
+    #Components for estimating the influence functions of all observations to calculate average causal effects
     obs_est = list(mu0 = NULL,
                    mu1 = NULL,
                    mu = NULL,
@@ -27,24 +26,17 @@ AIPW_base <- R6::R6Class(
                    p_score = NULL,
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
-    #' @field estimates Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
+    #Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
     estimates = list(RD = NULL,
                      RR = NULL,
                      OR = NULL,
                      sigma_covar = NULL),
-    #' @field result A matrix contains RD, RR and OR with their SE and 95%CI
+    #A matrix contains RD, RR and OR with their SE and 95%CI
     result = NULL,
-    #' @field g.plot A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
+    #A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
     g.plot = NULL,
 
-    #' @description
-    #' Create a new `AIPW_base` object.
-    #'
-    #' @param Y Outcome (binary integer: 0 or 1)
-    #' @param A Exposure (binary integer: 0 or 1)
-    #' @param verbose Whether to print the result (logical; Default = TRUE)
-    #'
-    #' @return A new `AIPW_base` obejct
+    #-------------------------constructor-----------------------------#
     initialize = function(Y=NULL, A=NULL,verbose=TRUE){
       #save input into private fields
       private$Y=Y
@@ -61,20 +53,8 @@ AIPW_base <- R6::R6Class(
       self$obs_est$mu <- rep(NA,self$n)
       self$obs_est$raw_p_score <- rep(NA,self$n)
     },
-    #' @description
-    #' Calculate average causal effects in RD, RR and OR in the fitted `AIPW` obejct with the estimated influence functions
-    #'
-    #' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
-    #'
-    #' @return An `AIPW` object with average treatment effect estimations in RD, RR and OR
-    #'
-    #' @examples
-    #' library(SuperLearner)
-    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-    #'                     k_split=1,verbose=FALSE)$fit()
-    #' aipw_sl$summary(g.bound=0.025)
+
+    #-------------------------summary method-----------------------------#
     summary = function(g.bound=0.025){
       #p_score truncation
       private$g.bound=g.bound
@@ -112,21 +92,8 @@ AIPW_base <- R6::R6Class(
       }
       invisible(self)
     },
-    #' @description
-    #' Plot and check the balance of propensity scores by exposure status
-    #'
-    #' @return `g.plot` A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
-    #' @examples
-    #' library(SuperLearner)
-    #' library(ggplot2)
-    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-    #'                     k_split=1,verbose=FALSE)$fit()
-    #' #before average treatment effect calculation
-    #' aipw_sl$plot.p_score()
-    #' #after calculation
-    #' aipw_sl$summary(g.bound=0.025)$plot.p_score()
+
+    #-------------------------plot.p_score method-----------------------------#
     plot.p_score = function(){
       #check if ggplot2 library is loaded
       if (!any(names(sessionInfo()$otherPkgs) %in% c("ggplot2"))){
@@ -159,6 +126,8 @@ AIPW_base <- R6::R6Class(
       invisible(self)
     }
   ),
+
+  #-------------------------private fields and methods----------------------------#
   private = list(
     #input
     Y=NULL,
@@ -213,3 +182,61 @@ AIPW_base <- R6::R6Class(
     }
   )
 )
+
+
+
+#' @name summary
+#' @aliases summary.AIPW_base
+#' @title Summary of the average treatment effects from AIPW
+#'
+#' @description
+#' Calculate average causal effects in RD, RR and OR in the fitted `AIPW` obejct with the estimated influence functions
+#'
+#' @usage summary.AIPW_base(object, g.bound = 0.025)
+#'
+#' @param object An object of [AIPW] or [AIPW_tmle] class  efficient influence functions
+#' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
+#'
+#' @section R6 Usage:
+#' \code{$summary(g.bound = 0.025)}
+#'
+#' @return Summaries of the average treatment effect estimations in RD, RR and OR
+#'
+#' @examples
+#' library(SuperLearner)
+#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+#'                     k_split=1,verbose=FALSE)$fit()
+#' aipw_sl$summary(g.bound=0.025)
+NULL
+
+
+
+#' @name plot.p_score
+#' @title Plot propensity scores by exposure status
+#'
+#' @description
+#' Plot and check the balance of propensity scores by exposure status
+#'
+#' @usage plot.p_score(object)
+#'
+#' @param object An object of [AIPW] or [AIPW_tmle] class with estimated efficient influence functions
+#'
+#' @section R6 Usage:
+#' \code{$plot.p_plot()}
+#'
+#' @return `g.plot` A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
+#'
+#' @examples
+#' library(SuperLearner)
+#' library(ggplot2)
+#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+#'                     k_split=1,verbose=FALSE)$fit()
+#' #before average treatment effect calculation
+#' aipw_sl$plot.p_score()
+#' #after calculation
+#' aipw_sl$summary(g.bound=0.025)$plot.p_score()
+NULL

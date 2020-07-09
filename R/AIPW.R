@@ -1,62 +1,95 @@
-#' @title Augmented Inverse Probablity Weighting (AIPW)
+#' @title Augmented Inverse Probability Weighting (AIPW)
 #'
-#' @description Define an R6Class aipw object
+#' @description An R6Class of AIPW for estimating the average causal effects with users' inputs of exposure, outcome, covariates and related
+#' libraries for estimating the efficient influence function.
 #'
-#' @docType class
+#' @details An AIPW object is constructed by `new()` with users' inputs of data and causal structures, then it `fit()` the data using the
+#' libraries in `Q.SL.library` and `g.SL.library` with `k_split` sample splitting, and provides results via the `summary()` method.
+#' After using `fit()` and/or `summary()` methods, the propensity scores by exposure status can be examined with `plot.p_plot()`.
+#' See examples for illustration.
 #'
-#' @importFrom R6 R6Class
+#' @section Constructor:
+#' \code{AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE)}
 #'
-#' @export
+#' @section Constructor Arguments:
+#' \tabular{lll}{
+#' \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
+#' \code{Y}               \tab   Integer    \tab     A vector of outcomes (0 or 1) \cr
+#' \code{A}               \tab   Integer    \tab     A vector ofExposure (0 or 1) \cr
+#' \code{W}               \tab   Data              \tab    Vector, matrix or data.frame of covariates for both exposure and outcome models.
+#'                                                         If NULL, this function will seek for inputs from `W.Q` and `W.g`. \cr
+#' \code{W.Q}             \tab   Data              \tab    Vector, matrix or data.frame of covariates for the outcome model (Q).
+#'                                                         Only valid when `W` is NULL, otherwise it would be replaced by `W`. \cr
+#' \code{W.g}             \tab   Data              \tab    Vector, matrix or data.frame of covariates for the exposure model (g).
+#'                                                         nly valid when `W` is NULL, otherwise it would be replaced by `W`. \cr
+#' \code{Q.SL.library}    \tab   SL.library        \tab    [SuperLearner] libraries or `sl3` learner object (Lrnr_base) of algorithms used for the outcome model (Q). \cr
+#' \code{g.SL.library}    \tab   SL.library        \tab    [SuperLearner] libraries or `sl3` learner object (Lrnr_base) of algorithms used for the outcome model (g). \cr
+#' \code{k_split}         \tab   Integer           \tab    Number of splitting (Default = 10; range: from 1 to number of observation-1
+#'                                                         if k_split=1, no sample splitting; if k_split>1, use similar technique as cross-validation
+#'                                                         (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict
+#'                                                         \strong{NOTE: it's recommended to use sample splitting.} \cr
+#' \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE) \cr
+#' }
 #'
-#' @details create an AIPW object
+#' @section Public Methods:
+#'  \tabular{ll}{
+#'  \strong{Methods}      \tab   \strong{Link} \cr
+#'  \code{fit()}          \tab   \code{\link{fit.AIPW}} \cr
+#'  \code{summary()}      \tab   \code{\link{summary.AIPW_base}} \cr
+#'  \code{plot.p_score()} \tab   \code{\link{plot.p_score}} \cr
+#'  }
+#'
+#' @section Public Variables:
+#'  \tabular{ll}{
+#'  \strong{Variable}     \tab   \strong{Return} \cr
+#'  \code{n}              \tab   Number of observations \cr
+#'  \code{obs_est}        \tab   Components for estimating the efficient influence functions to calculate average causal effects \cr
+#'  \code{estimates}      \tab   Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation \cr
+#'  \code{result}         \tab   A matrix contains RD, RR and OR with their SE and 95%CI \cr
+#'  \code{g.plot}         \tab   A density plot of propensity scores by exposure status (`ggplot2::geom_density`) \cr
+#'  \code{libs}           \tab   SuperLearner or sl3 libraries and their fitted objects \cr
+#'  \code{sl.fit}         \tab   A wrapper function for fitting SuperLearner or sl3 \cr
+#'  \code{sl.predict}     \tab   A wrapper function using \code{sl.fit} to predict \cr
+#'  }
 #'
 #' @return \code{AIPW} object
 #'
-#' @format \code{\link{R6Class}} object.
+#' @examples
+#' library(SuperLearner)
+#' library(ggplot2)
+#'
+#' #create an object
+#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+#'                     k_split=1,verbose=FALSE)$fit()
+#'
+#' #fit the object
+#' aipw_sl$fit()
+#'
+#' #calculate the retults
+#' aipw_sl$summary(g.bound = 0.025)
+#'
+#' #check the propensity scores by exposure status after truncation
+#' aipw_sl$plot.p_score()
+#'
+#' @export
 AIPW <- R6::R6Class(
   "AIPW",
   portable = TRUE,
   inherit = AIPW_base,
   public = list(
-    #' @field libs SuperLearner or sl3 libraries and their fitted objects
+    #-------------------------public fields-----------------------------#
     libs =list(Q.SL.library=NULL,
                Q.fit = NULL,
                g.SL.library=NULL,
                g.fit = NULL,
                validation_index = NULL),
-    #' @field sl.fit A wrapper function for fitting SuperLearner or sl3
     sl.fit = NULL,
-    #' @field sl.predict A wrapper using \code{sl.fit} to predict
     sl.predict = NULL,
 
-    #' @description
-    #' Create a new `AIPW` object.
-    #'
-    #' @param Y Outcome (binary integer: 0 or 1)
-    #' @param A Exposure (binary integer: 0 or 1)
-    #' @param verbose Whether to print the result (logical; Default = TRUE)
-    #' @param W covariates for both exposure and outcome models  (vector, matrix or data.frame). If null, this function will seek for
-    #' inputs from `W.Q` and `W.g`.
-    #' @param W.Q Only valid when `W` is null, otherwise it would be replaced by `W`.
-    #' Covariates for outcome model (vector, matrix or data.frame).
-    #' @param W.g Only valid when `W` is null, otherwise it would be replaced by `W`.
-    #' Covariates for exposure model (vector, matrix or data.frame)
-    #' @param Q.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model
-    #' @param g.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model
-    #' @param k_split Number of splitting (integer; range: from 1 to number of observation-1):
-    #'   if k_split=1, no sample splitting;
-    #'   if k_split>1, use similar technique of cross-validation
-    #'   (e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
-    #'   NOTE: it's recommended to use sample splitting.
-    #'
-    #' @return A new `AIPW` object
-    #'
-    #' @examples
-    #' library(SuperLearner)
-    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-    #'                     k_split=1,verbose=FALSE)
+
+    #-------------------------constructor-----------------------------#
     initialize = function(Y=NULL, A=NULL, verbose=TRUE,
                           W=NULL, W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL, g.SL.library=NULL,
@@ -160,18 +193,8 @@ AIPW <- R6::R6Class(
         private$.f_lapply = function(iter,func) lapply(iter,func)
         }
     },
-    #' @description
-    #' Fitting the data into the `AIPW` object with/without sample splitting to estimate the influence functions
-    #'
-    #' @return A fitted `AIPW` object
-    #'
-    #' @examples
-    #' library(SuperLearner)
-    #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-    #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-    #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-    #'                     k_split=1,verbose=FALSE)
-    #' aipw_sl$fit()
+
+    #-------------------------fit method-----------------------------#
     fit = function(){
       #----------create index for sample splitting---------#
       private$cv$k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
@@ -264,6 +287,8 @@ AIPW <- R6::R6Class(
       invisible(self)
     }
   ),
+
+  #-------------------------private fields and methods----------------------------#
   private = list(
     #input
     Q.set=NULL,
@@ -299,3 +324,30 @@ AIPW <- R6::R6Class(
     }
   )
 )
+
+
+
+#' @name fit
+#' @aliases fit.AIPW
+#' @title Fit the data to the [AIPW] object
+#'
+#' @description
+#' Fitting the data into the [AIPW] object with/without sample splitting to estimate the influence functions
+#'
+#' @usage fit(object)
+#'
+#' @param object An object of [AIPW] class
+#'
+#' @section R6 Usage:
+#' \code{$fit()}
+#'
+#' @return A fitted [AIPW] object
+#'
+#' @examples
+#' library(SuperLearner)
+#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+#'                     k_split=1,verbose=FALSE)
+#' aipw_sl$fit()
+NULL

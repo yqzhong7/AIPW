@@ -22,8 +22,8 @@
 #' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
 #'
 #' @export
-#'
-#' @return A fitted `AIPW` obeject with summarised results
+#' @seealso [AIPW]
+#' @return A fitted `AIPW` object with summarised results
 #'
 #' @examples
 #' library(SuperLearner)

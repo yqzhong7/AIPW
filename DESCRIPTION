@@ -5,7 +5,7 @@ Authors@R:
     c(person(given = "Yongqi",
              family = "Zhong",
              role = c("aut", "cre"),
-             email = "yqzhong7@gmail.com",
+             email = "yq.zhong7@gmail.com",
              comment = c(ORCID = "0000-0002-4042-7450")),
       person(given = "Ashley",
              family = "Naimi",
@@ -16,12 +16,12 @@ Authors@R:
              family = "Conzuelo",
              role = c("aut"),
              email = "gabriel.conzuelo@pitt.edu"))
-Description: Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. 
+Description: Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. This pacakge implement the AIPW estimator for an binary exposure on a binary outcome with user-defined stacked machine learning algorithms.  
 License: GPL-3
 Encoding: UTF-8
 Language: es
 LazyData: true
-Roxygen: list(markdown = TRUE)
+Roxygen: list(markdown = TRUE, r6 = FALSE)
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
