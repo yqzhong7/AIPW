@@ -5,7 +5,7 @@
 \alias{fit.AIPW}
 \title{Fit the data to the \link{AIPW} object}
 \value{
-A fitted \link{AIPW} object
+A fitted \link{AIPW} object with \code{obs_est} and \code{libs} (public variables)
 }
 \description{
 Fitting the data into the \link{AIPW} object with/without sample splitting to estimate the efficient influence functions

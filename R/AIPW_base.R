@@ -199,7 +199,7 @@ AIPW_base <- R6::R6Class(
 #'
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
-#' @return Summarize the average treatment effect in RD, RR and OR
+#' @return `estimates` and `result`(public variables): Average treatment effect in RD, RR and OR
 #'
 #' @examples
 #' library(SuperLearner)
@@ -223,7 +223,7 @@ NULL
 #'
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
-#' @return `g.plot` A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
+#' @return `g.plot` (public variable): A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
 #'
 #' @examples
 #' library(SuperLearner)

@@ -4,7 +4,7 @@
 \alias{plot.p_score}
 \title{Plot the propensity scores by exposure status}
 \value{
-\code{g.plot} A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})
+\code{g.plot} (public variable): A density plot of propensity scores by exposure status (\code{ggplot2::geom_density})
 }
 \description{
 Plot and check the balance of propensity scores by exposure status

@@ -8,7 +8,7 @@
 \item{g.bound}{Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
 }
 \value{
-Summarize the average treatment effect in RD, RR and OR
+\code{estimates} and \code{result}(public variables): Average treatment effect in RD, RR and OR
 }
 \description{
 Calculate average causal effects in RD, RR and OR in the fitted \link{AIPW} or \link{AIPW_tmle} object using the estimated efficient influence functions
