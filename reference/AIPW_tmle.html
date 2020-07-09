@@ -161,8 +161,8 @@
 
 <table class='table'>
 <tr><td><strong>Argument</strong></td><td><strong>Type</strong></td><td><strong>Details</strong></td></tr>
-<tr><td><code>Y</code></td><td>Integer</td><td>A vector of outcomes (0 or 1)</td></tr>
-<tr><td><code>A</code></td><td>Integer</td><td>A vector ofExposure (0 or 1)</td></tr>
+<tr><td><code>Y</code></td><td>Integer</td><td>A vector of outcome (0 or 1)</td></tr>
+<tr><td><code>A</code></td><td>Integer</td><td>A vector of exposure (0 or 1)</td></tr>
 <tr><td><code>tmle_fit</code></td><td>Object</td><td>A fitted <code>tmle</code> or <code>tmle3</code> object</td></tr>
 <tr><td><code>verbose</code></td><td>Logical</td><td>Whether to print the result (Default = TRUE)</td></tr>
 </table>
@@ -186,7 +186,8 @@
 <table class='table'>
 <tr><td><strong>Variable</strong></td><td><strong>Return</strong></td></tr>
 <tr><td><code>n</code></td><td>Number of observations</td></tr>
-<tr><td><code>obs_est</code></td><td>Components for estimating the efficient influence functions to calculate average causal effects</td></tr>
+<tr><td><code>obs_est</code></td><td>Components calculating average causal effects,
+including propensity scores, counterfactual predictions and efficient influence functions</td></tr>
 <tr><td><code>estimates</code></td><td>Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation</td></tr>
 <tr><td><code>result</code></td><td>A matrix contains RD, RR and OR with their SE and 95%CI</td></tr>
 <tr><td><code>g.plot</code></td><td>A density plot of propensity scores by exposure status (<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density</a></code>)</td></tr>
