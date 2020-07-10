@@ -2,7 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^scripts$
-^manual_tests$
 ^docs$
 ^\.travis\.yml$
 ^_pkgdown\.yml$
@@ -11,5 +10,7 @@
 ^\.github$
 ^README\.Rmd$
 ^README_files$
-^tests\testthat\*.pdf$
-^\.Rd2pdf87414$
+^tests/testthat/*.pdf$
+^tests/manual_tests$
+^\.Rd2pdf*
+
