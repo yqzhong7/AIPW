@@ -9,23 +9,24 @@
 #' See examples for illustration.
 #'
 #' @section Constructor:
-#' \code{AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE)}
+#' \code{AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE, save.sl.fit = FALSE)}
 #'
-#' ## Constructor Arguments:
+#' ## Constructor Arguments
 #' \tabular{lll}{
 #' \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
 #' \code{Y}               \tab   Integer           \tab     A vector of outcome (0 or 1) \cr
 #' \code{A}               \tab   Integer           \tab     A vector of exposure (0 or 1) \cr
-#' \code{W}               \tab   Data              \tab     Covariates for both exposure and outcome models. \cr
-#' \code{W.Q}             \tab   Data              \tab     Covariates for the outcome model (Q).\cr
-#' \code{W.g}             \tab   Data              \tab     Covariates for the exposure model (g). \cr
-#' \code{Q.SL.library}    \tab   SL.library        \tab     Algorithms used for the outcome model (Q). \cr
-#' \code{g.SL.library}    \tab   SL.library         \tab    Algorithms used for the exposure model (g). \cr
+#' \code{W}               \tab   Data              \tab     Covariates for \strong{both} exposure and outcome models. \cr
+#' \code{W.Q}             \tab   Data              \tab     Covariates for the \strong{outcome} model (Q).\cr
+#' \code{W.g}             \tab   Data              \tab     Covariates for the \strong{exposure} model (g). \cr
+#' \code{Q.SL.library}    \tab   SL.library        \tab     Algorithms used for the \strong{outcome} model (Q). \cr
+#' \code{g.SL.library}    \tab   SL.library         \tab    Algorithms used for the \strong{exposure} model (g). \cr
 #' \code{k_split}         \tab   Integer           \tab    Number of folds for splitting (Default = 10).\cr
 #' \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE) \cr
+#' \code{save.sl.fit}     \tab   Logical          \tab     Whether to save Q.fit and g.fit (Default = False) \cr
 #' }
 #'
-#' ## Constructor Argument Details:
+#' ## Constructor Argument Details
 #' \describe{
 #'   \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if `W == NULL`, `W` would be replaced by `W.Q` and `W.g`. }
 #'   \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from [SuperLearner] libraries or `sl3` learner object (Lrnr_base)}
@@ -33,6 +34,8 @@
 #'                         If k_split=1, no sample splitting; if k_split>1, use similar technique as cross-validation
 #'                         (e.g., `k_split=10`, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
 #'                          \strong{NOTE: it's recommended to use sample splitting.} }
+#'  \item{\code{save.sl.fit}}{This option allows users to save the fitted sl object (libs$Q.fit & libs$g.fit) for debug use.
+#'                             \strong{Warning: Saving the SuperLearner fitted object may cause a substantive storage/memory use.}}
 #' }
 #'
 #'
@@ -57,7 +60,7 @@
 #'  \code{sl.predict}     \tab   Constructor                \tab     A wrapper function using \code{sl.fit} to predict \cr
 #'  }
 #'
-#' ## Public Variable Details:
+#' ## Public Variable Details
 #' \describe{
 #'    \item{\code{obs_est}}{After using `fit()` and `summary()` methods, this list contains the propensity scores (`p_score`),
 #'    counterfactual predictions (`mu`, `mu1` & `mu0`) and efficient influence functions (`aipw_eif1` & `aipw_eif0`) for later average treatment effect calculations.}
@@ -105,7 +108,7 @@ AIPW <- R6::R6Class(
     initialize = function(Y=NULL, A=NULL, verbose=TRUE,
                           W=NULL, W.Q=NULL, W.g=NULL,
                           Q.SL.library=NULL, g.SL.library=NULL,
-                          k_split=10){
+                          k_split=10, save.sl.fit=FALSE){
       #-----initialize from AIPW_base class-----#
       super$initialize(Y=Y,A=A,verbose=verbose)
       #decide covariate set(s): W.Q and W.g only works when W is null.
@@ -122,6 +125,8 @@ AIPW <- R6::R6Class(
       }
       #save input into private fields
       private$k_split=k_split
+      #whether to save sl.fit  (Q.fit and g.fit)
+      private$save.sl.fit = save.sl.fit
       #check data length
       if (!(length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
         stop("Please check the dimension of the data")
@@ -286,8 +291,10 @@ AIPW <- R6::R6Class(
         self$obs_est$mu1[i$validation_index] <- i$mu1
         self$obs_est$raw_p_score[i$validation_index] <- i$raw_p_score
         #append fitted objects
-        self$libs$Q.fit = append(self$libs$Q.fit, i$Q.fit)
-        self$libs$g.fit = append(self$libs$g.fit, i$g.fit)
+        if (private$save.sl.fit){
+          self$libs$Q.fit = append(self$libs$Q.fit, i$Q.fit)
+          self$libs$g.fit = append(self$libs$g.fit, i$g.fit)
+        }
         self$libs$validation_index = append(self$libs$validation_index, i$validation_index)
       }
       self$obs_est$mu  <- (self$obs_est$mu0*(1-private$A) + self$obs_est$mu1*(private$A)) #Q_pred
@@ -306,6 +313,7 @@ AIPW <- R6::R6Class(
     Q.set=NULL,
     g.set=NULL,
     k_split=NULL,
+    save.sl.fit=FALSE,
     cv = list(
       #a vector stores the groups for splitting
       k_index= NULL,

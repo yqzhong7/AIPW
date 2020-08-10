@@ -15,7 +15,7 @@ Create an AIPW_tmle object that uses the estimated efficient influence function 
 \section{Constructor}{
 
 \code{AIPW$new(Y = NULL, A = NULL, tmle_fit = NULL, verbose = TRUE)}
-\subsection{Constructor Arguments:}{
+\subsection{Constructor Arguments}{
 
 \tabular{lll}{
 \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
@@ -46,7 +46,7 @@ Create an AIPW_tmle object that uses the estimated efficient influence function 
 \code{result}         \tab   \code{summary()}                \tab     A matrix contains RD, RR and OR with their SE and 95\%CI \cr
 \code{g.plot}         \tab   \code{plot.p_score()}           \tab     A density plot of propensity scores by exposure status \cr
 }
-\subsection{Public Variable Details:}{
+\subsection{Public Variable Details}{
 
 \describe{
 \item{\code{obs_est}}{This list extracts from the fitted \code{tmle} or \code{tmle3} object.

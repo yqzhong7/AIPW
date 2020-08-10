@@ -18,24 +18,25 @@ See examples for illustration.
 }
 \section{Constructor}{
 
-\code{AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE)}
-\subsection{Constructor Arguments:}{
+\code{AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE, save.sl.fit = FALSE)}
+\subsection{Constructor Arguments}{
 
 \tabular{lll}{
 \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
 \code{Y}               \tab   Integer           \tab     A vector of outcome (0 or 1) \cr
 \code{A}               \tab   Integer           \tab     A vector of exposure (0 or 1) \cr
-\code{W}               \tab   Data              \tab     Covariates for both exposure and outcome models. \cr
-\code{W.Q}             \tab   Data              \tab     Covariates for the outcome model (Q).\cr
-\code{W.g}             \tab   Data              \tab     Covariates for the exposure model (g). \cr
-\code{Q.SL.library}    \tab   SL.library        \tab     Algorithms used for the outcome model (Q). \cr
-\code{g.SL.library}    \tab   SL.library         \tab    Algorithms used for the exposure model (g). \cr
+\code{W}               \tab   Data              \tab     Covariates for \strong{both} exposure and outcome models. \cr
+\code{W.Q}             \tab   Data              \tab     Covariates for the \strong{outcome} model (Q).\cr
+\code{W.g}             \tab   Data              \tab     Covariates for the \strong{exposure} model (g). \cr
+\code{Q.SL.library}    \tab   SL.library        \tab     Algorithms used for the \strong{outcome} model (Q). \cr
+\code{g.SL.library}    \tab   SL.library         \tab    Algorithms used for the \strong{exposure} model (g). \cr
 \code{k_split}         \tab   Integer           \tab    Number of folds for splitting (Default = 10).\cr
 \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE) \cr
+\code{save.sl.fit}     \tab   Logical          \tab     Whether to save Q.fit and g.fit (Default = False) \cr
 }
 }
 
-\subsection{Constructor Argument Details:}{
+\subsection{Constructor Argument Details}{
 
 \describe{
 \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if \code{W == NULL}, \code{W} would be replaced by \code{W.Q} and \code{W.g}. }
@@ -44,6 +45,8 @@ See examples for illustration.
 If k_split=1, no sample splitting; if k_split>1, use similar technique as cross-validation
 (e.g., \code{k_split=10}, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
 \strong{NOTE: it's recommended to use sample splitting.} }
+\item{\code{save.sl.fit}}{This option allows users to save the fitted sl object (libs$Q.fit & libs$g.fit) for debug use.
+\strong{Warning: Saving the SuperLearner fitted object may cause a substantive storage/memory use.}}
 }
 }
 }
@@ -71,7 +74,7 @@ If k_split=1, no sample splitting; if k_split>1, use similar technique as cross-
 \code{sl.fit}         \tab   Constructor                \tab     A wrapper function for fitting \link{SuperLearner} or sl3 \cr
 \code{sl.predict}     \tab   Constructor                \tab     A wrapper function using \code{sl.fit} to predict \cr
 }
-\subsection{Public Variable Details:}{
+\subsection{Public Variable Details}{
 
 \describe{
 \item{\code{obs_est}}{After using \code{fit()} and \code{summary()} methods, this list contains the propensity scores (\code{p_score}),

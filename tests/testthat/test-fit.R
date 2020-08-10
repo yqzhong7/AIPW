@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/06/05
+#' 2020/08/09
 test_that("AIPW fit: SuperLeaner & k_split", {
   require(SuperLearner)
   ##k_split == 1: no sample splitting
@@ -14,7 +14,8 @@ test_that("AIPW fit: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 1,verbose = FALSE)
+                    k_split = 1,verbose = FALSE,
+                    save.sl.fit = TRUE)
   aipw$fit()
   #check any null values after calculating results
   expect_false(any(sapply(aipw$libs, is.null)))
@@ -40,7 +41,8 @@ test_that("AIPW fit: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 3,verbose = FALSE)
+                    k_split = 3,verbose = FALSE,
+                    save.sl.fit = TRUE)
   aipw$fit()
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score
@@ -53,7 +55,7 @@ test_that("AIPW fit: SuperLeaner & k_split", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/06/05
+#' 2020/08/09
 test_that("AIPW fit: sl3 & k_split", {
   require(sl3)
   ##k_split == 1: no sample splitting
@@ -70,7 +72,8 @@ test_that("AIPW fit: sl3 & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
-                    k_split = 1,verbose = FALSE)
+                    k_split = 1,verbose = FALSE,
+                    save.sl.fit = TRUE)
   aipw$fit()
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score
@@ -85,7 +88,8 @@ test_that("AIPW fit: sl3 & k_split", {
                                    W.g =vec(),
                                    Q.SL.library=sl3.lib,
                                    g.SL.library=sl3.lib,
-                                   k_split = 2,verbose = FALSE)
+                                   k_split = 2,verbose = FALSE,
+                                   save.sl.fit = TRUE)
                  ,info = "One fold cross-validation will be used.")
   aipw$fit()
   expect_false(any(sapply(aipw$libs, is.null)))
@@ -100,7 +104,7 @@ test_that("AIPW fit: sl3 & k_split", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/07/09
+#' 2020/08/09
 test_that("AIPW fit: verbose", {
   #verbose == TRUE: "Done!"
   library(SuperLearner)

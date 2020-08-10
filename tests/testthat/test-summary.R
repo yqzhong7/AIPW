@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/22
+#' 2020/08/09
 test_that("AIPW summary: SuperLeaner & k_split", {
   require(SuperLearner)
   ##k_split == 1: no sample splitting
@@ -14,7 +14,8 @@ test_that("AIPW summary: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 1,verbose = TRUE)
+                    k_split = 1,verbose = TRUE,
+                    save.sl.fit = TRUE)
   #correctly print output
   expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results
@@ -30,7 +31,8 @@ test_that("AIPW summary: SuperLeaner & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
-                    k_split = 3,verbose = TRUE)
+                    k_split = 3,verbose = TRUE,
+                    save.sl.fit = TRUE)
   #correctly print output
   expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results
@@ -44,7 +46,7 @@ test_that("AIPW summary: SuperLeaner & k_split", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/22
+#' 2020/08/09
 test_that("AIPW summary: sl3 & k_split", {
   require(sl3)
   ##k_split == 1: no sample splitting
@@ -61,7 +63,8 @@ test_that("AIPW summary: sl3 & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
-                    k_split = 1,verbose = TRUE)
+                    k_split = 1,verbose = TRUE,
+                    save.sl.fit = TRUE)
   #correctly print output
   expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results
@@ -77,7 +80,8 @@ test_that("AIPW summary: sl3 & k_split", {
                     W.g =vec(),
                     Q.SL.library=sl3.lib,
                     g.SL.library=sl3.lib,
-                    k_split = 3,verbose = TRUE)
+                    k_split = 3,verbose = TRUE,
+                    save.sl.fit = TRUE)
   #correctly print output
   expect_output(aipw$fit()$summary(), regexp = "Estimate")
   #check any null values after calculating results

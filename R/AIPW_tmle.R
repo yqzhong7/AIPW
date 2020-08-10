@@ -7,7 +7,7 @@
 #' @section Constructor:
 #' \code{AIPW$new(Y = NULL, A = NULL, tmle_fit = NULL, verbose = TRUE)}
 #'
-#' ## Constructor Arguments:
+#' ## Constructor Arguments
 #' \tabular{lll}{
 #' \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
 #' \code{Y}               \tab   Integer    \tab     A vector of outcome (0 or 1) \cr
@@ -33,7 +33,7 @@
 #'  \code{g.plot}         \tab   `plot.p_score()`           \tab     A density plot of propensity scores by exposure status \cr
 #'  }
 #'
-#' ## Public Variable Details:
+#' ## Public Variable Details
 #' \describe{
 #'    \item{\code{obs_est}}{This list extracts from the fitted `tmle` or `tmle3` object.
 #'    It includes propensity scores (`p_score`), counterfactual predictions (`mu`, `mu1` & `mu0`) and efficient influence functions (`aipw_eif1` & `aipw_eif0`)}
