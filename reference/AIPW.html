@@ -89,7 +89,7 @@ libraries for estimating the efficient influence function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5.9000</span>
       </span>
     </div>
 
@@ -159,25 +159,26 @@ See examples for illustration.</p>
 
     
 
-<p><code>AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE)</code></p><h3>Constructor Arguments:</h3>
+<p><code>AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE, save.sl.fit = FALSE)</code></p><h3>Constructor Arguments</h3>
 
 
 <table class='table'>
 <tr><td><strong>Argument</strong></td><td><strong>Type</strong></td><td><strong>Details</strong></td></tr>
 <tr><td><code>Y</code></td><td>Integer</td><td>A vector of outcome (0 or 1)</td></tr>
 <tr><td><code>A</code></td><td>Integer</td><td>A vector of exposure (0 or 1)</td></tr>
-<tr><td><code>W</code></td><td>Data</td><td>Covariates for both exposure and outcome models.</td></tr>
-<tr><td><code>W.Q</code></td><td>Data</td><td>Covariates for the outcome model (Q).</td></tr>
-<tr><td><code>W.g</code></td><td>Data</td><td>Covariates for the exposure model (g).</td></tr>
-<tr><td><code>Q.SL.library</code></td><td>SL.library</td><td>Algorithms used for the outcome model (Q).</td></tr>
-<tr><td><code>g.SL.library</code></td><td>SL.library</td><td>Algorithms used for the exposure model (g).</td></tr>
+<tr><td><code>W</code></td><td>Data</td><td>Covariates for <strong>both</strong> exposure and outcome models.</td></tr>
+<tr><td><code>W.Q</code></td><td>Data</td><td>Covariates for the <strong>outcome</strong> model (Q).</td></tr>
+<tr><td><code>W.g</code></td><td>Data</td><td>Covariates for the <strong>exposure</strong> model (g).</td></tr>
+<tr><td><code>Q.SL.library</code></td><td>SL.library</td><td>Algorithms used for the <strong>outcome</strong> model (Q).</td></tr>
+<tr><td><code>g.SL.library</code></td><td>SL.library</td><td>Algorithms used for the <strong>exposure</strong> model (g).</td></tr>
 <tr><td><code>k_split</code></td><td>Integer</td><td>Number of folds for splitting (Default = 10).</td></tr>
 <tr><td><code>verbose</code></td><td>Logical</td><td>Whether to print the result (Default = TRUE)</td></tr>
+<tr><td><code>save.sl.fit</code></td><td>Logical</td><td>Whether to save Q.fit and g.fit (Default = False)</td></tr>
 </table>
 
 
 
-<h3>Constructor Argument Details:</h3>
+<h3>Constructor Argument Details</h3>
 
 
 <dl'>
@@ -187,6 +188,8 @@ See examples for illustration.</p>
 If k_split=1, no sample splitting; if k_split&gt;1, use similar technique as cross-validation
 (e.g., <code>k_split=10</code>, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
 <strong>NOTE: it's recommended to use sample splitting.</strong></p></dd>
+<dt><code>save.sl.fit</code></dt><dd><p>This option allows users to save the fitted sl object (libs$Q.fit &amp; libs$g.fit) for debug use.
+<strong>Warning: Saving the SuperLearner fitted object may cause a substantive storage/memory use.</strong></p></dd>
 
 </dl>
 
@@ -219,7 +222,7 @@ If k_split=1, no sample splitting; if k_split&gt;1, use similar technique as cro
 <tr><td><code>sl.predict</code></td><td>Constructor</td><td>A wrapper function using <code>sl.fit</code> to predict</td></tr>
 </table>
 
-<h3>Public Variable Details:</h3>
+<h3>Public Variable Details</h3>
 
 
 <dl'>
