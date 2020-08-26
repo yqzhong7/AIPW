@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.6</span>
       </span>
     </div>
 
@@ -313,10 +313,10 @@ Metalearner is required to combine the estimates from stacklearner!</li>
   <span class="fu"><a href="../reference/summary.html">summary</a></span>(<span class="kw">g.bound</span><span class="kw">=</span><span class="fl">0.025</span>)$
   <span class="fu"><a href="../reference/plot.p_score.html">plot.p_score</a></span>()
 <span class="co">#&gt; Sample splitting was not supported with a fitted tmle object</span>
-<span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.213 0.157 -0.5207  0.0941 200</span>
-<span class="co">#&gt; Risk Ratio         0.438 0.517  0.1590  1.2089 200</span>
-<span class="co">#&gt; Odds Ratio         0.326 0.746  0.0756  1.4079 200</span></pre></body></html></div>
+<span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.213 0.0695  -0.350  -0.077 200</span>
+<span class="co">#&gt; Risk Ratio         0.438 0.3614   0.216   0.890 200</span>
+<span class="co">#&gt; Odds Ratio         0.326 0.4474   0.136   0.784 200</span></pre></body></html></div>
 <p><img src="AIPW_files/figure-html/tmle-1.png" width="576"></p>
 </div>
 <div id="tmle3" class="section level4">
@@ -359,10 +359,10 @@ Metalearner is required to combine the estimates from stacklearner!</li>
   <span class="fu"><a href="../reference/summary.html">summary</a></span>(<span class="kw">g.bound</span><span class="kw">=</span><span class="fl">0</span>)$
   <span class="fu"><a href="../reference/plot.p_score.html">plot.p_score</a></span>()
 <span class="co">#&gt; Propensity scores from fitted tmle3 object are by default truncated (0.025)</span>
-<span class="co">#&gt;                 Estimate    SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference   -0.209 0.160 -0.5236   0.105 200</span>
-<span class="co">#&gt; Risk Ratio         0.439 0.535  0.1538   1.253 200</span>
-<span class="co">#&gt; Odds Ratio         0.329 0.768  0.0731   1.483 200</span></pre></body></html></div>
+<span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk Difference   -0.218 0.0695  -0.354 -0.0815 200</span>
+<span class="co">#&gt; Risk Ratio         0.429 0.3670   0.209  0.8805 200</span>
+<span class="co">#&gt; Odds Ratio         0.317 0.4531   0.131  0.7709 200</span></pre></body></html></div>
 <p><img src="AIPW_files/figure-html/tmle3-1.png" width="576"></p>
 </div>
 <div id="compare-the-aipw-estimates-from-different-input-methods" class="section level4">
@@ -381,26 +381,26 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <tbody>
 <tr class="odd">
 <td align="left">Risk Difference</td>
-<td align="right">-0.253</td>
-<td align="right">0.133</td>
-<td align="right">-0.514</td>
-<td align="right">0.008</td>
+<td align="right">-0.196</td>
+<td align="right">0.065</td>
+<td align="right">-0.324</td>
+<td align="right">-0.069</td>
 <td align="right">200</td>
 </tr>
 <tr class="even">
 <td align="left">Risk Ratio</td>
-<td align="right">0.421</td>
-<td align="right">0.392</td>
-<td align="right">0.195</td>
-<td align="right">0.907</td>
+<td align="right">0.484</td>
+<td align="right">0.294</td>
+<td align="right">0.272</td>
+<td align="right">0.862</td>
 <td align="right">200</td>
 </tr>
 <tr class="odd">
 <td align="left">Odds Ratio</td>
-<td align="right">0.290</td>
-<td align="right">0.601</td>
-<td align="right">0.089</td>
-<td align="right">0.943</td>
+<td align="right">0.367</td>
+<td align="right">0.378</td>
+<td align="right">0.175</td>
+<td align="right">0.770</td>
 <td align="right">200</td>
 </tr>
 </tbody>
@@ -419,25 +419,25 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <tr class="odd">
 <td align="left">Risk Difference</td>
 <td align="right">-0.213</td>
-<td align="right">0.157</td>
-<td align="right">-0.521</td>
-<td align="right">0.094</td>
+<td align="right">0.070</td>
+<td align="right">-0.350</td>
+<td align="right">-0.077</td>
 <td align="right">200</td>
 </tr>
 <tr class="even">
 <td align="left">Risk Ratio</td>
 <td align="right">0.438</td>
-<td align="right">0.517</td>
-<td align="right">0.159</td>
-<td align="right">1.209</td>
+<td align="right">0.361</td>
+<td align="right">0.216</td>
+<td align="right">0.890</td>
 <td align="right">200</td>
 </tr>
 <tr class="odd">
 <td align="left">Odds Ratio</td>
 <td align="right">0.326</td>
-<td align="right">0.746</td>
-<td align="right">0.076</td>
-<td align="right">1.408</td>
+<td align="right">0.447</td>
+<td align="right">0.136</td>
+<td align="right">0.784</td>
 <td align="right">200</td>
 </tr>
 </tbody>
@@ -455,26 +455,26 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <tbody>
 <tr class="odd">
 <td align="left">Risk Difference</td>
-<td align="right">-0.209</td>
-<td align="right">0.160</td>
-<td align="right">-0.524</td>
-<td align="right">0.105</td>
+<td align="right">-0.218</td>
+<td align="right">0.070</td>
+<td align="right">-0.354</td>
+<td align="right">-0.082</td>
 <td align="right">200</td>
 </tr>
 <tr class="even">
 <td align="left">Risk Ratio</td>
-<td align="right">0.439</td>
-<td align="right">0.535</td>
-<td align="right">0.154</td>
-<td align="right">1.253</td>
+<td align="right">0.429</td>
+<td align="right">0.367</td>
+<td align="right">0.209</td>
+<td align="right">0.881</td>
 <td align="right">200</td>
 </tr>
 <tr class="odd">
 <td align="left">Odds Ratio</td>
-<td align="right">0.329</td>
-<td align="right">0.768</td>
-<td align="right">0.073</td>
-<td align="right">1.483</td>
+<td align="right">0.317</td>
+<td align="right">0.453</td>
+<td align="right">0.131</td>
+<td align="right">0.771</td>
 <td align="right">200</td>
 </tr>
 </tbody>
