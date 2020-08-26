@@ -47,7 +47,7 @@ AIPW_base <- R6::R6Class(
         stop("Please check the dimension of the data")
       }
       #setup
-      self$n <- length(private$Y)
+      self$n <- length(private$A)
       self$obs_est$mu0 <- rep(NA,self$n)
       self$obs_est$mu1 <- rep(NA,self$n)
       self$obs_est$mu <- rep(NA,self$n)
@@ -68,7 +68,7 @@ AIPW_base <- R6::R6Class(
 
       #AIPW est
       self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
-      self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu0
+      self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/(1-self$obs_est$p_score))*(private$Y - self$obs_est$mu) + self$obs_est$mu0
 
       root_n <- sqrt(self$n)
 
