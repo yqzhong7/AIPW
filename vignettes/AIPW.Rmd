@@ -29,7 +29,6 @@ Contents:
   * [Using tmle/tmle3 as input](#tmle_input)
     + [tmle](#tmle)
     + [tmle3](#tmle3)
-    + [Compare AIPW estimates from different input methods](#compare)
 
 
 ## <a id="Installation"></a>Installation
@@ -73,6 +72,7 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
                     k_split = 10,
                     verbose=FALSE)$
   fit()$
+  #Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended
   summary(g.bound = 0.25)$
   plot.p_score()
 ```
@@ -176,7 +176,7 @@ AIPW shares similar intermediate estimates with the Targeted Maximum Likelihood 
 
 As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) only support sample splitting in the outcome model. 
 
-```{r tmle}
+```{r tmle, eval=F}
 library(tmle)
 library(SuperLearner)
 
@@ -203,7 +203,7 @@ a_tmle <- AIPW_tmle$
 
 Notably, [tmle3](https://github.com/tlverse/tmle3) conducts sample splitting and propensity truncation (0.025) by default.
 
-```{r tmle3}
+```{r tmle3, eval=F}
 library(tmle3,quietly = TRUE)
 library(sl3,quietly = TRUE)
 
@@ -227,24 +227,5 @@ a_tmle3<- AIPW_tmle$
 ```
 
 
-#### 3. <a id="compare"></a> Compare the AIPW estimates from different input methods
 
-```{r compare, echo=F, fig.width=12, collapse=FALSE}
-options(width = 12)
-library(knitr)
-cat("True Estimates")
-true_est <- rbind(attributes(eager_sim_obs)$true_rd, exp(attributes(eager_sim_obs)$true_logrr), exp(attributes(eager_sim_obs)$true_logor))
-row.names(true_est) <- row.names(AIPW_SL$result)
-colnames(true_est) <- "True Estimate"
-kable(true_est,digits=3)
-      
-cat("Native AIPW function with sample splitting = 10")
-kable(AIPW_SL$result,digits=3)
-
-cat("From tmle fit object with sample splitting = 10 in the outcome model only")
-kable(a_tmle$result,digits=3) 
-
-cat("From tmle3 fit object with sample splitting = 10 (tmle3 default)")
-kable(a_tmle3$result,digits=3)
-```
 

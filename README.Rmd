@@ -82,7 +82,8 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     k_split = 3,
                     verbose=FALSE)$
   fit()$
-  summary(g.bound = 0.25)$
+  #Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended
+  summary(g.bound = 0.25)$ 
   plot.p_score()
 ```
 
