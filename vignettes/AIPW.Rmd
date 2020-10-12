@@ -49,22 +49,15 @@ install.packages("SuperLearner")
 remotes::install_github("tlverse/sl3")
 ```
 
-## Input data for analyses
+## Input data for analyses 
 
 ```{r example data}
-set.seed(888)
-N <- 200
-outcome <- rbinom(N,1,0.3)
-exposure <- rbinom(N,1,0.2)
-#covaraites for outcome model (Q)
-covariates.Q <- matrix(c(rbinom(N,1,0.4),
-                                rnorm(N,mean = 0,sd=1),
-                                rpois(N,lambda = 2)),
-                              ncol=3)
-#covariates for exposure model (g; assuming they are the same)
-covariates.g <- covariates.Q 
-
-# covariates.g <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
+library(AIPW)
+library(SuperLearner)
+library(ggplot2)
+set.seed(123)
+data("eager_sim_obs")
+cov = c("eligibility","loss_num","age", "time_try_pregnant","BMI","meanAP")
 ```
 
 ## Using AIPW to estimate the average treatment effect
@@ -72,13 +65,9 @@ covariates.g <- covariates.Q
 Using native AIPW class allows users to define different covariate sets for the exposure and the outcome models, respectively.
 
 ```{r one_line}
-library(AIPW)
-library(SuperLearner)
-library(ggplot2)
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
+AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
+                    A= eager_sim_obs$sim_A,
+                    W= subset(eager_sim_obs,select=cov), 
                     Q.SL.library = c("SL.mean","SL.glm"),
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 10,
@@ -92,8 +81,6 @@ AIPW_SL <- AIPW$new(Y= outcome,
 
 #### 1. <a id="constructor"></a>Create an AIPW object 
 
-
-
   * ##### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries
 ```{r SuperLearner, message=FALSE,eval=F}
 library(AIPW)
@@ -103,9 +90,9 @@ library(SuperLearner)
 sl.lib <- c("SL.mean","SL.glm")
 
 #construct an aipw object for later estimations 
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W=covariates.Q,
+AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
+                    A= eager_sim_obs$sim_A,
+                    W= subset(eager_sim_obs,select=cov), 
                     Q.SL.library = sl.lib,
                     g.SL.library = sl.lib,
                     k_split = 10,
@@ -126,17 +113,16 @@ stacklearner <- Stack$new(lrnr_glm, lrnr_mean)
 #metalearner is required to combine the estimates from stacklearner
 metalearner <- Lrnr_nnls$new()
 sl3.lib <- Lrnr_sl$new(learners = stacklearner,
-                      metalearner = metalearner)
+                       metalearner = metalearner)
 
 #construct an aipw object for later estimations 
-AIPW_sl3 <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
-                    Q.SL.library = sl3.lib,
-                    g.SL.library = sl3.lib,
-                    k_split = 10,
-                    verbose=FALSE)
+AIPW_sl3 <- AIPW$new(Y= eager_sim_obs$sim_Y,
+                     A= eager_sim_obs$sim_A,
+                     W= subset(eager_sim_obs,select=cov), 
+                     Q.SL.library = sl3.lib,
+                     g.SL.library = sl3.lib,
+                     k_split = 10,
+                     verbose=FALSE)
 ```
 
 #### 2. <a id="fit"></a>Fit the AIPW object
@@ -171,14 +157,13 @@ In default setting, the `AIPW$fit()` method will be run sequentially. The curren
 library(future.apply)
 plan(multiprocess, workers=2, gc=T)
 set.seed(888)
-AIPW_SL <- AIPW$new(Y= outcome,
-                    A= exposure,
-                    W.Q=covariates.Q, 
-                    W.g=covariates.g,
-                    Q.SL.library = sl.lib,
-                    g.SL.library = sl.lib,
+AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
+                    A= eager_sim_obs$sim_A,
+                    W= subset(eager_sim_obs,select=cov), 
+                    Q.SL.library = sl3.lib,
+                    g.SL.library = sl3.lib,
                     k_split = 10,
-                    verbose=F)$fit()$summary()
+                    verbose=FALSE)$fit()$summary()
 ```
 
 
@@ -189,16 +174,19 @@ AIPW shares similar intermediate estimates with the Targeted Maximum Likelihood 
 
 #### 1. <a id="tmle"></a>`tmle`
 
-As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) alone does not support sample splitting. In addition, `tmle` does not support different covariate sets for the exposure and the outcome models, respectively.
+As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) only support sample splitting in the outcome model. 
 
 ```{r tmle}
 library(tmle)
 library(SuperLearner)
 
-tmle_fit <- tmle(Y=outcome,A=exposure,W=covariates.Q,
+tmle_fit <- tmle(Y=eager_sim_obs$sim_Y,
+                 A=eager_sim_obs$sim_A,
+                 W=subset(eager_sim_obs,select=cov), 
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
-                 family="binomial")
+                 family="binomial",
+                 cvQinit = TRUE)
 
 cat("\nEstimates from TMLE\n")
 unlist(tmle_fit$estimates$ATE)
@@ -207,28 +195,26 @@ unlist(tmle_fit$estimates$OR)
 
 cat("\nEstimates from AIPW\n")
 a_tmle <- AIPW_tmle$
-  new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
-  summary(g.bound=0.025)$
-  plot.p_score()
+  new(A=eager_sim_obs$sim_A,Y=eager_sim_obs$sim_Y,tmle_fit = tmle_fit,verbose = TRUE)$
+  summary(g.bound=0.025)
 ```
 
 #### 2. <a id="tmle3"></a> `tmle3`
 
-Similarly, [tmle3](https://github.com/tlverse/tmle3) may not support different covariate sets for the exposure and the outcome models, respectively. However, `tmle3` conducts sample splitting and propensity truncation (0.025) by default.
+Notably, [tmle3](https://github.com/tlverse/tmle3) conducts sample splitting and propensity truncation (0.025) by default.
 
 ```{r tmle3}
 library(tmle3,quietly = TRUE)
 library(sl3,quietly = TRUE)
 
-df <- data.frame(exposure,outcome,covariates.Q)
-node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])
+node_list <- list(A = "sim_A",Y = "sim_Y",W = colnames(eager_sim_obs)[-1:-2])
 or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
-tmle_task <- or_spec$make_tmle_task(df,node_list)
+tmle_task <- or_spec$make_tmle_task(eager_sim_obs,node_list)
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
 sl <- Lrnr_sl$new(learners = list(lrnr_glm,lrnr_mean))
 learner_list <- list(A = sl, Y = sl)
-tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
+tmle3_fit <- tmle3(or_spec, data=eager_sim_obs, node_list, learner_list)
 
 cat("\nEstimates from TMLE\n")
 tmle3_fit$summary
@@ -236,9 +222,8 @@ tmle3_fit$summary
 # parse tmle3_fit into AIPW_tmle class
 cat("\nEstimates from AIPW\n")
 a_tmle3<- AIPW_tmle$
-  new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
-  summary(g.bound=0)$
-  plot.p_score()
+  new(A=eager_sim_obs$sim_A,Y=eager_sim_obs$sim_Y,tmle_fit = tmle3_fit,verbose = TRUE)$
+  summary(g.bound=0)
 ```
 
 
@@ -247,13 +232,19 @@ a_tmle3<- AIPW_tmle$
 ```{r compare, echo=F, fig.width=12, collapse=FALSE}
 options(width = 12)
 library(knitr)
-cat("Native AIPW function with W.g != W.Q and sample splitting = 10")
+cat("True Estimates")
+true_est <- rbind(attributes(eager_sim_obs)$true_rd, exp(attributes(eager_sim_obs)$true_logrr), exp(attributes(eager_sim_obs)$true_logor))
+row.names(true_est) <- row.names(AIPW_SL$result)
+colnames(true_est) <- "True Estimate"
+kable(true_est,digits=3)
+      
+cat("Native AIPW function with sample splitting = 10")
 kable(AIPW_SL$result,digits=3)
 
-cat("From tmle fit object with W.g == W.Q and no sample splitting")
+cat("From tmle fit object with sample splitting = 10 in the outcome model only")
 kable(a_tmle$result,digits=3) 
 
-cat("From tmle3 fit object with W.g == W.Q and sample splitting = 10 (tmle3 default)")
+cat("From tmle3 fit object with sample splitting = 10 (tmle3 default)")
 kable(a_tmle3$result,digits=3)
 ```
 

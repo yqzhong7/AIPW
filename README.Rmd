@@ -4,8 +4,8 @@ output:
   github_document
 ---
 <!-- badges: start -->
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#WIP)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
 [![Travis build status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-ci.com/yqzhong7/AIPW)
 [![R build status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
@@ -14,7 +14,7 @@ output:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-__Authors:__ [Yongqi Zhong](https://github.com/yqzhong7), [Ashley Naimi](https://github.com/ainaimi), [Gabriel Conzuelo](https://github.com/gconzuelo)
+__Authors:__ [Yongqi Zhong](https://github.com/yqzhong7), [Ashley Naimi](https://github.com/ainaimi), [Gabriel Conzuelo](https://github.com/gconzuelo), [Edward Kennedy](https://github.com/ehkennedy)
 
 
 ```{r, include = FALSE}
@@ -29,9 +29,7 @@ knitr::opts_chunk$set(
 
 ----------------
 
-Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The `AIPW` package is designed for estimating the average treatment effect of a binary exposure on a binary outcome in risk difference (RD), risk ratio (RR) and odds ratio (OR), under the nonparametric structural equations (NPSEM) or structural causal model (SCM) framework. Users need to examine causal assumptions (e.g., consistency) before using this package. 
-
-
+Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The `AIPW` package is designed for estimating the average treatment effect of a binary exposure and outcome on risk difference (RD), risk ratio (RR) and odds ratio (OR). Users need to examine causal assumptions (e.g., consistency) before using this package. 
 
 ---------------
 
@@ -60,15 +58,12 @@ remotes::install_github("yqzhong7/AIPW")
 
 ### <a id="data"></a>Setup example data
 ```{r example data}
-set.seed(888)
-N <- 200
-outcome <- rbinom(N,1,0.4)
-exposure <- rbinom(N,1,0.3)
+set.seed(123)
+data("eager_sim_obs")
+outcome <- eager_sim_obs$sim_A
+exposure <- eager_sim_obs$sim_Y
 #covariates for both outcome model (Q) and exposure model (g)
-covariates <- matrix(c(rbinom(N,1,0.4),
-                       rnorm(N,mean = 0,sd=1),
-                       rpois(N,lambda = 2)),
-                     ncol=3)
+covariates <- eager_sim_obs[-1:-2]
 
 # covariates <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
@@ -161,8 +156,6 @@ with_progress(
 
 #### 1. `tmle`
 
-As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) alone does not support sample splitting. In addition, `tmle` does not support different covariate sets for the exposure and the outcome models, respectively.
-
 ```{r tmle}
 require(tmle)
 require(SuperLearner)
@@ -177,24 +170,21 @@ AIPW_tmle$
 
 #### 2. `tmle3`
 
-Similarly, [tmle3](https://github.com/tlverse/tmle3) may not support different covariate sets for the exposure and the outcome models, respectively. However, `tmle3` conducts sample splitting and propensity truncation (0.025) by default.
-
 ```{r tmle3, eval =FALSE}
 library(sl3)
 library(tmle3)
-df <- data.frame(exposure,outcome,covariates)
-node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])
+node_list <- list(A = "sim_A",Y = "sim_Y",W = colnames(eager_sim_obs)[-1:-2])
 or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
-tmle_task <- or_spec$make_tmle_task(df,node_list)
+tmle_task <- or_spec$make_tmle_task(eager_sim_obs,node_list)
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
 sl <- Lrnr_sl$new(learners = list(lrnr_glm,lrnr_mean))
 learner_list <- list(A = sl, Y = sl)
-tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
+tmle3_fit <- tmle3(or_spec, data=eager_sim_obs, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
 AIPW_tmle$
-  new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
+  new(A=eager_sim_obs$sim_A,Y=eager_sim_obs$sim_Y,tmle_fit = tmle3_fit,verbose = TRUE)$
   summary()
 ```
 

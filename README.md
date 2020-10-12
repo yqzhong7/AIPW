@@ -3,11 +3,11 @@ AIPW: Augmented Inverse Probability Weighting
 
 <!-- badges: start -->
 
-[![Project Status: WIP – Initial development is in progress, but there
-has not yet been a stable, usable release suitable for the
-public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#WIP)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
 [![Travis build
@@ -21,17 +21,17 @@ status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https
 
 **Authors:** [Yongqi Zhong](https://github.com/yqzhong7), [Ashley
 Naimi](https://github.com/ainaimi), [Gabriel
-Conzuelo](https://github.com/gconzuelo)
+Conzuelo](https://github.com/gconzuelo), [Edward
+Kennedy](https://github.com/ehkennedy)
 
 -----
 
 Augmented inverse probability weighting (AIPW) is a doubly robust
 estimator for causal inference. The `AIPW` package is designed for
-estimating the average treatment effect of a binary exposure on a binary
-outcome in risk difference (RD), risk ratio (RR) and odds ratio (OR),
-under the nonparametric structural equations (NPSEM) or structural
-causal model (SCM) framework. Users need to examine causal assumptions
-(e.g., consistency) before using this package.
+estimating the average treatment effect of a binary exposure and outcome
+on risk difference (RD), risk ratio (RR) and odds ratio (OR). Users need
+to examine causal assumptions (e.g., consistency) before using this
+package.
 
 -----
 
@@ -65,15 +65,12 @@ remotes::install_github("yqzhong7/AIPW")
 ### <a id="data"></a>Setup example data
 
 ``` r
-set.seed(888)
-N <- 200
-outcome <- rbinom(N,1,0.4)
-exposure <- rbinom(N,1,0.3)
+set.seed(123)
+data("eager_sim_obs")
+outcome <- eager_sim_obs$sim_A
+exposure <- eager_sim_obs$sim_Y
 #covariates for both outcome model (Q) and exposure model (g)
-covariates <- matrix(c(rbinom(N,1,0.4),
-                       rnorm(N,mean = 0,sd=1),
-                       rpois(N,lambda = 2)),
-                     ncol=3)
+covariates <- eager_sim_obs[-1:-2]
 
 # covariates <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
@@ -106,10 +103,10 @@ To see the results, set `verbose = TRUE`(default) or:
 
 ``` r
 AIPW_SL$result
-#>                   Estimate        SE    95% LCL    95% UCL   N
-#> Risk Difference -0.1319084 0.1076637 -0.3429293 0.07911247 200
-#> Risk Ratio       0.7280326 0.2528325  0.4435427 1.19499521 200
-#> Odds Ratio       0.5795789 0.4451837  0.2421946 1.38694937 200
+#>                 Estimate        SE      95% LCL   95% UCL   N
+#> Risk Difference 0.131264 0.0711246 -0.008140195 0.2706682 200
+#> Risk Ratio      1.240933 0.1173172  0.986020851 1.5617478 200
+#> Odds Ratio      1.743802 0.3101808  0.949436357 3.2027894 200
 ```
 
 You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and
@@ -159,10 +156,10 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     k_split = 3,
                     verbose=TRUE)$fit()$summary()
 #> Done!
-#>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.153 0.112  -0.372  0.0665 200
-#> Risk Ratio         0.701 0.259   0.422  1.1640 200
-#> Odds Ratio         0.534 0.469   0.213  1.3377 200
+#>                 Estimate     SE  95% LCL 95% UCL   N
+#> Risk Difference    0.139 0.0714 -0.00144   0.279 200
+#> Risk Ratio         1.258 0.1177  0.99869   1.584 200
+#> Odds Ratio         1.796 0.3104  0.97745   3.300 200
 ```
 
 Progress bar that supports parallel processing is available in the
@@ -202,12 +199,6 @@ input
 
 #### 1\. `tmle`
 
-As shown in the message,
-[tmle](https://cran.r-project.org/web/packages/tmle/index.html) alone
-does not support sample splitting. In addition, `tmle` does not support
-different covariate sets for the exposure and the outcome models,
-respectively.
-
 ``` r
 require(tmle)
 #> Loading required package: tmle
@@ -225,36 +216,30 @@ tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)
-#> Sample splitting was not supported with a fitted tmle object
-#>                 Estimate    SE 95% LCL 95% UCL   N
-#> Risk Difference   -0.129 0.106  -0.337  0.0778 200
-#> Risk Ratio         0.720 0.259   0.433  1.1975 200
-#> Odds Ratio         0.580 0.442   0.244  1.3809 200
+#> Sample splitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)
+#>                 Estimate     SE 95% LCL 95% UCL   N
+#> Risk Difference    0.144 0.0698 0.00702   0.281 200
+#> Risk Ratio         1.270 0.1157 1.01198   1.593 200
+#> Odds Ratio         1.836 0.3037 1.01244   3.330 200
 ```
 
 #### 2\. `tmle3`
 
-Similarly, [tmle3](https://github.com/tlverse/tmle3) may not support
-different covariate sets for the exposure and the outcome models,
-respectively. However, `tmle3` conducts sample splitting and propensity
-truncation (0.025) by default.
-
 ``` r
 library(sl3)
 library(tmle3)
-df <- data.frame(exposure,outcome,covariates)
-node_list <- list(A = "exposure",Y = "outcome",W = colnames(df)[-1:-2])
+node_list <- list(A = "sim_A",Y = "sim_Y",W = colnames(eager_sim_obs)[-1:-2])
 or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
-tmle_task <- or_spec$make_tmle_task(df,node_list)
+tmle_task <- or_spec$make_tmle_task(eager_sim_obs,node_list)
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
 sl <- Lrnr_sl$new(learners = list(lrnr_glm,lrnr_mean))
 learner_list <- list(A = sl, Y = sl)
-tmle3_fit <- tmle3(or_spec, data=df, node_list, learner_list)
+tmle3_fit <- tmle3(or_spec, data=eager_sim_obs, node_list, learner_list)
 
 # parse tmle3_fit into AIPW_tmle class
 AIPW_tmle$
-  new(A=df$exposure,Y=df$outcome,tmle_fit = tmle3_fit,verbose = TRUE)$
+  new(A=eager_sim_obs$sim_A,Y=eager_sim_obs$sim_Y,tmle_fit = tmle3_fit,verbose = TRUE)$
   summary()
 ```
 
