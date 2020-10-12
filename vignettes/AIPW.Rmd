@@ -182,7 +182,7 @@ library(SuperLearner)
 
 tmle_fit <- tmle(Y=eager_sim_obs$sim_Y,
                  A=eager_sim_obs$sim_A,
-                 W=as.matrix(subset(eager_sim_obs,select=cov)), 
+                 W=eager_sim_obs[,-1:-2], 
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial",
