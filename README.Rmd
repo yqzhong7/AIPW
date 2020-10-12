@@ -63,7 +63,7 @@ data("eager_sim_obs")
 outcome <- eager_sim_obs$sim_A
 exposure <- eager_sim_obs$sim_Y
 #covariates for both outcome model (Q) and exposure model (g)
-covariates <- eager_sim_obs[-1:-2]
+covariates <- as.matrix(eager_sim_obs[-1:-2])
 
 # covariates <- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported
 ```
