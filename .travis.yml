@@ -11,11 +11,4 @@ matrix:
       before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
       after_success:
         - Rscript -e 'covr::codecov()'
-      deploy:
-        provider: script
-        script: Rscript -e 'pkgdown::deploy_site_github()'
-        skip_cleanup: true
-        on:
-          all_branches: true
-          condition: '"$TRAVIS_BRANCH" == "master" || -n "$TRAVIS_TAG"'
 
