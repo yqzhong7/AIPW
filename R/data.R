@@ -15,7 +15,7 @@
 #'   \item{eligibility}{binary, indicator of the eligibility stratum}
 #'   \item{loss_num}{count, number of prior pregnancy losses}
 #'   \item{age}{continuous, age in years}
-#'   \item{time_try_pregnant}{count, number of prior conception attempts}
+#'   \item{time_try_pregnant}{count, months of conception attempts prior to randomization}
 #'   \item{BMI}{continuous, body mass index}
 #'   \item{meanAP}{continuous, mean arterial blood pressure}
 #' }
@@ -39,7 +39,7 @@
 #'   \item{eligibility}{binary, indicator of the eligibility stratum}
 #'   \item{loss_num}{count, number of prior pregnancy losses}
 #'   \item{age}{continuous, age in years}
-#'   \item{time_try_pregnant}{count, number of prior conception attempts}
+#'   \item{time_try_pregnant}{count, months of conception attempts prior to randomization}
 #'   \item{BMI}{continuous, body mass index}
 #'   \item{meanAP}{continuous, mean arterial blood pressure}
 #' }
