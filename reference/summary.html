@@ -148,18 +148,21 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>g.bound</th>
-      <td><p>Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></td>
+      <td><p>Value between [0,1] at which the propensity score should be truncated.
+Propensity score will be truncated to \([g.bound, 1-g.bound]\) when one g.bound value is provided, or to \([min(g.bound), max(g.bound)]\) when two values are provided.
+<strong>Defaults to 0.025</strong>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>estimates</code> and <code>result</code>(public variables): Average treatment effect in RD, RR and OR</p>
+    <p><code>estimates</code> and <code>result</code> (public variables): Risks, Average treatment effect in RD, RR and OR, and Addictive Effects among the treated and the controls (ATT and ATC)</p>
     <h2 class="hasAnchor" id="r-usage"><a class="anchor" href="#r-usage"></a>R6 Usage</h2>
 
     
 
-<p><code>$summary(g.bound = 0.025)</code></p>
+<p><code>$summary(g.bound = 0.025)</code> <br />
+<code>$summary(g.bound = c(0.025,0.975))</code></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='AIPW.html'>AIPW</a> and <a href='AIPW_tmle.html'>AIPW_tmle</a></p></div>

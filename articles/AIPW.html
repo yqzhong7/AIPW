@@ -166,7 +166,7 @@
                     verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
   <span class="co">#Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended</span>
-  <span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span><span class="op">$</span>
+  <span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.25</span>,<span class="fl">0.75</span><span class="op">)</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="AIPW_files/figure-html/one_line-1.png" width="576"><img src="AIPW_files/figure-html/one_line-2.png" width="576"></p>
