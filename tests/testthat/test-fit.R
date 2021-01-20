@@ -24,15 +24,22 @@ test_that("AIPW fit: SuperLeaner & k_split", {
   expect_true(is.null(aipw$result))
   expect_true(is.null(aipw$estimate))
 
-  ##k_split >0: sample splitting == k_split
-  expect_warning(aipw <-  AIPW$new(Y=vec(),
-                                   A=vec(),
-                                   W.Q =vec(),
-                                   W.g =vec(),
-                                   Q.SL.library=sl.lib,
-                                   g.SL.library=sl.lib,
-                                   k_split = 2,verbose = FALSE)
-                 ,info = "One fold cross-validation will be used.")
+  expect_error(aipw <-  AIPW$new(Y=vec(),
+                                 A=vec(),
+                                 W.Q =vec(),
+                                 W.g =vec(),
+                                 Q.SL.library=sl.lib,
+                                 g.SL.library=sl.lib,
+                                 k_split = 2,verbose = FALSE))
+
+  ##k_split >=3: sample splitting == k_split
+  aipw <-  AIPW$new(Y=vec(),
+                    A=vec(),
+                    W.Q =vec(),
+                    W.g =vec(),
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 3,verbose = FALSE)
 
 
   aipw <-  AIPW$new(Y=vec(),
@@ -81,16 +88,15 @@ test_that("AIPW fit: sl3 & k_split", {
   expect_true(is.null(aipw$result))
   expect_true(is.null(aipw$estimate))
 
-  ##k_split >0: sample splitting == k_split
-  expect_warning(aipw <-  AIPW$new(Y=vec(),
-                                   A=vec(),
-                                   W.Q =vec(),
-                                   W.g =vec(),
-                                   Q.SL.library=sl3.lib,
-                                   g.SL.library=sl3.lib,
-                                   k_split = 2,verbose = FALSE,
-                                   save.sl.fit = TRUE)
-                 ,info = "One fold cross-validation will be used.")
+  ##k_split >=3: sample splitting == k_split
+  aipw <-  AIPW$new(Y=vec(),
+                    A=vec(),
+                    W.Q =vec(),
+                    W.g =vec(),
+                    Q.SL.library=sl3.lib,
+                    g.SL.library=sl3.lib,
+                    k_split = 3,verbose = FALSE,
+                    save.sl.fit = TRUE)
   aipw$fit()
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score

@@ -2,6 +2,7 @@
 
 export(AIPW)
 export(AIPW_base)
+export(AIPW_nuis)
 export(AIPW_tmle)
 export(aipw_wrapper)
 importFrom(R6,R6Class)

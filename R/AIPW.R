@@ -31,7 +31,7 @@
 #'   \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if `W == NULL`, `W` would be replaced by `W.Q` and `W.g`. }
 #'   \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from [SuperLearner] libraries or `sl3` learner object (Lrnr_base)}
 #'   \item{\code{k_split}}{It ranges from 1 to number of observation-1.
-#'                         If k_split=1, no sample splitting; if k_split>1, use similar technique as cross-validation
+#'                         If k_split=1, no sample splitting; if k_split>=3, use similar technique as cross-validation
 #'                         (e.g., `k_split=10`, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
 #'                          \strong{NOTE: it's recommended to use sample splitting.} }
 #'  \item{\code{save.sl.fit}}{This option allows users to save the fitted sl object (libs$Q.fit & libs$g.fit) for debug use.
@@ -194,7 +194,7 @@ AIPW <- R6::R6Class(
       if (private$k_split<1 | private$k_split>=self$n){
         stop("`k_split` is not valid")
       } else if (private$k_split %in% 2){
-        warning("One fold cross-validation will be used.")
+        stop("k_split == 2 is not allowed.")
       }
       #check verbose value
       if (!is.logical(private$verbose)){
