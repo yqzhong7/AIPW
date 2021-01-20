@@ -16,42 +16,41 @@ status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-c
 status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
 
 <!-- badges: end -->
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-**Authors:** [Yongqi Zhong](https://github.com/yqzhong7), [Ashley
+**Contributors:** [Yongqi Zhong](https://github.com/yqzhong7), [Ashley
 Naimi](https://github.com/ainaimi), [Gabriel
 Conzuelo](https://github.com/gconzuelo), [Edward
 Kennedy](https://github.com/ehkennedy)
 
------
+------------------------------------------------------------------------
 
 Augmented inverse probability weighting (AIPW) is a doubly robust
 estimator for causal inference. The `AIPW` package is designed for
-estimating the average treatment effect of a binary exposure and outcome
-on risk difference (RD), risk ratio (RR) and odds ratio (OR). Users need
-to examine causal assumptions (e.g., consistency) before using this
+estimating the average treatment effect of a binary exposure on risk
+difference (RD), risk ratio (RR) and odds ratio (OR). Users need to
+examine causal assumptions (e.g., consistency) before using this
 package.
 
------
+------------------------------------------------------------------------
 
 ## Contents:
 
-  - ##### [Installation](#Installation)
+-   ##### [Installation](#Installation)
 
-  - ##### [Example](#Example)
-    
-      - ###### [Setup example data](#data)
-    
-      - ###### [One line version](#one_line)
+-   ##### [Example](#Example)
 
-  - ##### [Parallelization and progress bar](#par)
+    -   ###### [Setup example data](#data)
 
-  - ##### [Use tmle/tmle3 as input](#tmle)
+    -   ###### [One line version](#one_line)
 
-  - ##### [References](#ref)
+-   ##### [Parallelization and progress bar](#par)
 
------
+-   ##### [Use tmle/tmle3 as input](#tmle)
+
+-   ##### [References](#ref)
+
+------------------------------------------------------------------------
 
 ## <a id="Installation"></a>Installation
 
@@ -103,11 +102,15 @@ AIPW_SL <- AIPW$new(Y = outcome,
 To see the results, set `verbose = TRUE`(default) or:
 
 ``` r
-AIPW_SL$result
-#>                 Estimate        SE      95% LCL   95% UCL   N
-#> Risk Difference 0.131264 0.0711246 -0.008140195 0.2706682 200
-#> Risk Ratio      1.240933 0.1173172  0.986020851 1.5617478 200
-#> Odds Ratio      1.743802 0.3101808  0.949436357 3.2027894 200
+print(AIPW_SL$result, digits = 2)
+#>                                    Estimate    SE 95% LCL 95% UCL   N
+#> Risk for exposure                     0.676 0.053  0.5714    0.78 200
+#> Risk for control                      0.545 0.047  0.4536    0.64 200
+#> Risk Difference                       0.131 0.071 -0.0081    0.27 200
+#> Risk Difference among the Treated     0.214 0.138 -0.0556    0.48  78
+#> Risk Difference among the Controls    0.078 0.077 -0.0719    0.23 122
+#> Risk Ratio                            1.241 0.117  0.9860    1.56 200
+#> Odds Ratio                            1.744 0.310  0.9494    3.20 200
 ```
 
 You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and
@@ -157,10 +160,14 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     k_split = 3,
                     verbose=TRUE)$fit()$summary()
 #> Done!
-#>                 Estimate     SE  95% LCL 95% UCL   N
-#> Risk Difference    0.139 0.0714 -0.00144   0.279 200
-#> Risk Ratio         1.258 0.1177  0.99869   1.584 200
-#> Odds Ratio         1.796 0.3104  0.97745   3.300 200
+#>                                    Estimate     SE  95% LCL 95% UCL   N
+#> Risk for exposure                    0.6761 0.0546  0.56913   0.783 200
+#> Risk for control                     0.5375 0.0462  0.44705   0.628 200
+#> Risk Difference                      0.1386 0.0714 -0.00144   0.279 200
+#> Risk Difference among the Treated    0.2061 0.1399 -0.06806   0.480  78
+#> Risk Difference among the Controls   0.0954 0.0759 -0.05335   0.244 122
+#> Risk Ratio                           1.2578 0.1177  0.99869   1.584 200
+#> Odds Ratio                           1.7960 0.3104  0.97745   3.300 200
 ```
 
 Progress bar that supports parallel processing is available in the
@@ -198,7 +205,7 @@ with_progress(
 `AIPW_tmle` class is designed for using `tmle`/`tmle3` fitted object as
 input
 
-#### 1\. `tmle`
+#### 1. `tmle`
 
 ``` r
 require(tmle)
@@ -218,13 +225,17 @@ AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)
 #> Sample splitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)
-#>                 Estimate     SE 95% LCL 95% UCL   N
-#> Risk Difference    0.144 0.0698 0.00702   0.281 200
-#> Risk Ratio         1.270 0.1157 1.01198   1.593 200
-#> Odds Ratio         1.836 0.3037 1.01244   3.330 200
+#>                                    Estimate     SE  95% LCL 95% UCL   N
+#> Risk for exposure                     0.678 0.0529  0.57380   0.781 200
+#> Risk for control                      0.534 0.0455  0.44450   0.623 200
+#> Risk Difference                       0.144 0.0698  0.00702   0.281 200
+#> Risk Difference among the Treated     0.144 0.1359 -0.12196   0.411  78
+#> Risk Difference among the Controls    0.144 0.0751 -0.00355   0.291 122
+#> Risk Ratio                            1.270 0.1157  1.01198   1.593 200
+#> Odds Ratio                            1.836 0.3037  1.01244   3.330 200
 ```
 
-#### 2\. `tmle3`
+#### 2. `tmle3`
 
 ``` r
 library(sl3)
@@ -244,7 +255,7 @@ AIPW_tmle$
   summary()
 ```
 
------
+------------------------------------------------------------------------
 
 ### <a id="ref"></a>References:
 

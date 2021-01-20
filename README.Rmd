@@ -14,7 +14,7 @@ output:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-__Authors:__ [Yongqi Zhong](https://github.com/yqzhong7), [Ashley Naimi](https://github.com/ainaimi), [Gabriel Conzuelo](https://github.com/gconzuelo), [Edward Kennedy](https://github.com/ehkennedy)
+__Contributors:__ [Yongqi Zhong](https://github.com/yqzhong7), [Ashley Naimi](https://github.com/ainaimi), [Gabriel Conzuelo](https://github.com/gconzuelo), [Edward Kennedy](https://github.com/ehkennedy)
 
 
 ```{r, include = FALSE}
@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 ----------------
 
-Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The `AIPW` package is designed for estimating the average treatment effect of a binary exposure and outcome on risk difference (RD), risk ratio (RR) and odds ratio (OR). Users need to examine causal assumptions (e.g., consistency) before using this package. 
+Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The `AIPW` package is designed for estimating the average treatment effect of a binary exposure  on risk difference (RD), risk ratio (RR) and odds ratio (OR). Users need to examine causal assumptions (e.g., consistency) before using this package. 
 
 ---------------
 
@@ -89,7 +89,7 @@ AIPW_SL <- AIPW$new(Y = outcome,
 
 To see the results, set `verbose = TRUE`(default) or:
 ```{r res}
-AIPW_SL$result
+print(AIPW_SL$result, digits = 2)
 ```
 
 You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and `summary()` together (also support method chaining):

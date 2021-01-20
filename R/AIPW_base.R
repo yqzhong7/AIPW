@@ -28,6 +28,7 @@ AIPW_base <- R6::R6Class(
                    mu = NULL,
                    raw_p_score = NULL,
                    p_score = NULL,
+                   ip_weights = NULL,
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
     #Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
@@ -43,6 +44,8 @@ AIPW_base <- R6::R6Class(
     result = NULL,
     #A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
     g.plot = NULL,
+    #A box plot of inverse probability weights using truncated propensity scores by exposure status (`ggplot2::geom_boxplot`)
+    ip_weights.plot = NULL,
 
     #-------------------------constructor-----------------------------#
     initialize = function(Y=NULL, A=NULL,verbose=TRUE){
@@ -83,6 +86,9 @@ AIPW_base <- R6::R6Class(
       }
       self$obs_est$p_score <- private$.bound(self$obs_est$raw_p_score)
 
+      #inverse propobility weights
+      self$obs_est$ip_weights <- (as.numeric(private$A==1)/self$obs_est$p_score) + (as.numeric(private$A==0)/(1-self$obs_est$p_score))
+
       #AIPW est
       self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
       self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/(1-self$obs_est$p_score))*(private$Y - self$obs_est$mu) + self$obs_est$mu0
@@ -105,7 +111,7 @@ AIPW_base <- R6::R6Class(
                                     self$estimates$RD, self$estimates$ATT, self$estimates$ATC), nrow=5, byrow=T),
                            c(rep(self$n,3), self$n_A1, self$n_A0))
       row.names(self$result) <- c("Risk for exposure", "Risk for control",
-                                  "Risk Difference","Average Treatment effects among the Treated (ATT)", "Average Treatment effects among the Controls (ATC)")
+                                  "Risk Difference","Risk Difference among the Treated", "Risk Difference among the Controls")
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
 
       if (private$Y.type == 'binomial'){
@@ -131,25 +137,28 @@ AIPW_base <- R6::R6Class(
     },
 
     #-------------------------plot.p_score method-----------------------------#
-    plot.p_score = function(){
+    plot.p_score = function(print.ip_weights = F){
       #check if ggplot2 library is loaded
       if (!any(names(sessionInfo()$otherPkgs) %in% c("ggplot2"))){
         stop("`ggplot2` package is not loaded.")
       }
+
+      plot_data_A = factor(private$A, levels = 0:1)
+
       #input check
       if (any(is.na(self$obs_est$raw_p_score))){
         stop("Propensity scores are not estimated.")
       } else if (is.null(self$obs_est$p_score)) {
         #p_score before truncation (estimated ps)
-        plot_data = data.frame(A = factor(private$A),
+        plot_data = data.frame(A = plot_data_A,
                                p_score= self$obs_est$raw_p_score,
                                trunc = "Not truncated")
         message("ATE has not been calculated.")
       } else {
-        plot_data = rbind(data.frame(A = factor(private$A),
+        plot_data = rbind(data.frame(A = plot_data_A,
                                      p_score= self$obs_est$raw_p_score,
                                      trunc = "Not truncated"),
-                          data.frame(A = factor(private$A),
+                          data.frame(A = plot_data_A,
                                      p_score= self$obs_est$p_score,
                                      trunc = "Truncated"))
       }
@@ -158,12 +167,44 @@ AIPW_base <- R6::R6Class(
         ggplot2::scale_x_continuous(limits = c(0,1)) +
         ggplot2::facet_wrap(~trunc) +
         ggtitle("Propensity scores by exposure status") +
-        theme_bw()
+        theme_bw() +
+        theme(legend.position = 'bottom')
+        xlab('Propensity Scores')
+
       print(self$g.plot)
       invisible(self)
     }
-  ),
+  ,
+  #-------------------------plot.ip_weights method-----------------------------#
+  plot.ip_weights = function(){
+    #check if ggplot2 library is loaded
+    if (!any(names(sessionInfo()$otherPkgs) %in% c("ggplot2"))){
+      stop("`ggplot2` package is not loaded.")
+    }
 
+    plot_data_A = factor(private$A, levels = 0:1)
+
+    #input check
+    if (any(is.na(self$obs_est$raw_p_score))){
+      stop("Propensity scores are not estimated.")
+    } else if (is.null(self$obs_est$p_score)) {
+      stop("ATE has not been calculated.")
+    } else {
+      ipw_plot_data = data.frame(A = plot_data_A, ip_weights= self$obs_est$ip_weights)
+      self$ip_weights.plot = ggplot2::ggplot(data = ipw_plot_data, ggplot2::aes(y = ip_weights, x = A, fill = A)) +
+        ggplot2::geom_boxplot(alpha=0.5) +
+        ggtitle("IP-weights using truncated propensity scores by exposure status") +
+        theme_bw() +
+        ylab('Inverse Probablity Weights') +
+        coord_flip() +
+        theme(legend.position = 'bottom')
+
+      print(self$ip_weights.plot)
+    }
+
+    invisible(self)
+  }
+),
   #-------------------------private fields and methods----------------------------#
   private = list(
     #input
@@ -275,4 +316,28 @@ NULL
 #' aipw_sl$plot.p_score()
 #' #after calculation
 #' aipw_sl$summary(g.bound=0.025)$plot.p_score()
+NULL
+
+#' @name plot.ip_weights
+#' @title Plot the inverse probability weights using truncated propensity scores by exposure status
+#'
+#' @description
+#' Plot and check the balance of propensity scores by exposure status
+#'
+#' @section R6 Usage:
+#' \code{$plot.ip_weights()}
+#'
+#' @seealso [AIPW] and [AIPW_tmle]
+#'
+#' @return `ip_weights.plot` (public variable): A box plot of inverse probability weights using truncated propensity scores by exposure status (`ggplot2::geom_boxplot`)
+#'
+#' @examples
+#' library(SuperLearner)
+#' library(ggplot2)
+#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
+#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
+#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
+#'                     k_split=1,verbose=FALSE)$fit()
+#' #after average treatment effect calculation calculation
+#' aipw_sl$summary(g.bound=0.025)$plot.ip_weights()
 NULL
