@@ -90,9 +90,9 @@
 
 <!-- badges: end -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<p><strong>Authors:</strong> <a href="https://github.com/yqzhong7">Yongqi Zhong</a>, <a href="https://github.com/ainaimi">Ashley Naimi</a>, <a href="https://github.com/gconzuelo">Gabriel Conzuelo</a>, <a href="https://github.com/ehkennedy">Edward Kennedy</a></p>
+<p><strong>Contributors:</strong> <a href="https://github.com/yqzhong7">Yongqi Zhong</a>, <a href="https://github.com/ainaimi">Ashley Naimi</a>, <a href="https://github.com/gconzuelo">Gabriel Conzuelo</a>, <a href="https://github.com/ehkennedy">Edward Kennedy</a></p>
 <hr>
-<p>Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The <code>AIPW</code> package is designed for estimating the average treatment effect of a binary exposure and outcome on risk difference (RD), risk ratio (RR) and odds ratio (OR). Users need to examine causal assumptions (e.g., consistency) before using this package.</p>
+<p>Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The <code>AIPW</code> package is designed for estimating the average treatment effect of a binary exposure on risk difference (RD), risk ratio (RR) and odds ratio (OR). Users need to examine causal assumptions (e.g., consistency) before using this package.</p>
 <hr>
 <div id="contents" class="section level2">
 <h2 class="hasAnchor">
@@ -160,11 +160,15 @@
 <p><img src="reference/figures/one_line-1.png"><!-- --></p>
 <p>To see the results, set <code>verbose = TRUE</code>(default) or:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">AIPW_SL</span><span class="op">$</span><span class="va">result</span>
-<span class="co">#&gt;                 Estimate        SE      95% LCL   95% UCL   N</span>
-<span class="co">#&gt; Risk Difference 0.131264 0.0711246 -0.008140195 0.2706682 200</span>
-<span class="co">#&gt; Risk Ratio      1.240933 0.1173172  0.986020851 1.5617478 200</span>
-<span class="co">#&gt; Odds Ratio      1.743802 0.3101808  0.949436357 3.2027894 200</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">AIPW_SL</span><span class="op">$</span><span class="va">result</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="co">#&gt;                                    Estimate    SE 95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk for exposure                     0.676 0.053  0.5714    0.78 200</span>
+<span class="co">#&gt; Risk for control                      0.545 0.047  0.4536    0.64 200</span>
+<span class="co">#&gt; Risk Difference                       0.131 0.071 -0.0081    0.27 200</span>
+<span class="co">#&gt; Risk Difference among the Treated     0.214 0.138 -0.0556    0.48  78</span>
+<span class="co">#&gt; Risk Difference among the Controls    0.078 0.077 -0.0719    0.23 122</span>
+<span class="co">#&gt; Risk Ratio                            1.241 0.117  0.9860    1.56 200</span>
+<span class="co">#&gt; Odds Ratio                            1.744 0.310  0.9494    3.20 200</span></code></pre></div>
 <p>You can also use the <code><a href="reference/aipw_wrapper.html">aipw_wrapper()</a></code> to wrap <code>new()</code>, <code><a href="reference/fit.html">fit()</a></code> and <code><a href="reference/summary.html">summary()</a></code> together (also support method chaining):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/aipw_wrapper.html">aipw_wrapper</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,
@@ -205,10 +209,14 @@
                     k_split <span class="op">=</span> <span class="fl">3</span>,
                     verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Done!</span>
-<span class="co">#&gt;                 Estimate     SE  95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference    0.139 0.0714 -0.00144   0.279 200</span>
-<span class="co">#&gt; Risk Ratio         1.258 0.1177  0.99869   1.584 200</span>
-<span class="co">#&gt; Odds Ratio         1.796 0.3104  0.97745   3.300 200</span></code></pre></div>
+<span class="co">#&gt;                                    Estimate     SE  95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk for exposure                    0.6761 0.0546  0.56913   0.783 200</span>
+<span class="co">#&gt; Risk for control                     0.5375 0.0462  0.44705   0.628 200</span>
+<span class="co">#&gt; Risk Difference                      0.1386 0.0714 -0.00144   0.279 200</span>
+<span class="co">#&gt; Risk Difference among the Treated    0.2061 0.1399 -0.06806   0.480  78</span>
+<span class="co">#&gt; Risk Difference among the Controls   0.0954 0.0759 -0.05335   0.244 122</span>
+<span class="co">#&gt; Risk Ratio                           1.2578 0.1177  0.99869   1.584 200</span>
+<span class="co">#&gt; Odds Ratio                           1.7960 0.3104  0.97745   3.300 200</span></code></pre></div>
 <p>Progress bar that supports parallel processing is available in the <code>AIPW$fit()</code> method through the API from <a href="https://github.com/HenrikBengtsson/progressr">progressr</a> package:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr">progressr</a></span><span class="op">)</span>
@@ -261,10 +269,14 @@
   <span class="fu">new</span><span class="op">(</span>A<span class="op">=</span><span class="va">exposure</span>,Y<span class="op">=</span><span class="va">outcome</span>,tmle_fit <span class="op">=</span> <span class="va">tmle_fit</span>,verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">summary</span><span class="op">(</span>g.bound<span class="op">=</span><span class="fl">0.025</span><span class="op">)</span>
 <span class="co">#&gt; Sample splitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)</span>
-<span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk Difference    0.144 0.0698 0.00702   0.281 200</span>
-<span class="co">#&gt; Risk Ratio         1.270 0.1157 1.01198   1.593 200</span>
-<span class="co">#&gt; Odds Ratio         1.836 0.3037 1.01244   3.330 200</span></code></pre></div>
+<span class="co">#&gt;                                    Estimate     SE  95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk for exposure                     0.678 0.0529  0.57380   0.781 200</span>
+<span class="co">#&gt; Risk for control                      0.534 0.0455  0.44450   0.623 200</span>
+<span class="co">#&gt; Risk Difference                       0.144 0.0698  0.00702   0.281 200</span>
+<span class="co">#&gt; Risk Difference among the Treated     0.144 0.1359 -0.12196   0.411  78</span>
+<span class="co">#&gt; Risk Difference among the Controls    0.144 0.0751 -0.00355   0.291 122</span>
+<span class="co">#&gt; Risk Ratio                            1.270 0.1157  1.01198   1.593 200</span>
+<span class="co">#&gt; Odds Ratio                            1.836 0.3037  1.01244   3.330 200</span></code></pre></div>
 </div>
 <div id="2-tmle3" class="section level4">
 <h4 class="hasAnchor">
