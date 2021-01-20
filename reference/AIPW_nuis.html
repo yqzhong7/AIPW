@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Augmented Inverse Probability Weighting (AIPW) — AIPW • AIPW</title>
+<title>Augmented Inverse Probability Weighting (AIPW) uses tmle or tmle3 as inputs — AIPW_nuis • AIPW</title>
 
 
 <!-- jquery -->
@@ -45,9 +45,8 @@
 
 
 
-<meta property="og:title" content="Augmented Inverse Probability Weighting (AIPW) — AIPW" />
-<meta property="og:description" content="An R6Class of AIPW for estimating the average causal effects with users' inputs of exposure, outcome, covariates and related
-libraries for estimating the efficient influence function." />
+<meta property="og:title" content="Augmented Inverse Probability Weighting (AIPW) uses tmle or tmle3 as inputs — AIPW_nuis" />
+<meta property="og:description" content="AIPW_nuis class for users to manually input nuisance functions (estimates from the exposure and the outcome models)" />
 
 
 
@@ -134,64 +133,44 @@ libraries for estimating the efficient influence function." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Augmented Inverse Probability Weighting (AIPW)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/yqzhong7/AIPW/blob/master/R/AIPW.R'><code>R/AIPW.R</code></a></small>
-    <div class="hidden name"><code>AIPW.Rd</code></div>
+    <h1>Augmented Inverse Probability Weighting (AIPW) uses tmle or tmle3 as inputs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yqzhong7/AIPW/blob/master/R/AIPW_nuis.R'><code>R/AIPW_nuis.R</code></a></small>
+    <div class="hidden name"><code>AIPW_nuis.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>An R6Class of AIPW for estimating the average causal effects with users' inputs of exposure, outcome, covariates and related
-libraries for estimating the efficient influence function.</p>
+    <p><code>AIPW_nuis</code> class for users to manually input nuisance functions (estimates from the exposure and the outcome models)</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>AIPW</code> object</p>
+    <p><code>AIPW_nuis</code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>An AIPW object is constructed by <code>new()</code> with users' inputs of data and causal structures, then it <code><a href='fit.html'>fit()</a></code> the data using the
-libraries in <code>Q.SL.library</code> and <code>g.SL.library</code> with <code>k_split</code> sample splitting, and provides results via the <code><a href='summary.html'>summary()</a></code> method.
-After using <code><a href='fit.html'>fit()</a></code> and/or <code><a href='summary.html'>summary()</a></code> methods, the propensity scores by exposure status can be examined with <code><a href='plot.p_score.html'>plot.p_score()</a></code>.
-See examples for illustration.</p>
+    <p>Create an AIPW_nuis object that uses users' input nuisance functions from the exposure model \(P(A| W)\),
+and the outcome models \(P(Y| do(A=0), W)\) and \(P(Y| do(A=1), W.Q)\):
+$$
+     \psi(a) = E{[ I(A=a) * Y-P(Y=1|A,W_Q) / P(A=a|W_g) ] + P(Y=1| do(A=a),W_Q) }
+     $$</p>
     <h2 class="hasAnchor" id="constructor"><a class="anchor" href="#constructor"></a>Constructor</h2>
 
     
 
-<p><code>AIPW$new(Y = NULL, A = NULL, W = NULL, W.Q = NULL, W.g = NULL, Q.SL.library = NULL, g.SL.library = NULL, k_split = 10, verbose = TRUE, save.sl.fit = FALSE)</code></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Constructor Arguments</h3>
+<p><code>AIPW$new(Y = NULL, A = NULL, tmle_fit = NULL, verbose = TRUE)</code></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Constructor Arguments</h3>
 
 
 <table class='table'>
 <tr><td><strong>Argument</strong></td><td><strong>Type</strong></td><td><strong>Details</strong></td></tr>
 <tr><td><code>Y</code></td><td>Integer</td><td>A vector of outcome (binary (0, 1) or continuous)</td></tr>
 <tr><td><code>A</code></td><td>Integer</td><td>A vector of binary exposure (0 or 1)</td></tr>
-<tr><td><code>W</code></td><td>Data</td><td>Covariates for <strong>both</strong> exposure and outcome models.</td></tr>
-<tr><td><code>W.Q</code></td><td>Data</td><td>Covariates for the <strong>outcome</strong> model (Q).</td></tr>
-<tr><td><code>W.g</code></td><td>Data</td><td>Covariates for the <strong>exposure</strong> model (g).</td></tr>
-<tr><td><code>Q.SL.library</code></td><td>SL.library</td><td>Algorithms used for the <strong>outcome</strong> model (Q).</td></tr>
-<tr><td><code>g.SL.library</code></td><td>SL.library</td><td>Algorithms used for the <strong>exposure</strong> model (g).</td></tr>
-<tr><td><code>k_split</code></td><td>Integer</td><td>Number of folds for splitting (Default = 10).</td></tr>
+<tr><td><code>mu0</code></td><td>Numeric</td><td>User input of \(P(Y=1| do(A = 0),W_Q)\)</td></tr>
+<tr><td><code>mu1</code></td><td>Numeric</td><td>User input of \(P(Y=1| do(A = 1),W_Q)\)</td></tr>
+<tr><td><code>raw_p_score</code></td><td>Numeric</td><td>User input of \(P(A=a|W_g)\)</td></tr>
 <tr><td><code>verbose</code></td><td>Logical</td><td>Whether to print the result (Default = TRUE)</td></tr>
-<tr><td><code>save.sl.fit</code></td><td>Logical</td><td>Whether to save Q.fit and g.fit (Default = False)</td></tr>
 </table>
 
-
-
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Constructor Argument Details</h3>
-
-
-<dl>
-<dt><code>W</code>, <code>W.Q</code> &amp; <code>W.g</code></dt><dd><p>It can be a vector, matrix or data.frame. If and only if <code>W == NULL</code>, <code>W</code> would be replaced by <code>W.Q</code> and <code>W.g</code>.</p></dd>
-<dt><code>Q.SL.library</code> &amp; <code>g.SL.library</code></dt><dd><p>Machine learning algorithms from <a href='https://rdrr.io/pkg/SuperLearner/man/SuperLearner.html'>SuperLearner</a> libraries or <code>sl3</code> learner object (Lrnr_base)</p></dd>
-<dt><code>k_split</code></dt><dd><p>It ranges from 1 to number of observation-1.
-If k_split=1, no sample splitting; if k_split&gt;=3, use similar technique as cross-validation
-(e.g., <code>k_split=10</code>, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
-<strong>NOTE: it's recommended to use sample splitting.</strong></p></dd>
-<dt><code>save.sl.fit</code></dt><dd><p>This option allows users to save the fitted sl object (libs$Q.fit &amp; libs$g.fit) for debug use.
-<strong>Warning: Saving the SuperLearner fitted object may cause a substantive storage/memory use.</strong></p></dd>
-
-</dl>
 
 
     <h2 class="hasAnchor" id="public-methods"><a class="anchor" href="#public-methods"></a>Public Methods</h2>
@@ -200,7 +179,6 @@ If k_split=1, no sample splitting; if k_split&gt;=3, use similar technique as cr
 
 <table class='table'>
 <tr><td><strong>Methods</strong></td><td><strong>Details</strong></td><td><strong>Link</strong></td></tr>
-<tr><td><code><a href='fit.html'>fit()</a></code></td><td>Fit the data to the AIPW object</td><td><a href='fit.html'>fit.AIPW</a></td></tr>
 <tr><td><code><a href='summary.html'>summary()</a></code></td><td>Summary of the average treatment effects from AIPW</td><td><a href='summary.html'>summary.AIPW_base</a></td></tr>
 <tr><td><code><a href='plot.p_score.html'>plot.p_score()</a></code></td><td>Plot the propensity scores by exposure status</td><td><a href='plot.p_score.html'>plot.p_score</a></td></tr>
 <tr><td><code><a href='plot.ip_weights.html'>plot.ip_weights()</a></code></td><td>Plot the inverse probability weights using truncated propensity scores</td><td><a href='plot.ip_weights.html'>plot.ip_weights</a></td></tr>
@@ -214,22 +192,19 @@ If k_split=1, no sample splitting; if k_split&gt;=3, use similar technique as cr
 <table class='table'>
 <tr><td><strong>Variable</strong></td><td><strong>Generated by</strong></td><td><strong>Return</strong></td></tr>
 <tr><td><code>n</code></td><td>Constructor</td><td>Number of observations</td></tr>
-<tr><td><code>obs_est</code></td><td><code><a href='fit.html'>fit()</a></code> &amp; <code><a href='summary.html'>summary()</a></code></td><td>Components calculating average causal effects</td></tr>
+<tr><td><code>obs_est</code></td><td>Constructor</td><td>Components calculating average causal effects</td></tr>
 <tr><td><code>estimates</code></td><td><code><a href='summary.html'>summary()</a></code></td><td>A list of Risk difference, risk ratio, odds ratio</td></tr>
 <tr><td><code>result</code></td><td><code><a href='summary.html'>summary()</a></code></td><td>A matrix contains RD, ATT, ATC, RR and OR with their SE and 95%CI</td></tr>
 <tr><td><code>g.plot</code></td><td><code><a href='plot.p_score.html'>plot.p_score()</a></code></td><td>A density plot of propensity scores by exposure status</td></tr>
 <tr><td><code>ip_weights.plot</code></td><td><code><a href='plot.ip_weights.html'>plot.ip_weights()</a></code></td><td>A box plot of inverse probability weights</td></tr>
-<tr><td><code>libs</code></td><td><code><a href='fit.html'>fit()</a></code></td><td><a href='https://rdrr.io/pkg/SuperLearner/man/SuperLearner.html'>SuperLearner</a> or sl3 libraries and their fitted objects</td></tr>
-<tr><td><code>sl.fit</code></td><td>Constructor</td><td>A wrapper function for fitting <a href='https://rdrr.io/pkg/SuperLearner/man/SuperLearner.html'>SuperLearner</a> or sl3</td></tr>
-<tr><td><code>sl.predict</code></td><td>Constructor</td><td>A wrapper function using <code>sl.fit</code> to predict</td></tr>
 </table>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public Variable Details</h3>
 
 
 <dl>
-<dt><code>obs_est</code></dt><dd><p>After using <code><a href='fit.html'>fit()</a></code> and <code><a href='summary.html'>summary()</a></code> methods, this list contains the propensity scores (<code>p_score</code>),
-counterfactual predictions (<code>mu</code>, <code>mu1</code> &amp; <code>mu0</code>) and efficient influence functions (<code>aipw_eif1</code> &amp; <code>aipw_eif0</code>) for later average treatment effect calculations.</p></dd>
+<dt><code>obs_est</code></dt><dd><p>This list extracts from the fitted <code>tmle</code> or <code>tmle3</code> object.
+It includes propensity scores (<code>p_score</code>), counterfactual predictions (<code>mu</code>, <code>mu1</code> &amp; <code>mu0</code>) and efficient influence functions (<code>aipw_eif1</code> &amp; <code>aipw_eif0</code>)</p></dd>
 <dt><code>g.plot</code></dt><dd><p>This plot is generated by <code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>ggplot2::geom_density</a></code></p></dd>
 <dt><code>ip_weights.plot</code></dt><dd><p>This plot uses truncated propensity scores stratified by exposure status (<code><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>ggplot2::geom_boxplot</a></code>)</p></dd>
 
@@ -237,26 +212,6 @@ counterfactual predictions (<code>mu</code>, <code>mu1</code> &amp; <code>mu0</c
 
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ecpolley/SuperLearner'>SuperLearner</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required package: nnls</span></div><div class='output co'>#&gt; <span class='message'>Super Learner</span></div><div class='output co'>#&gt; <span class='message'>Version: 2.0-26</span></div><div class='output co'>#&gt; <span class='message'>Package created on 2019-10-27</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-
-<span class='co'>#create an object</span>
-<span class='va'>aipw_sl</span> <span class='op'>&lt;-</span> <span class='va'>AIPW</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>Y<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>, A<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>,
-                    W.Q<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>, W.g<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>,
-                    Q.SL.library<span class='op'>=</span><span class='st'>"SL.mean"</span>,g.SL.library<span class='op'>=</span><span class='st'>"SL.mean"</span>,
-                    k_split<span class='op'>=</span><span class='fl'>1</span>,verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>fit</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'>#fit the object</span>
-<span class='va'>aipw_sl</span><span class='op'>$</span><span class='fu'>fit</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'>#calculate the retults</span>
-<span class='va'>aipw_sl</span><span class='op'>$</span><span class='fu'>summary</span><span class='op'>(</span>g.bound <span class='op'>=</span> <span class='fl'>0.025</span><span class='op'>)</span>
-
-<span class='co'>#check the propensity scores by exposure status after truncation</span>
-<span class='va'>aipw_sl</span><span class='op'>$</span><span class='fu'>plot.p_score</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='img'><img src='AIPW-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
