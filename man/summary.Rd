@@ -5,17 +5,20 @@
 \alias{summary.AIPW_base}
 \title{Summary of the average treatment effects from AIPW}
 \arguments{
-\item{g.bound}{Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
+\item{g.bound}{Value between [0,1] at which the propensity score should be truncated.
+Propensity score will be truncated to \eqn{[g.bound, 1-g.bound]} when one g.bound value is provided, or to \eqn{[min(g.bound), max(g.bound)]} when two values are provided.
+\strong{Defaults to 0.025}.}
 }
 \value{
-\code{estimates} and \code{result}(public variables): Average treatment effect in RD, RR and OR
+\code{estimates} and \code{result} (public variables): Risks, Average treatment effect in RD, RR and OR, and Addictive Effects among the treated and the controls (ATT and ATC)
 }
 \description{
 Calculate average causal effects in RD, RR and OR in the fitted \link{AIPW} or \link{AIPW_tmle} object using the estimated efficient influence functions
 }
 \section{R6 Usage}{
 
-\code{$summary(g.bound = 0.025)}
+\code{$summary(g.bound = 0.025)} \cr
+\code{$summary(g.bound = c(0.025,0.975))}
 }
 
 \examples{

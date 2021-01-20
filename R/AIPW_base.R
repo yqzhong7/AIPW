@@ -77,19 +77,26 @@ AIPW_base <- R6::R6Class(
     #-------------------------summary method-----------------------------#
     summary = function(g.bound=0.025){
       #p_score truncation
+      if (length(g.bound) > 2){
+        warning('More than two g.bound are provided. Only the first two will be used.')
+        g.bound = g.bound[1:2]
+      } else if (length(g.bound) ==1 & g.bound[1] >= 0.5){
+          stop("g.bound >= 0.5 is not allowed when only one g.bound value is provided")
+      }
+
       private$g.bound=g.bound
       #check g.bound value
       if (!is.numeric(private$g.bound)){
         stop("g.bound must be a numeric value")
-      } else if (private$g.bound>1|private$g.bound<0){
+      } else if (max(private$g.bound) > 1 | min(private$g.bound) < 0){
         stop("g.bound must between 0 and 1")
       }
       self$obs_est$p_score <- private$.bound(self$obs_est$raw_p_score)
 
-      #inverse propobility weights
+      #inverse probability weights
       self$obs_est$ip_weights <- (as.numeric(private$A==1)/self$obs_est$p_score) + (as.numeric(private$A==0)/(1-self$obs_est$p_score))
 
-      #AIPW est
+      ##------AIPW est------##
       self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
       self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/(1-self$obs_est$p_score))*(private$Y - self$obs_est$mu) + self$obs_est$mu0
 
@@ -102,7 +109,7 @@ AIPW_base <- R6::R6Class(
       ## risk difference
       self$estimates$RD <- private$get_RD(self$obs_est$aipw_eif1, self$obs_est$aipw_eif0, root_n)
 
-      ## Average treatment effects on the treated and controls
+      ## Average treatment effects among the treated and controls
       self$estimates$ATT <- private$get_RD(self$obs_est$aipw_eif1[private$A==1], self$obs_est$aipw_eif0[private$A==1], sqrt(self$n_A1))
       self$estimates$ATC <- private$get_RD(self$obs_est$aipw_eif1[private$A==0], self$obs_est$aipw_eif0[private$A==0], sqrt(self$n_A0))
 
@@ -124,7 +131,7 @@ AIPW_base <- R6::R6Class(
         ## odds ratio
         self$estimates$OR <- private$get_OR(self$obs_est$aipw_eif1,self$obs_est$aipw_eif0, self$estimates$sigma_covar, root_n)
 
-        #results w/ multiplicative sacles
+        #w/ results on the multiplicative scale
         mult_result <- cbind(matrix(c(self$estimates$RR, self$estimates$OR),nrow=2,byrow=T),self$n)
         row.names(mult_result) <- c("Risk Ratio", "Odds Ratio")
         self$result <- rbind(self$result, mult_result)
@@ -256,8 +263,13 @@ AIPW_base <- R6::R6Class(
     },
     #setup the bounds for the propensity score to ensure the balance
     .bound = function(p_score,bound = private$g.bound){
-      res <- base::ifelse(p_score<bound,bound,
-                          base::ifelse(p_score>(1-bound),(1-bound),p_score))
+      if (length(bound) == 1){
+        res <- base::ifelse(p_score<bound, bound,
+                            base::ifelse(p_score > (1-bound), (1-bound) ,p_score))
+      } else {
+        res <- base::ifelse(p_score< min(bound), min(bound),
+                            base::ifelse(p_score > max(bound), max(bound), p_score))
+      }
       return(res)
     }
   )
@@ -273,13 +285,16 @@ AIPW_base <- R6::R6Class(
 #' Calculate average causal effects in RD, RR and OR in the fitted [AIPW] or [AIPW_tmle] object using the estimated efficient influence functions
 #'
 #' @section R6 Usage:
-#' \code{$summary(g.bound = 0.025)}
+#' \code{$summary(g.bound = 0.025)} \cr
+#' \code{$summary(g.bound = c(0.025,0.975))}
 #'
-#' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
+#' @param g.bound Value between \[0,1\] at which the propensity score should be truncated.
+#' Propensity score will be truncated to \eqn{[g.bound, 1-g.bound]} when one g.bound value is provided, or to \eqn{[min(g.bound), max(g.bound)]} when two values are provided.
+#'  \strong{Defaults to 0.025}.
 #'
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
-#' @return `estimates` and `result`(public variables): Average treatment effect in RD, RR and OR
+#' @return `estimates` and `result` (public variables): Risks, Average treatment effect in RD, RR and OR, and Addictive Effects among the treated and the controls (ATT and ATC)
 #'
 #' @examples
 #' library(SuperLearner)

@@ -73,7 +73,7 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
                     verbose=FALSE)$
   fit()$
   #Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended
-  summary(g.bound = 0.25)$
+  summary(g.bound = c(0.25,0.75))$
   plot.p_score()$
   plot.ip_weights()
 ```
