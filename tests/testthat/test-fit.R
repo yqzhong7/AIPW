@@ -104,7 +104,7 @@ test_that("AIPW fit: sl3 & k_split", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/08/09
+#' 2021/01/20
 test_that("AIPW fit: verbose", {
   #verbose == TRUE: "Done!"
   library(SuperLearner)
@@ -117,7 +117,7 @@ test_that("AIPW fit: verbose", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = T)
-  expect_output(aipw$fit(),regexp = "Done!")
+  expect_message(aipw$fit(),regexp = "Done!")
 
   ##progressr
   #when progressr not loaded

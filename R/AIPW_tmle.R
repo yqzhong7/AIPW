@@ -10,8 +10,8 @@
 #' ## Constructor Arguments
 #' \tabular{lll}{
 #' \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
-#' \code{Y}               \tab   Integer    \tab     A vector of outcome (0 or 1) \cr
-#' \code{A}               \tab   Integer    \tab     A vector of exposure (0 or 1) \cr
+#' \code{Y}               \tab   Integer           \tab     A vector of outcome (binary (0, 1) or continuous) \cr
+#' \code{A}               \tab   Integer           \tab     A vector of binary exposure (0 or 1) \cr
 #' \code{tmle_fit}        \tab   Object             \tab    A fitted `tmle` or `tmle3` object \cr
 #' \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE)
 #' }
@@ -29,7 +29,7 @@
 #'  \code{n}              \tab   Constructor                \tab     Number of observations \cr
 #'  \code{obs_est}        \tab   Constructor                \tab     Components calculating average causal effects \cr
 #'  \code{estimates}      \tab   `summary()`                \tab     A list of Risk difference, risk ratio, odds ratio \cr
-#'  \code{result}         \tab   `summary()`                \tab     A matrix contains RD, RR and OR with their SE and 95%CI \cr
+#'  \code{result}         \tab   `summary()`                \tab     A matrix contains RD, ATT, ATC, RR and OR with their SE and 95%CI \cr
 #'  \code{g.plot}         \tab   `plot.p_score()`           \tab     A density plot of propensity scores by exposure status \cr
 #'  }
 #'

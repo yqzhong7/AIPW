@@ -23,8 +23,8 @@ See examples for illustration.
 
 \tabular{lll}{
 \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
-\code{Y}               \tab   Integer           \tab     A vector of outcome (0 or 1) \cr
-\code{A}               \tab   Integer           \tab     A vector of exposure (0 or 1) \cr
+\code{Y}               \tab   Integer           \tab     A vector of outcome (binary (0, 1) or continuous) \cr
+\code{A}               \tab   Integer           \tab     A vector of binary exposure (0 or 1) \cr
 \code{W}               \tab   Data              \tab     Covariates for \strong{both} exposure and outcome models. \cr
 \code{W.Q}             \tab   Data              \tab     Covariates for the \strong{outcome} model (Q).\cr
 \code{W.g}             \tab   Data              \tab     Covariates for the \strong{exposure} model (g). \cr
@@ -68,7 +68,7 @@ If k_split=1, no sample splitting; if k_split>1, use similar technique as cross-
 \code{n}              \tab   Constructor                \tab     Number of observations \cr
 \code{obs_est}        \tab   \code{fit()} & \code{summary()}      \tab     Components calculating average causal effects \cr
 \code{estimates}      \tab   \code{summary()}                \tab     A list of Risk difference, risk ratio, odds ratio \cr
-\code{result}         \tab   \code{summary()}                \tab     A matrix contains RD, RR and OR with their SE and 95\%CI \cr
+\code{result}         \tab   \code{summary()}                \tab     A matrix contains RD, ATT, ATC, RR and OR with their SE and 95\%CI \cr
 \code{g.plot}         \tab   \code{plot.p_score()}           \tab     A density plot of propensity scores by exposure status\cr
 \code{libs}           \tab   \code{fit()}                    \tab     \link{SuperLearner} or sl3 libraries and their fitted objects \cr
 \code{sl.fit}         \tab   Constructor                \tab     A wrapper function for fitting \link{SuperLearner} or sl3 \cr

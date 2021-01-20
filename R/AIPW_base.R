@@ -18,6 +18,10 @@ AIPW_base <- R6::R6Class(
     #-------------------------public fields-----------------------------#
     #Number of observations
     n = NULL,
+    #Number of exposed
+    n_A1 = NULL,
+    #Number ofunexposed
+    n_A0 = NULL,
     #Components for estimating the influence functions of all observations to calculate average causal effects
     obs_est = list(mu0 = NULL,
                    mu1 = NULL,
@@ -27,7 +31,11 @@ AIPW_base <- R6::R6Class(
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
     #Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
-    estimates = list(RD = NULL,
+    estimates = list(risk_A1 = NULL,
+                     risk_A0 = NULL,
+                     RD = NULL,
+                     ATT = NULL,
+                     ATC = NULL,
                      RR = NULL,
                      OR = NULL,
                      sigma_covar = NULL),
@@ -46,8 +54,17 @@ AIPW_base <- R6::R6Class(
       if (!(length(private$Y)==length(private$A))){
         stop("Please check the dimension of the data")
       }
+      #detect outcome is binary or continuous
+      if (length(unique(private$Y))==2) {
+        private$Y.type = 'binomial'
+      } else {
+        private$Y.type = 'gaussian'
+      }
+
       #setup
       self$n <- length(private$A)
+      self$n_A1 <- sum(private$A==1)
+      self$n_A0 <- sum(private$A==0)
       self$obs_est$mu0 <- rep(NA,self$n)
       self$obs_est$mu1 <- rep(NA,self$n)
       self$obs_est$mu <- rep(NA,self$n)
@@ -72,21 +89,41 @@ AIPW_base <- R6::R6Class(
 
       root_n <- sqrt(self$n)
 
+      ## risk for the treated and controls
+      self$estimates$risk_A1 <- private$get_RD(self$obs_est$aipw_eif1, 0, root_n)
+      self$estimates$risk_A0 <- private$get_RD(self$obs_est$aipw_eif0, 0, root_n)
+
       ## risk difference
       self$estimates$RD <- private$get_RD(self$obs_est$aipw_eif1, self$obs_est$aipw_eif0, root_n)
 
-      ## var-cov mat for rr and or calculation
-      self$estimates$sigma_covar <- private$get_sigma_covar(self$obs_est$aipw_eif0,self$obs_est$aipw_eif1)
+      ## Average treatment effects on the treated and controls
+      self$estimates$ATT <- private$get_RD(self$obs_est$aipw_eif1[private$A==1], self$obs_est$aipw_eif0[private$A==1], sqrt(self$n_A1))
+      self$estimates$ATC <- private$get_RD(self$obs_est$aipw_eif1[private$A==0], self$obs_est$aipw_eif0[private$A==0], sqrt(self$n_A0))
 
-      ## risk ratio
-      self$estimates$RR <- private$get_RR(self$obs_est$aipw_eif1,self$obs_est$aipw_eif0, self$estimates$sigma_covar, root_n)
-
-      ## odds ratio
-      self$estimates$OR <- private$get_OR(self$obs_est$aipw_eif1,self$obs_est$aipw_eif0, self$estimates$sigma_covar, root_n)
-
-      self$result <- cbind(matrix(c(self$estimates$RD,self$estimates$RR,self$estimates$OR),nrow=3,byrow=T),self$n)
+      #results on additive sacles
+      self$result <- cbind(matrix(c(self$estimates$risk_A1, self$estimates$risk_A0,
+                                    self$estimates$RD, self$estimates$ATT, self$estimates$ATC), nrow=5, byrow=T),
+                           c(rep(self$n,3), self$n_A1, self$n_A0))
+      row.names(self$result) <- c("Risk for exposure", "Risk for control",
+                                  "Risk Difference","Average Treatment effects among the Treated (ATT)", "Average Treatment effects among the Controls (ATC)")
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
-      row.names(self$result) <- c("Risk Difference","Risk Ratio", "Odds Ratio")
+
+      if (private$Y.type == 'binomial'){
+        ## var-cov mat for rr and or calculation
+        self$estimates$sigma_covar <- private$get_sigma_covar(self$obs_est$aipw_eif0,self$obs_est$aipw_eif1)
+
+        ## risk ratio
+        self$estimates$RR <- private$get_RR(self$obs_est$aipw_eif1,self$obs_est$aipw_eif0, self$estimates$sigma_covar, root_n)
+
+        ## odds ratio
+        self$estimates$OR <- private$get_OR(self$obs_est$aipw_eif1,self$obs_est$aipw_eif0, self$estimates$sigma_covar, root_n)
+
+        #results w/ multiplicative sacles
+        mult_result <- cbind(matrix(c(self$estimates$RR, self$estimates$OR),nrow=2,byrow=T),self$n)
+        row.names(mult_result) <- c("Risk Ratio", "Odds Ratio")
+        self$result <- rbind(self$result, mult_result)
+      }
+
       if (private$verbose){
         print(self$result,digit=3)
       }
@@ -134,6 +171,8 @@ AIPW_base <- R6::R6Class(
     A=NULL,
     verbose=NULL,
     g.bound=NULL,
+    #outcome type
+    Y.type = NULL,
     #private methods
     #Use individual estimates of efficient influence functions (obs_est$aipw_eif0 & obs_est$aipw_eif0) to calculate RD, RR and OR with SE and 95CI%
     get_RD = function(aipw_eif1,aipw_eif0,root_n){

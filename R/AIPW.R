@@ -14,8 +14,8 @@
 #' ## Constructor Arguments
 #' \tabular{lll}{
 #' \strong{Argument}      \tab   \strong{Type}     \tab     \strong{Details} \cr
-#' \code{Y}               \tab   Integer           \tab     A vector of outcome (0 or 1) \cr
-#' \code{A}               \tab   Integer           \tab     A vector of exposure (0 or 1) \cr
+#' \code{Y}               \tab   Integer           \tab     A vector of outcome (binary (0, 1) or continuous) \cr
+#' \code{A}               \tab   Integer           \tab     A vector of binary exposure (0 or 1) \cr
 #' \code{W}               \tab   Data              \tab     Covariates for \strong{both} exposure and outcome models. \cr
 #' \code{W.Q}             \tab   Data              \tab     Covariates for the \strong{outcome} model (Q).\cr
 #' \code{W.g}             \tab   Data              \tab     Covariates for the \strong{exposure} model (g). \cr
@@ -53,7 +53,7 @@
 #'  \code{n}              \tab   Constructor                \tab     Number of observations \cr
 #'  \code{obs_est}        \tab   `fit()` & `summary()`      \tab     Components calculating average causal effects \cr
 #'  \code{estimates}      \tab   `summary()`                \tab     A list of Risk difference, risk ratio, odds ratio \cr
-#'  \code{result}         \tab   `summary()`                \tab     A matrix contains RD, RR and OR with their SE and 95%CI \cr
+#'  \code{result}         \tab   `summary()`                \tab     A matrix contains RD, ATT, ATC, RR and OR with their SE and 95%CI \cr
 #'  \code{g.plot}         \tab   `plot.p_score()`           \tab     A density plot of propensity scores by exposure status\cr
 #'  \code{libs}           \tab   `fit()`                    \tab     [SuperLearner] or sl3 libraries and their fitted objects \cr
 #'  \code{sl.fit}         \tab   Constructor                \tab     A wrapper function for fitting [SuperLearner] or sl3 \cr
@@ -144,7 +144,7 @@ AIPW <- R6::R6Class(
           #change wrapper functions
           self$sl.fit = function(Y, X, SL.library, CV){
             suppressMessages({
-              fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family="binomial",
+              fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family= private$Y.type,
                                                 env=private$sl.env, cvControl = CV)
             })
             return(fit)
@@ -300,7 +300,7 @@ AIPW <- R6::R6Class(
       self$obs_est$mu  <- (self$obs_est$mu0*(1-private$A) + self$obs_est$mu1*(private$A)) #Q_pred
 
       if (private$verbose){
-        cat("Done!\n")
+        message("Done!\n")
       }
 
       invisible(self)
