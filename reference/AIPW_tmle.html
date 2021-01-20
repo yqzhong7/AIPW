@@ -96,7 +96,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -110,7 +110,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/yqzhong7/AIPW/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -159,8 +159,8 @@
 
 <table class='table'>
 <tr><td><strong>Argument</strong></td><td><strong>Type</strong></td><td><strong>Details</strong></td></tr>
-<tr><td><code>Y</code></td><td>Integer</td><td>A vector of outcome (0 or 1)</td></tr>
-<tr><td><code>A</code></td><td>Integer</td><td>A vector of exposure (0 or 1)</td></tr>
+<tr><td><code>Y</code></td><td>Integer</td><td>A vector of outcome (binary (0, 1) or continuous)</td></tr>
+<tr><td><code>A</code></td><td>Integer</td><td>A vector of binary exposure (0 or 1)</td></tr>
 <tr><td><code>tmle_fit</code></td><td>Object</td><td>A fitted <code>tmle</code> or <code>tmle3</code> object</td></tr>
 <tr><td><code>verbose</code></td><td>Logical</td><td>Whether to print the result (Default = TRUE)</td></tr>
 </table>
@@ -187,7 +187,7 @@
 <tr><td><code>n</code></td><td>Constructor</td><td>Number of observations</td></tr>
 <tr><td><code>obs_est</code></td><td>Constructor</td><td>Components calculating average causal effects</td></tr>
 <tr><td><code>estimates</code></td><td><code><a href='summary.html'>summary()</a></code></td><td>A list of Risk difference, risk ratio, odds ratio</td></tr>
-<tr><td><code>result</code></td><td><code><a href='summary.html'>summary()</a></code></td><td>A matrix contains RD, RR and OR with their SE and 95%CI</td></tr>
+<tr><td><code>result</code></td><td><code><a href='summary.html'>summary()</a></code></td><td>A matrix contains RD, ATT, ATC, RR and OR with their SE and 95%CI</td></tr>
 <tr><td><code>g.plot</code></td><td><code><a href='plot.p_score.html'>plot.p_score()</a></code></td><td>A density plot of propensity scores by exposure status</td></tr>
 </table>
 

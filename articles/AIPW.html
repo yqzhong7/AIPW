@@ -47,7 +47,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -61,7 +61,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/yqzhong7/AIPW/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -122,32 +122,32 @@
 <li>Install AIPW from <a href="https://github.com/yqzhong7/AIPW">GitHub</a>
 </li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW"</span><span class="op">)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Install <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">SuperLearner</a> or <a href="https://tlverse.org/sl3/articles/intro_sl3.html">sl3</a>)</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co">#SuperLearner</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#SuperLearner</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"SuperLearner"</span><span class="op">)</span>
 <span class="co">#sl3</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3"</span><span class="op">)</span></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="input-data-for-analyses" class="section level2">
 <h2 class="hasAnchor">
 <a href="#input-data-for-analyses" class="anchor"></a>Input data for analyses</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: nnls</span>
 <span class="co">#&gt; Super Learner</span>
 <span class="co">#&gt; Version: 2.0-26</span>
 <span class="co">#&gt; Package created on 2019-10-27</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"eager_sim_obs"</span><span class="op">)</span>
-<span class="va">cov</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"eligibility"</span>,<span class="st">"loss_num"</span>,<span class="st">"age"</span>, <span class="st">"time_try_pregnant"</span>,<span class="st">"BMI"</span>,<span class="st">"meanAP"</span><span class="op">)</span></pre></div>
+<span class="va">cov</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"eligibility"</span>,<span class="st">"loss_num"</span>,<span class="st">"age"</span>, <span class="st">"time_try_pregnant"</span>,<span class="st">"BMI"</span>,<span class="st">"meanAP"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="using-aipw-to-estimate-the-average-treatment-effect" class="section level2">
 <h2 class="hasAnchor">
@@ -156,8 +156,8 @@
 <h3 class="hasAnchor">
 <a href="#one-line-version-method-chaining-from-r6class" class="anchor"></a><a id="one_line"></a>One line version (Method chaining from R6class)</h3>
 <p>Using native AIPW class allows users to define different covariate sets for the exposure and the outcome models, respectively.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y<span class="op">=</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>,
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y<span class="op">=</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>,
                     A<span class="op">=</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span>,
                     W<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">eager_sim_obs</span>,select<span class="op">=</span><span class="va">cov</span><span class="op">)</span>, 
                     Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
@@ -167,7 +167,7 @@
   <span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
   <span class="co">#Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended</span>
   <span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></pre></div>
+  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="AIPW_files/figure-html/one_line-1.png" width="576"></p>
 </div>
 <div id="a-more-detailed-tutorial" class="section level3">
@@ -179,8 +179,8 @@
 <ul>
 <li><h5 id="use-superlearner-libraries">Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries</h5></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span><span class="op">)</span>
 
 <span class="co">#SuperLearner libraries for outcome (Q) and exposure models (g)</span>
@@ -193,14 +193,14 @@
                     Q.SL.library <span class="op">=</span> <span class="va">sl.lib</span>,
                     g.SL.library <span class="op">=</span> <span class="va">sl.lib</span>,
                     k_split <span class="op">=</span> <span class="fl">10</span>,
-                    verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></pre></div>
+                    verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>
 <h5 id="use-sl3-libraries">Use <a href="https://tlverse.org/sl3/index.html">sl3</a> libraries</h5>
 Metalearner is required to combine the estimates from stacklearner!</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span><span class="op">)</span>
 
 <span class="co">##construct sl3 learners for outcome (Q) and exposure models (g)</span>
@@ -220,15 +220,15 @@ Metalearner is required to combine the estimates from stacklearner!</li>
                      Q.SL.library <span class="op">=</span> <span class="va">sl3.lib</span>,
                      g.SL.library <span class="op">=</span> <span class="va">sl3.lib</span>,
                      k_split <span class="op">=</span> <span class="fl">10</span>,
-                     verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></pre></div>
+                     verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="fit-the-aipw-object" class="section level4">
 <h4 class="hasAnchor">
 <a href="#fit-the-aipw-object" class="anchor"></a>2. <a id="fit"></a>Fit the AIPW object</h4>
 <p>This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co">#fit the AIPW_SL object</span>
-<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#fit the AIPW_SL object</span>
+<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="calculate-average-treatment-effects" class="section level4">
 <h4 class="hasAnchor">
@@ -236,15 +236,15 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <ul>
 <li><h5 id="estimate-the-ate-with-propensity-scores-truncation">Estimate the ATE with propensity scores truncation</h5></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
-<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="co">#propensity score truncation </span></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#estimate the average causal effects from the fitted AIPW_SL object </span>
+<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="co">#propensity score truncation </span></code></pre></div>
 <ul>
 <li><h5 id="check-the-balance-of-propensity-scores-by-exposure-status-after-truncation">Check the balance of propensity scores by exposure status after truncation</h5></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="AIPW_files/figure-html/ps_trunc-1.png" width="576"></p>
 </div>
 </div>
@@ -253,8 +253,8 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <h2 class="hasAnchor">
 <a href="#parallelization-with-future-apply" class="anchor"></a><a id="par"></a>Parallelization with future.apply</h2>
 <p>In default setting, the <code>AIPW$fit()</code> method will be run sequentially. The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future">future</a> framework. Before creating a <code>AIPW</code> object, simply use <code><a href="https://rdrr.io/pkg/future/man/plan.html">future::plan()</a></code> to enable parallelization and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="co"># install.packages("future.apply")</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("future.apply")</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a></span><span class="op">)</span>
 <span class="fu">plan</span><span class="op">(</span><span class="va">multiprocess</span>, workers<span class="op">=</span><span class="fl">2</span>, gc<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">888</span><span class="op">)</span>
@@ -264,7 +264,7 @@ Metalearner is required to combine the estimates from stacklearner!</li>
                     Q.SL.library <span class="op">=</span> <span class="va">sl3.lib</span>,
                     g.SL.library <span class="op">=</span> <span class="va">sl3.lib</span>,
                     k_split <span class="op">=</span> <span class="fl">10</span>,
-                    verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></pre></div>
+                    verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="use-tmletmle3-fitted-object-as-input" class="section level2">
 <h2 class="hasAnchor">
@@ -275,8 +275,8 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <a href="#tmle" class="anchor"></a>1. <a id="tmle"></a><code>tmle</code>
 </h4>
 <p>As shown in the message, <a href="https://cran.r-project.org/web/packages/tmle/index.html">tmle</a> only support sample splitting in the outcome model.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=tmle">tmle</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=tmle">tmle</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span><span class="op">)</span>
 
 <span class="va">tmle_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tmle/man/tmle.html">tmle</a></span><span class="op">(</span>Y<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>,
@@ -295,15 +295,15 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"\nEstimates from AIPW\n"</span><span class="op">)</span>
 <span class="va">a_tmle</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AIPW_tmle.html">AIPW_tmle</a></span><span class="op">$</span>
   <span class="fu">new</span><span class="op">(</span>A<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span>,Y<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>,tmle_fit <span class="op">=</span> <span class="va">tmle_fit</span>,verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">summary</span><span class="op">(</span>g.bound<span class="op">=</span><span class="fl">0.025</span><span class="op">)</span></pre></div>
+  <span class="fu">summary</span><span class="op">(</span>g.bound<span class="op">=</span><span class="fl">0.025</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="tmle3" class="section level4">
 <h4 class="hasAnchor">
 <a href="#tmle3" class="anchor"></a>2. <a id="tmle3"></a> <code>tmle3</code>
 </h4>
 <p>Notably, <a href="https://github.com/tlverse/tmle3">tmle3</a> conducts sample splitting and propensity truncation (0.025) by default.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/tmle3">tmle3</a></span>,quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/tmle3">tmle3</a></span>,quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span>,quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">node_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>A <span class="op">=</span> <span class="st">"sim_A"</span>,Y <span class="op">=</span> <span class="st">"sim_Y"</span>,W <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">eager_sim_obs</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">:</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
@@ -322,7 +322,7 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"\nEstimates from AIPW\n"</span><span class="op">)</span>
 <span class="va">a_tmle3</span><span class="op">&lt;-</span> <span class="va"><a href="../reference/AIPW_tmle.html">AIPW_tmle</a></span><span class="op">$</span>
   <span class="fu">new</span><span class="op">(</span>A<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span>,Y<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>,tmle_fit <span class="op">=</span> <span class="va">tmle3_fit</span>,verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">summary</span><span class="op">(</span>g.bound<span class="op">=</span><span class="fl">0</span><span class="op">)</span></pre></div>
+  <span class="fu">summary</span><span class="op">(</span>g.bound<span class="op">=</span><span class="fl">0</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>

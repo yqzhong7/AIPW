@@ -47,7 +47,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -61,7 +61,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/yqzhong7/AIPW/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -115,9 +115,9 @@
 <div id="installation-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation-1" class="anchor"></a><a id="Installation"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
@@ -125,27 +125,27 @@
 <div id="setup-example-data-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#setup-example-data-1" class="anchor"></a><a id="data"></a>Setup example data</h3>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"eager_sim_obs"</span><span class="op">)</span>
 <span class="va">outcome</span> <span class="op">&lt;-</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span>
 <span class="va">exposure</span> <span class="op">&lt;-</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>
 <span class="co">#covariates for both outcome model (Q) and exposure model (g)</span>
 <span class="va">covariates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">eager_sim_obs</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">:</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
 
-<span class="co"># covariates &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></pre></div>
+<span class="co"># covariates &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></code></pre></div>
 </div>
 <div id="one-line-version-aipw-class-method-chaining-from-r6class" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-line-version-aipw-class-method-chaining-from-r6class" class="anchor"></a><a id="one_line"></a>One line version (<code>AIPW</code> class: method chaining from R6class)</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW">AIPW</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: nnls</span>
 <span class="co">#&gt; Super Learner</span>
 <span class="co">#&gt; Version: 2.0-26</span>
 <span class="co">#&gt; Package created on 2019-10-27</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,
                     A <span class="op">=</span> <span class="va">exposure</span>,
                     W <span class="op">=</span> <span class="va">covariates</span>, 
@@ -156,24 +156,24 @@
   <span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
   <span class="co">#Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended</span>
   <span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span><span class="op">$</span> 
-  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></pre></div>
+  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/one_line-1.png"><!-- --></p>
 <p>To see the results, set <code>verbose = TRUE</code>(default) or:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">AIPW_SL</span><span class="op">$</span><span class="va">result</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">AIPW_SL</span><span class="op">$</span><span class="va">result</span>
 <span class="co">#&gt;                 Estimate        SE      95% LCL   95% UCL   N</span>
 <span class="co">#&gt; Risk Difference 0.131264 0.0711246 -0.008140195 0.2706682 200</span>
 <span class="co">#&gt; Risk Ratio      1.240933 0.1173172  0.986020851 1.5617478 200</span>
-<span class="co">#&gt; Odds Ratio      1.743802 0.3101808  0.949436357 3.2027894 200</span></pre></div>
+<span class="co">#&gt; Odds Ratio      1.743802 0.3101808  0.949436357 3.2027894 200</span></code></pre></div>
 <p>You can also use the <code><a href="reference/aipw_wrapper.html">aipw_wrapper()</a></code> to wrap <code>new()</code>, <code><a href="reference/fit.html">fit()</a></code> and <code><a href="reference/summary.html">summary()</a></code> together (also support method chaining):</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/aipw_wrapper.html">aipw_wrapper</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/aipw_wrapper.html">aipw_wrapper</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,
                         A <span class="op">=</span> <span class="va">exposure</span>,
                         W <span class="op">=</span> <span class="va">covariates</span>, 
                         Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
                         g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
                         k_split <span class="op">=</span> <span class="fl">3</span>,
-                        verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></pre></div>
+                        verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="parallelization-with-futureapply-and-progress-bar-with-progressr" class="section level2">
@@ -181,8 +181,8 @@
 <a href="#parallelization-with-futureapply-and-progress-bar-with-progressr" class="anchor"></a><a id="par"></a>Parallelization with <code>future.apply</code> and progress bar with <code>progressr</code>
 </h2>
 <p>In default setting, the <code>AIPW$fit()</code> method will be run sequentially. The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future">future</a> framework. Simply use <code><a href="https://rdrr.io/pkg/future/man/plan.html">future::plan()</a></code> to enable parallelization and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co">###Additional steps for parallel processing###</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">###Additional steps for parallel processing###</span>
 <span class="co"># install.packages("future.apply")</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: future</span>
@@ -208,10 +208,10 @@
 <span class="co">#&gt;                 Estimate     SE  95% LCL 95% UCL   N</span>
 <span class="co">#&gt; Risk Difference    0.139 0.0714 -0.00144   0.279 200</span>
 <span class="co">#&gt; Risk Ratio         1.258 0.1177  0.99869   1.584 200</span>
-<span class="co">#&gt; Odds Ratio         1.796 0.3104  0.97745   3.300 200</span></pre></div>
+<span class="co">#&gt; Odds Ratio         1.796 0.3104  0.97745   3.300 200</span></code></pre></div>
 <p>Progress bar that supports parallel processing is available in the <code>AIPW$fit()</code> method through the API from <a href="https://github.com/HenrikBengtsson/progressr">progressr</a> package:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr">progressr</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr">progressr</a></span><span class="op">)</span>
 <span class="co">#define the type of progress bar</span>
 <span class="fu"><a href="https://rdrr.io/pkg/progressr/man/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span><span class="op">)</span>
 <span class="co">#reporting through progressr::with_progress() which is embedded in the AIPW$fit() method</span>
@@ -233,7 +233,7 @@
                         g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
                         k_split <span class="op">=</span> <span class="fl">3</span>,
                         verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 </div>
 <div id="use-tmletmle3-fitted-object-as-input-aipw_tmle-class" class="section level2">
 <h2 class="hasAnchor">
@@ -243,8 +243,8 @@
 <h4 class="hasAnchor">
 <a href="#1-tmle" class="anchor"></a>1. <code>tmle</code>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=tmle">tmle</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=tmle">tmle</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: tmle</span>
 <span class="co">#&gt; Loading required package: glmnet</span>
 <span class="co">#&gt; Loading required package: Matrix</span>
@@ -264,14 +264,14 @@
 <span class="co">#&gt;                 Estimate     SE 95% LCL 95% UCL   N</span>
 <span class="co">#&gt; Risk Difference    0.144 0.0698 0.00702   0.281 200</span>
 <span class="co">#&gt; Risk Ratio         1.270 0.1157 1.01198   1.593 200</span>
-<span class="co">#&gt; Odds Ratio         1.836 0.3037 1.01244   3.330 200</span></pre></div>
+<span class="co">#&gt; Odds Ratio         1.836 0.3037 1.01244   3.330 200</span></code></pre></div>
 </div>
 <div id="2-tmle3" class="section level4">
 <h4 class="hasAnchor">
 <a href="#2-tmle3" class="anchor"></a>2. <code>tmle3</code>
 </h4>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/tmle3">tmle3</a></span><span class="op">)</span>
 <span class="va">node_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>A <span class="op">=</span> <span class="st">"sim_A"</span>,Y <span class="op">=</span> <span class="st">"sim_Y"</span>,W <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">eager_sim_obs</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">:</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
 <span class="va">or_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://tlverse.org/tmle3/reference/tmle_OR.html">tmle_OR</a></span><span class="op">(</span>baseline_level <span class="op">=</span> <span class="st">"0"</span>,contrast_level <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span>
@@ -285,7 +285,7 @@
 <span class="co"># parse tmle3_fit into AIPW_tmle class</span>
 <span class="va"><a href="reference/AIPW_tmle.html">AIPW_tmle</a></span><span class="op">$</span>
   <span class="fu">new</span><span class="op">(</span>A<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span>,Y<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>,tmle_fit <span class="op">=</span> <span class="va">tmle3_fit</span>,verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">summary</span><span class="op">(</span><span class="op">)</span></pre></div>
+  <span class="fu">summary</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <hr>
 </div>
 <div id="references-1" class="section level3">
