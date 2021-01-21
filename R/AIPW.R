@@ -117,13 +117,17 @@ AIPW <- R6::R6Class(
       #decide covariate set(s): W.Q and W.g only works when W is null.
       if (is.null(W)){
         if (any(is.null(W.Q),is.null(W.g))) {
-          stop("No sufficient covariates were provided.")
+          stop("Insufficient covariate sets were provided.")
         } else{
-          private$Q.set=cbind(A, as.data.frame(W.Q))
+          tryCatch({
+            private$Q.set=cbind(A, as.data.frame(W.Q))
+            }, error = function(e) stop('Covariates dimension error: nrow(W.Q) != length(A)'))
           private$g.set=as.data.frame(W.g)
         }
       } else{
-        private$Q.set=cbind(A, as.data.frame(W))
+        tryCatch({
+          private$Q.set=cbind(A, as.data.frame(W))
+          }, error = function(e) stop('Covariates dimension error: nrow(W) != length(A)'))
         private$g.set=as.data.frame(W)
       }
       #save input into private fields

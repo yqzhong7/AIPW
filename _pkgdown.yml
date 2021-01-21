@@ -31,9 +31,14 @@ reference:
   desc:  Using a fitted tmle or tmle3 object as input
 - contents:
   - AIPW_tmle
+- title: AIPW_nuis Class
+  desc:  User input of nuisance functions
+- contents:
+  - AIPW_nuis
 - title: Common methods and base class
   desc: Methods available for both AIPW and AIPW_tmle classes
 - contents:
   - AIPW_base
   - starts_with("summary")
   - plot.p_score
+  - plot.ip_weights

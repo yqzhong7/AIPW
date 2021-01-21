@@ -54,8 +54,10 @@ AIPW_base <- R6::R6Class(
       private$A=A
       private$verbose=verbose
       #check data length
-      if (!(length(private$Y)==length(private$A))){
-        stop("Please check the dimension of the data")
+      if (length(private$Y)>length(private$A)){
+        stop("Missing exposure is not allowed. Please check the dimension of the data.")
+      } else if(length(private$Y)<length(private$A)){
+        warning("Missing outcome is detected. Analysis assumes missing at random (MAR).")
       }
       #detect outcome is binary or continuous
       if (length(unique(private$Y))==2) {
@@ -117,7 +119,7 @@ AIPW_base <- R6::R6Class(
       self$result <- cbind(matrix(c(self$estimates$risk_A1, self$estimates$risk_A0,
                                     self$estimates$RD, self$estimates$ATT, self$estimates$ATC), nrow=5, byrow=T),
                            c(rep(self$n,3), self$n_A1, self$n_A0))
-      row.names(self$result) <- c("Risk for exposure", "Risk for control",
+      row.names(self$result) <- c("Risk of exposure", "Risk of control",
                                   "Risk Difference","Risk Difference among the Treated", "Risk Difference among the Controls")
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
 

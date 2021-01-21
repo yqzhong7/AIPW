@@ -13,7 +13,7 @@
 Create an AIPW_nuis object that uses users' input nuisance functions from the exposure model \eqn{P(A| W)},
 and the outcome models \eqn{P(Y| do(A=0), W)} and \eqn{P(Y| do(A=1), W.Q)}:
 \deqn{
-     \psi(a) = E{[ I(A=a) * Y-P(Y=1|A,W_Q) / P(A=a|W_g) ] + P(Y=1| do(A=a),W_Q) }
+     \psi(a) = E{[ I(A=a) * [Y-P(Y=1|A,W_Q)] / P(A=a|W_g) ] + P(Y=1| do(A=a),W_Q) }
      }
 }
 \section{Constructor}{
