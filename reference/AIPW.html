@@ -89,7 +89,7 @@ libraries for estimating the efficient influence function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@ libraries for estimating the efficient influence function.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>An AIPW object is constructed by <code>new()</code> with users' inputs of data and causal structures, then it <code><a href='fit.html'>fit()</a></code> the data using the
-libraries in <code>Q.SL.library</code> and <code>g.SL.library</code> with <code>k_split</code> sample splitting, and provides results via the <code><a href='summary.html'>summary()</a></code> method.
+libraries in <code>Q.SL.library</code> and <code>g.SL.library</code> with <code>k_split</code> cross-fitting, and provides results via the <code><a href='summary.html'>summary()</a></code> method.
 After using <code><a href='fit.html'>fit()</a></code> and/or <code><a href='summary.html'>summary()</a></code> methods, the propensity scores by exposure status can be examined with <code><a href='plot.p_score.html'>plot.p_score()</a></code>.
 See examples for illustration.</p>
     <h2 class="hasAnchor" id="constructor"><a class="anchor" href="#constructor"></a>Constructor</h2>
@@ -185,9 +185,9 @@ See examples for illustration.</p>
 <dt><code>W</code>, <code>W.Q</code> &amp; <code>W.g</code></dt><dd><p>It can be a vector, matrix or data.frame. If and only if <code>W == NULL</code>, <code>W</code> would be replaced by <code>W.Q</code> and <code>W.g</code>.</p></dd>
 <dt><code>Q.SL.library</code> &amp; <code>g.SL.library</code></dt><dd><p>Machine learning algorithms from <a href='https://rdrr.io/pkg/SuperLearner/man/SuperLearner.html'>SuperLearner</a> libraries or <code>sl3</code> learner object (Lrnr_base)</p></dd>
 <dt><code>k_split</code></dt><dd><p>It ranges from 1 to number of observation-1.
-If k_split=1, no sample splitting; if k_split&gt;=3, use similar technique as cross-validation
-(e.g., <code>k_split=10</code>, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
-<strong>NOTE: it's recommended to use sample splitting.</strong></p></dd>
+If k_split=1, no cross-fitting; if k_split&gt;=2, cross-fitting is used
+(e.g., <code>k_split=10</code>, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
+<strong>NOTE: it's recommended to use cross-fitting.</strong></p></dd>
 <dt><code>save.sl.fit</code></dt><dd><p>This option allows users to save the fitted sl object (libs$Q.fit &amp; libs$g.fit) for debug use.
 <strong>Warning: Saving the SuperLearner fitted object may cause a substantive storage/memory use.</strong></p></dd>
 

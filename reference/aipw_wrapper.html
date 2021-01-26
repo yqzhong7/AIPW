@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -196,10 +196,10 @@ Covariates for exposure model (vector, matrix or data.frame)</p></td>
     <tr>
       <th>k_split</th>
       <td><p>Number of splitting (integer; range: from 1 to number of observation-1):
-if k_split=1, no sample splitting;
-if k_split&gt;1, use similar technique of cross-validation
-(e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
-NOTE: it's recommended to use sample splitting.</p></td>
+if k_split=1, no cross-fitting;
+if k_split&gt;=2, cross-fitting is used
+(e.g., <code>k_split=10</code>, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
+NOTE: it's recommended to use cross-fitting.</p></td>
     </tr>
     <tr>
       <th>g.bound</th>
