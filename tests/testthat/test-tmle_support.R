@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/07/07
+#' 2021/01/26
 test_that("AIPW_tmle class: tmle", {
   require(tmle)
   require(SuperLearner)
@@ -19,7 +19,7 @@ test_that("AIPW_tmle class: tmle", {
   expect_error(AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = "tmle_fit",verbose = T),
                info = "The tmle_fit is neither a `tmle` or `tmle3_Fit` object")
   expect_message(aipw_tmle <- AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = T),
-                info = "Sample splitting was not supported with a fitted tmle object")
+                info = "Cross-fitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)")
   #correctly print output
   expect_output(aipw_tmle$summary(), regexp = "Estimate")
   #check any null values after calculating results

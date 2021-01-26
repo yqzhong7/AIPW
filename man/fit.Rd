@@ -8,7 +8,7 @@
 A fitted \link{AIPW} object with \code{obs_est} and \code{libs} (public variables)
 }
 \description{
-Fitting the data into the \link{AIPW} object with/without sample splitting to estimate the efficient influence functions
+Fitting the data into the \link{AIPW} object with/without cross-fitting to estimate the efficient influence functions
 }
 \section{R6 Usage}{
 

@@ -38,10 +38,10 @@ Covariates for exposure model (vector, matrix or data.frame)}
 \item{g.SL.library}{SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model}
 
 \item{k_split}{Number of splitting (integer; range: from 1 to number of observation-1):
-if k_split=1, no sample splitting;
-if k_split>1, use similar technique of cross-validation
-(e.g., k_split=10, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict)
-NOTE: it's recommended to use sample splitting.}
+if k_split=1, no cross-fitting;
+if k_split>=2, cross-fitting is used
+(e.g., \code{k_split=10}, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
+NOTE: it's recommended to use cross-fitting.}
 
 \item{g.bound}{Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
 }

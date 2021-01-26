@@ -89,7 +89,7 @@ AIPW_tmle <- R6::R6Class(
       super$initialize(Y=Y,A=A,verbose=verbose)
       #check the fitted object is tmle or tmle3 and import values accordingly
       if (any(class(tmle_fit) %in% "tmle")){
-        message("Sample splitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)")
+        message("Cross-fitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)")
         self$obs_est$mu0 <- tmle_fit$Qstar[,1]
         self$obs_est$mu1 <- tmle_fit$Qstar[,2]
         self$obs_est$mu <- self$obs_est$mu0*(1-private$A) + self$obs_est$mu1*(private$A)

@@ -12,7 +12,7 @@ libraries for estimating the efficient influence function.
 }
 \details{
 An AIPW object is constructed by \code{new()} with users' inputs of data and causal structures, then it \code{fit()} the data using the
-libraries in \code{Q.SL.library} and \code{g.SL.library} with \code{k_split} sample splitting, and provides results via the \code{summary()} method.
+libraries in \code{Q.SL.library} and \code{g.SL.library} with \code{k_split} cross-fitting, and provides results via the \code{summary()} method.
 After using \code{fit()} and/or \code{summary()} methods, the propensity scores by exposure status can be examined with \code{plot.p_score()}.
 See examples for illustration.
 }
@@ -42,9 +42,9 @@ See examples for illustration.
 \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if \code{W == NULL}, \code{W} would be replaced by \code{W.Q} and \code{W.g}. }
 \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from \link{SuperLearner} libraries or \code{sl3} learner object (Lrnr_base)}
 \item{\code{k_split}}{It ranges from 1 to number of observation-1.
-If k_split=1, no sample splitting; if k_split>=3, use similar technique as cross-validation
-(e.g., \code{k_split=10}, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
-\strong{NOTE: it's recommended to use sample splitting.} }
+If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
+(e.g., \code{k_split=10}, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
+\strong{NOTE: it's recommended to use cross-fitting.} }
 \item{\code{save.sl.fit}}{This option allows users to save the fitted sl object (libs$Q.fit & libs$g.fit) for debug use.
 \strong{Warning: Saving the SuperLearner fitted object may cause a substantive storage/memory use.}}
 }

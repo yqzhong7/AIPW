@@ -2,10 +2,10 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/08/09
+#' 2021/01/25
 test_that("AIPW fit: SuperLeaner & k_split", {
   require(SuperLearner)
-  ##k_split == 1: no sample splitting
+  ##k_split == 1: no cross-fitting
   vec <- function() sample(0:1,100,replace = T)
   sl.lib <- c("SL.mean","SL.glm")
   aipw <-  AIPW$new(Y=vec(),
@@ -24,15 +24,7 @@ test_that("AIPW fit: SuperLeaner & k_split", {
   expect_true(is.null(aipw$result))
   expect_true(is.null(aipw$estimate))
 
-  expect_error(aipw <-  AIPW$new(Y=vec(),
-                                 A=vec(),
-                                 W.Q =vec(),
-                                 W.g =vec(),
-                                 Q.SL.library=sl.lib,
-                                 g.SL.library=sl.lib,
-                                 k_split = 2,verbose = FALSE))
-
-  ##k_split >=3: sample splitting == k_split
+  ##k_split >=3: cross-fitting == k_split
   aipw <-  AIPW$new(Y=vec(),
                     A=vec(),
                     W.Q =vec(),
@@ -65,7 +57,7 @@ test_that("AIPW fit: SuperLeaner & k_split", {
 #' 2020/08/09
 test_that("AIPW fit: sl3 & k_split", {
   require(sl3)
-  ##k_split == 1: no sample splitting
+  ##k_split == 1: no cross-fitting
   vec <- function() sample(0:1,100,replace = T)
   lrnr_glm <- sl3::Lrnr_glm$new()
   lrnr_mean <- sl3::Lrnr_mean$new()
@@ -88,7 +80,7 @@ test_that("AIPW fit: sl3 & k_split", {
   expect_true(is.null(aipw$result))
   expect_true(is.null(aipw$estimate))
 
-  ##k_split >=3: sample splitting == k_split
+  ##k_split >=3: cross-fitting == k_split
   aipw <-  AIPW$new(Y=vec(),
                     A=vec(),
                     W.Q =vec(),

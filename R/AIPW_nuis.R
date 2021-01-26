@@ -62,7 +62,7 @@ AIPW_nuis <- R6::R6Class(
       #initialize from AIPW_base class
       super$initialize(Y=Y,A=A,verbose=verbose)
       if (any(class(tmle_fit) %in% "tmle")){
-        message("Sample splitting for estimating nuisance functions is recommended")
+        message("Cross-fitting for estimating nuisance functions is recommended")
         self$obs_est$mu0 <- mu0
         self$obs_est$mu1 <- mu1
         self$obs_est$mu <- self$obs_est$mu0*(1-private$A) + self$obs_est$mu1*(private$A)

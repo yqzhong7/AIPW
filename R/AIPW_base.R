@@ -52,18 +52,29 @@ AIPW_base <- R6::R6Class(
       #save input into private fields
       private$Y=Y
       private$A=A
+      private$observed = as.numeric(!is.na(private$Y))
       private$verbose=verbose
       #check data length
-      if (length(private$Y)>length(private$A)){
-        stop("Missing exposure is not allowed. Please check the dimension of the data.")
-      } else if(length(private$Y)<length(private$A)){
-        warning("Missing outcome is detected. Analysis assumes missing at random (MAR).")
+      if (length(private$Y)!=length(private$A)){
+        stop("Please check the dimension of the data")
       }
       #detect outcome is binary or continuous
       if (length(unique(private$Y))==2) {
         private$Y.type = 'binomial'
       } else {
         private$Y.type = 'gaussian'
+      }
+
+      #check missing exposure
+      if (any(is.na(private$A))){
+        stop("Missing exposure is not allowed.")
+      }
+
+      #check missing outcome
+      if (any(private$observed == 0)){
+        warning("Missing outcome is detected. Analysis assumes missing at random (MAR) using complete cases.")
+        private$Y=private$Y[private$observed==1]
+        private$A=private$A[private$observed==1]
       }
 
       #setup
@@ -89,7 +100,7 @@ AIPW_base <- R6::R6Class(
       private$g.bound=g.bound
       #check g.bound value
       if (!is.numeric(private$g.bound)){
-        stop("g.bound must be a numeric value")
+        stop("g.bound must be numeric")
       } else if (max(private$g.bound) > 1 | min(private$g.bound) < 0){
         stop("g.bound must between 0 and 1")
       }
@@ -219,6 +230,7 @@ AIPW_base <- R6::R6Class(
     #input
     Y=NULL,
     A=NULL,
+    observed=NULL,
     verbose=NULL,
     g.bound=NULL,
     #outcome type

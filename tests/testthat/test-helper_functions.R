@@ -76,3 +76,30 @@ test_that("make new training index: .new_cv_index",{
     expect_equal(as.numeric(unlist(new_index)), 1:length(as.numeric(unlist(new_index)))) #consecutive index
   }
 })
+
+
+
+#' @title Testing propensity score truncation function
+#'
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2021/01/26
+test_that("propensity score truncation: .bound",{
+  vec <- rep(1,100)
+  sl.lib <- c("SL.mean","SL.glm")
+  aipw <-  AIPW$new(Y=vec,
+                    A=vec,
+                    W.Q =vec,
+                    W.g =vec,
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 3,verbose = FALSE)
+
+  ps <- seq(0, 1, length.out = 100)
+  expect_equal(range(aipw$.__enclos_env__$private$.bound(ps, 0.1)), c(0.1, 0.9))
+  expect_equal(range(aipw$.__enclos_env__$private$.bound(ps, 0.49)), c(0.49, 0.51))
+  expect_equal(range(aipw$.__enclos_env__$private$.bound(ps, c(0.1,0.8))), c(0.1,0.8))
+  expect_equal(range(aipw$.__enclos_env__$private$.bound(ps, c(0.8,0.1))), c(0.1,0.8))
+  expect_equal(range(aipw$.__enclos_env__$private$.bound(ps, c(0.7,0.6))), c(0.6,0.7))
+})

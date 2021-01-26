@@ -4,7 +4,7 @@
 #' libraries for estimating the efficient influence function.
 #'
 #' @details An AIPW object is constructed by `new()` with users' inputs of data and causal structures, then it `fit()` the data using the
-#' libraries in `Q.SL.library` and `g.SL.library` with `k_split` sample splitting, and provides results via the `summary()` method.
+#' libraries in `Q.SL.library` and `g.SL.library` with `k_split` cross-fitting, and provides results via the `summary()` method.
 #' After using `fit()` and/or `summary()` methods, the propensity scores by exposure status can be examined with `plot.p_score()`.
 #' See examples for illustration.
 #'
@@ -31,9 +31,9 @@
 #'   \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if `W == NULL`, `W` would be replaced by `W.Q` and `W.g`. }
 #'   \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from [SuperLearner] libraries or `sl3` learner object (Lrnr_base)}
 #'   \item{\code{k_split}}{It ranges from 1 to number of observation-1.
-#'                         If k_split=1, no sample splitting; if k_split>=3, use similar technique as cross-validation
-#'                         (e.g., `k_split=10`, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict.
-#'                          \strong{NOTE: it's recommended to use sample splitting.} }
+#'                         If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
+#'                         (e.g., `k_split=10`, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
+#'                          \strong{NOTE: it's recommended to use cross-fitting.} }
 #'  \item{\code{save.sl.fit}}{This option allows users to save the fitted sl object (libs$Q.fit & libs$g.fit) for debug use.
 #'                             \strong{Warning: Saving the SuperLearner fitted object may cause a substantive storage/memory use.}}
 #' }
@@ -120,22 +120,33 @@ AIPW <- R6::R6Class(
           stop("Insufficient covariate sets were provided.")
         } else{
           tryCatch({
-            private$Q.set=cbind(A, as.data.frame(W.Q))
+            private$Q.set=cbind(A, W.Q)
             }, error = function(e) stop('Covariates dimension error: nrow(W.Q) != length(A)'))
-          private$g.set=as.data.frame(W.g)
+          private$g.set=W.g
         }
       } else{
         tryCatch({
-          private$Q.set=cbind(A, as.data.frame(W))
+          private$Q.set=cbind(A, W)
           }, error = function(e) stop('Covariates dimension error: nrow(W) != length(A)'))
-        private$g.set=as.data.frame(W)
+        private$g.set=W
       }
+
+      #subset observations with complete outcome
+      private$Q.set = as.data.frame(private$Q.set)[private$observed==1,]
+      private$g.set = as.data.frame(private$g.set)
+      if (ncol(private$g.set)==1) {
+        private$g.set = as.data.frame(private$g.set[private$observed==1,])
+        colnames(private$g.set) <- "Z"
+      } else {
+        private$g.set = private$g.set[private$observed==1,]
+      }
+
       #save input into private fields
       private$k_split=k_split
       #whether to save sl.fit  (Q.fit and g.fit)
       private$save.sl.fit = save.sl.fit
       #check data length
-      if (!(length(private$Y)==dim(private$Q.set)[1] & length(private$A)==dim(private$g.set)[1])){
+      if (length(private$Y)!=dim(private$Q.set)[1] | length(private$A)!=dim(private$g.set)[1]){
         stop("Please check the dimension of the data")
       }
       #-----determine SuperLearner or sl3 and change accordingly-----#
@@ -195,10 +206,10 @@ AIPW <- R6::R6Class(
       self$libs$g.SL.library=g.SL.library
       #------input checking-----#
       #check k_split value
-      if (private$k_split<1 | private$k_split>=self$n){
-        stop("`k_split` is not valid")
-      } else if (private$k_split %in% 2){
-        stop("k_split == 2 is not allowed.")
+      if (private$k_split>=self$n){
+        stop("`k_split` >= number of observation is not allowed.")
+      }else if (private$k_split < 1){
+        stop("`k_split` < 1 is not allowed.")
       }
       #check verbose value
       if (!is.logical(private$verbose)){
@@ -220,7 +231,7 @@ AIPW <- R6::R6Class(
 
     #-------------------------fit method-----------------------------#
     fit = function(){
-      #----------create index for sample splitting---------#
+      #----------create index for cross-fitting---------#
       private$cv$k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
       private$cv$fold_index = split(1:self$n, private$cv$k_index)
       private$cv$fold_length = sapply(private$cv$fold_index,length)
@@ -359,7 +370,7 @@ AIPW <- R6::R6Class(
 #' @title Fit the data to the [AIPW] object
 #'
 #' @description
-#' Fitting the data into the [AIPW] object with/without sample splitting to estimate the efficient influence functions
+#' Fitting the data into the [AIPW] object with/without cross-fitting to estimate the efficient influence functions
 #'
 #' @section R6 Usage:
 #' \code{$fit()}

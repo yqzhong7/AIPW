@@ -192,10 +192,10 @@ test_that("AIPW constructor: SL libraries", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/09
+#' 2021/01/26
 test_that("AIPW constructor: k_split", {
   require("SuperLearner")
-  #sample splitting
+  #cross-fitting
   vec <- rep(1,100)
   sl.lib <- c("SL.mean","SL.glm")
   aipw <-  AIPW$new(Y=vec,
@@ -215,7 +215,7 @@ test_that("AIPW constructor: k_split", {
              Q.SL.library=c("SL.mean","SL.glm"),
              g.SL.library=c("SL.mean","SL.glm"),
              k_split = -1,verbose = FALSE),
-    regexp = "`k_split` is not valid"
+    regexp = "`k_split` < 1 is not allowed."
   )
   expect_error(
     AIPW$new(Y=rep(1,100),
@@ -225,7 +225,7 @@ test_that("AIPW constructor: k_split", {
              Q.SL.library=c("SL.mean","SL.glm"),
              g.SL.library=c("SL.mean","SL.glm"),
              k_split = 100,verbose = FALSE),
-    regexp = "`k_split` is not valid"
+    regexp = "`k_split` >= number of observation is not allowed."
   )
 })
 
@@ -258,4 +258,42 @@ test_that("AIPW constructor: verbose", {
              k_split = 5,verbose = -1),
     regexp = "`verbose` is not valid"
   )
+})
+
+
+
+#' @title Testing AIPW constructor: missing exposure and outcome
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2021/01/26
+test_that("AIPW constructor: input data dimension", {
+  vec <- rep(1,100)
+  vec_na <- c(NA,vec[2:100])
+  sl.lib <- c("SL.mean","SL.glm")
+  #missing exposure
+  expect_error(aipw <-  AIPW$new(Y=vec,
+                                   A=vec_na,
+                                   W.Q =vec,
+                                   W.g =vec,
+                                   Q.SL.library=sl.lib,
+                                   g.SL.library=sl.lib,
+                                   k_split = 1,verbose = FALSE),
+                 info = "Missing exposure is not allowed.")
+  #missing outcome
+  expect_warning(aipw <-  AIPW$new(Y=vec_na,
+                                 A=vec,
+                                 W.Q =vec,
+                                 W.g =vec,
+                                 Q.SL.library=sl.lib,
+                                 g.SL.library=sl.lib,
+                                 k_split = 1,verbose = FALSE),
+               info = "Missing outcome is detected. Analysis assumes missing at random (MAR) using complete cases.")
+  expect_equal(aipw$n,99)
+  expect_equal(length(aipw$.__enclos_env__$private$A),99)
+  expect_equal(length(aipw$.__enclos_env__$private$Y),99)
+  expect_equal(dim(aipw$.__enclos_env__$private$Q.set)[1],99)
+  expect_equal(dim(aipw$.__enclos_env__$private$g.set)[1],99)
+  expect_equal(sum(aipw$.__enclos_env__$private$observed),99)
+  expect_equal(length(aipw$.__enclos_env__$private$observed),100)
 })

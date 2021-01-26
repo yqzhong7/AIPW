@@ -104,8 +104,8 @@ To see the results, set `verbose = TRUE`(default) or:
 ``` r
 print(AIPW_SL$result, digits = 2)
 #>                                    Estimate    SE 95% LCL 95% UCL   N
-#> Risk for exposure                     0.676 0.053  0.5714    0.78 200
-#> Risk for control                      0.545 0.047  0.4536    0.64 200
+#> Risk of exposure                      0.676 0.053  0.5714    0.78 200
+#> Risk of control                       0.545 0.047  0.4536    0.64 200
 #> Risk Difference                       0.131 0.071 -0.0081    0.27 200
 #> Risk Difference among the Treated     0.214 0.138 -0.0556    0.48  78
 #> Risk Difference among the Controls    0.078 0.077 -0.0719    0.23 122
@@ -161,8 +161,8 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     verbose=TRUE)$fit()$summary()
 #> Done!
 #>                                    Estimate     SE  95% LCL 95% UCL   N
-#> Risk for exposure                    0.6761 0.0546  0.56913   0.783 200
-#> Risk for control                     0.5375 0.0462  0.44705   0.628 200
+#> Risk of exposure                     0.6761 0.0546  0.56913   0.783 200
+#> Risk of control                      0.5375 0.0462  0.44705   0.628 200
 #> Risk Difference                      0.1386 0.0714 -0.00144   0.279 200
 #> Risk Difference among the Treated    0.2061 0.1399 -0.06806   0.480  78
 #> Risk Difference among the Controls   0.0954 0.0759 -0.05335   0.244 122
@@ -224,10 +224,10 @@ tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)
-#> Sample splitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)
+#> Cross-fitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)
 #>                                    Estimate     SE  95% LCL 95% UCL   N
-#> Risk for exposure                     0.678 0.0529  0.57380   0.781 200
-#> Risk for control                      0.534 0.0455  0.44450   0.623 200
+#> Risk of exposure                      0.678 0.0529  0.57380   0.781 200
+#> Risk of control                       0.534 0.0455  0.44450   0.623 200
 #> Risk Difference                       0.144 0.0698  0.00702   0.281 200
 #> Risk Difference among the Treated     0.144 0.1359 -0.12196   0.411  78
 #> Risk Difference among the Controls    0.144 0.0751 -0.00355   0.291 122
