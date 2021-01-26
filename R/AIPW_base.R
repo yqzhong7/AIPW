@@ -50,8 +50,8 @@ AIPW_base <- R6::R6Class(
     #-------------------------constructor-----------------------------#
     initialize = function(Y=NULL, A=NULL,verbose=TRUE){
       #save input into private fields
-      private$Y=Y
-      private$A=A
+      private$Y=as.numeric(Y)
+      private$A=as.numeric(A)
       private$observed = as.numeric(!is.na(private$Y))
       private$verbose=verbose
       #check data length

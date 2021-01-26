@@ -138,7 +138,7 @@ test_that("Testing summary: g.bound input", {
   expect_equal(aipw$.__enclos_env__$private$g.bound, c(0.1,0.2))
   expect_error(aipw$summary(0.5),
                info = "g.bound >= 0.5 is not allowed when only one g.bound value is provided")
-  expect_error(aipw$summary(T),
+  expect_error(aipw$summary("C"),
                  info = "g.bound must be numeric")
   expect_error(aipw$summary(-1),
                info = "g.bound must between 0 and 1")
