@@ -59,7 +59,7 @@ AIPW_base <- R6::R6Class(
         stop("Please check the dimension of the data")
       }
       #detect outcome is binary or continuous
-      if (length(unique(private$Y))==2) {
+      if (length(unique(private$Y[!is.na(private$Y)]))==2) {
         private$Y.type = 'binomial'
       } else {
         private$Y.type = 'gaussian'
@@ -72,12 +72,12 @@ AIPW_base <- R6::R6Class(
 
       #check missing outcome
       if (any(private$observed == 0)){
-        warning("Missing outcome is detected. Analysis assumes missing at random (MAR) using complete cases.")
-        private$Y=private$Y[private$observed==1]
-        private$A=private$A[private$observed==1]
+        warning("Missing outcome is detected. Analysis assumes missing at random (MAR).")
+        private$Y.missing = TRUE
       }
 
       #setup
+      private$AxObserved = private$A * private$observed #I(A=a, observed==1)
       self$n <- length(private$A)
       self$n_A1 <- sum(private$A==1)
       self$n_A0 <- sum(private$A==0)
@@ -110,8 +110,16 @@ AIPW_base <- R6::R6Class(
       self$obs_est$ip_weights <- (as.numeric(private$A==1)/self$obs_est$p_score) + (as.numeric(private$A==0)/(1-self$obs_est$p_score))
 
       ##------AIPW est------##
-      self$obs_est$aipw_eif1 <- (as.numeric(private$A==1)/self$obs_est$p_score)*(private$Y - self$obs_est$mu) + self$obs_est$mu1
-      self$obs_est$aipw_eif0 <- (as.numeric(private$A==0)/(1-self$obs_est$p_score))*(private$Y - self$obs_est$mu) + self$obs_est$mu0
+      self$obs_est$aipw_eif1 <- ifelse(private$observed == 1,
+                                       (as.numeric(private$A[private$observed==1]==1)/self$obs_est$p_score[private$observed==1])*
+                                         (private$Y[private$observed==1] - self$obs_est$mu[private$observed==1]) +
+                                         self$obs_est$mu1[private$observed==1],
+                                       0)
+      self$obs_est$aipw_eif0 <- ifelse(private$observed == 1,
+                                       (as.numeric(private$A[private$observed==1]==0)/(1-self$obs_est$p_score[private$observed==1]))*
+                                         (private$Y[private$observed==1] - self$obs_est$mu[private$observed==1]) +
+                                         self$obs_est$mu0[private$observed==1],
+                                       0)
 
       root_n <- sqrt(self$n)
 
@@ -231,10 +239,12 @@ AIPW_base <- R6::R6Class(
     Y=NULL,
     A=NULL,
     observed=NULL,
+    AxObserved = NULL,
     verbose=NULL,
     g.bound=NULL,
     #outcome type
     Y.type = NULL,
+    Y.missing = FALSE,
     #private methods
     #Use individual estimates of efficient influence functions (obs_est$aipw_eif0 & obs_est$aipw_eif0) to calculate RD, RR and OR with SE and 95CI%
     get_RD = function(aipw_eif1,aipw_eif0,root_n){

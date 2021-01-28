@@ -64,7 +64,7 @@ test_that("AIPW constructor: input data dimension", {
              Q.SL.library=sl.lib,
              g.SL.library=sl.lib,
              k_split = 1,verbose = FALSE),
-    regexp = "Please check the dimension of the data"
+    regexp = "Please check the dimension of the covariates"
   )
 })
 
@@ -288,12 +288,12 @@ test_that("AIPW constructor: input data dimension", {
                                  Q.SL.library=sl.lib,
                                  g.SL.library=sl.lib,
                                  k_split = 1,verbose = FALSE),
-               info = "Missing outcome is detected. Analysis assumes missing at random (MAR) using complete cases.")
-  expect_equal(aipw$n,99)
-  expect_equal(length(aipw$.__enclos_env__$private$A),99)
-  expect_equal(length(aipw$.__enclos_env__$private$Y),99)
-  expect_equal(dim(aipw$.__enclos_env__$private$Q.set)[1],99)
-  expect_equal(dim(aipw$.__enclos_env__$private$g.set)[1],99)
+               info = "Missing outcome is detected. Analysis assumes missing at random (MAR).")
+  expect_equal(aipw$n,100)
+  expect_equal(length(aipw$.__enclos_env__$private$A),100)
+  expect_equal(length(aipw$.__enclos_env__$private$Y),100)
+  expect_equal(dim(aipw$.__enclos_env__$private$Q.set)[1],100)
+  expect_equal(dim(aipw$.__enclos_env__$private$g.set)[1],100)
   expect_equal(sum(aipw$.__enclos_env__$private$observed),99)
   expect_equal(length(aipw$.__enclos_env__$private$observed),100)
 })

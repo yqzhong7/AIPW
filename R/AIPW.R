@@ -23,7 +23,7 @@
 #' \code{g.SL.library}    \tab   SL.library         \tab    Algorithms used for the \strong{exposure} model (g). \cr
 #' \code{k_split}         \tab   Integer           \tab    Number of folds for splitting (Default = 10).\cr
 #' \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE) \cr
-#' \code{save.sl.fit}     \tab   Logical          \tab     Whether to save Q.fit and g.fit (Default = False) \cr
+#' \code{save.sl.fit}     \tab   Logical          \tab     Whether to save Q.fit and g.fit (Default = FALSE) \cr
 #' }
 #'
 #' ## Constructor Argument Details
@@ -102,7 +102,8 @@ AIPW <- R6::R6Class(
                Q.fit = NULL,
                g.SL.library=NULL,
                g.fit = NULL,
-               validation_index = NULL),
+               validation_index = NULL,
+               validation_index.Q = NULL),
     sl.fit = NULL,
     sl.predict = NULL,
 
@@ -132,13 +133,13 @@ AIPW <- R6::R6Class(
       }
 
       #subset observations with complete outcome
-      private$Q.set = as.data.frame(private$Q.set)[private$observed==1,]
+      private$Q.set = as.data.frame(private$Q.set)
       private$g.set = as.data.frame(private$g.set)
       if (ncol(private$g.set)==1) {
-        private$g.set = as.data.frame(private$g.set[private$observed==1,])
+        private$g.set = as.data.frame(private$g.set)
         colnames(private$g.set) <- "Z"
       } else {
-        private$g.set = private$g.set[private$observed==1,]
+        private$g.set = private$g.set
       }
 
       #save input into private fields
@@ -147,7 +148,7 @@ AIPW <- R6::R6Class(
       private$save.sl.fit = save.sl.fit
       #check data length
       if (length(private$Y)!=dim(private$Q.set)[1] | length(private$A)!=dim(private$g.set)[1]){
-        stop("Please check the dimension of the data")
+        stop("Please check the dimension of the covariates")
       }
       #-----determine SuperLearner or sl3 and change accordingly-----#
       if (is.character(Q.SL.library) & is.character(g.SL.library)) {
@@ -235,6 +236,16 @@ AIPW <- R6::R6Class(
       private$cv$k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
       private$cv$fold_index = split(1:self$n, private$cv$k_index)
       private$cv$fold_length = sapply(private$cv$fold_index,length)
+      #create non-missing index for the outcome model
+      if (private$Y.missing) {
+        private$cv$fold_index.Q = lapply(private$cv$fold_index, function(x) x[x %in% which(private$observed==1)])
+        private$cv$fold_length.Q = sapply(private$cv$fold_index.Q,length)
+      } else{
+        private$cv$fold_index.Q = private$cv$fold_index
+        private$cv$fold_length.Q = private$cv$fold_length
+      }
+
+
       iter <- 1:private$k_split
 
       #----------------progress bar setup----------#
@@ -251,22 +262,43 @@ AIPW <- R6::R6Class(
           #when k_split in 1:2, no cvControl will be used (same cv for k_split)
           if (private$k_split==1){
             train_index <- validation_index <- as.numeric(unlist(private$cv$fold_index))
-            cv_param = list()
+            cv_param <- list()
           } else if (private$k_split==2){
             train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
             validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
-            cv_param = list()
+            cv_param <- list()
           } else{
             train_index <- as.numeric(unlist(private$cv$fold_index[-i]))
             validation_index <- as.numeric(unlist(private$cv$fold_index[i]))
-            cv_param = list(V=private$k_split-1,
-                            validRows= private$.new_cv_index(val_fold=i))
+            cv_param <- list(V=private$k_split-1,
+                            validRows= private$.new_cv_index(val_fold=i , fold_length = private$cv$fold_length))
+          }
+
+          #when outcome is missing, subset the complete case for Q estimation
+          if (private$Y.missing){
+            if (private$k_split==1){
+              train_index.Q <- validation_index.Q <-as.numeric(unlist(private$cv$fold_index.Q))
+              cv_param.Q <- list()
+            } else if (private$k_split==2) {
+              train_index.Q <- as.numeric(unlist(private$cv$fold_index.Q[-i]))
+              validation_index.Q <- as.numeric(unlist(private$cv$fold_index.Q[i]))
+              cv_param.Q <- list()
+            } else {#special care for cross-fitting indices when outcome is missing
+              train_index.Q <- as.numeric(unlist(private$cv$fold_index.Q[-i]))
+              validation_index.Q <- as.numeric(unlist(private$cv$fold_index.Q[i]))
+              cv_param.Q <- list(V=private$k_split-1,
+                                 validRows= private$.new_cv_index(val_fold=i, fold_length =private$cv$fold_length.Q))
+            }
+          } else{
+            train_index.Q = train_index
+            validation_index.Q = validation_index
+            cv_param.Q <- cv_param
           }
 
           #split the sample based on the index
           #Q outcome set
-          train_set.Q <- private$Q.set[train_index,]
-          validation_set.Q <- private$Q.set[validation_index,]
+          train_set.Q <- private$Q.set[train_index.Q,]
+          validation_set.Q <- private$Q.set[validation_index.Q,]
           #g exposure set
           train_set.g <- data.frame(private$g.set[train_index,])
           validation_set.g <- data.frame(private$g.set[validation_index,])
@@ -274,17 +306,17 @@ AIPW <- R6::R6Class(
 
           #Q model(outcome model: g-comp)
           #fit with train set
-          Q.fit <- self$sl.fit(Y = private$Y[train_index],
+          Q.fit <- self$sl.fit(Y = private$Y[train_index.Q],
                                X = train_set.Q,
                                SL.library = self$libs$Q.SL.library,
-                               CV= cv_param)
+                               CV= cv_param.Q)
           # predict on validation set
           mu0 <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 0)) #Q0_pred
-          mu1  <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 1)) #Q1_pred
+          mu1 <- self$sl.predict(Q.fit,newdata=transform(validation_set.Q, A = 1)) #Q1_pred
 
           #g model(exposure model: propensity score)
           # fit with train set
-          g.fit <- self$sl.fit(Y=private$A[train_index],
+          g.fit <- self$sl.fit(Y=private$AxObserved[train_index],
                                X=train_set.g,
                                SL.library = self$libs$g.SL.library,
                                CV= cv_param)
@@ -297,16 +329,23 @@ AIPW <- R6::R6Class(
           if (private$isLoaded_progressr){
             pb(sprintf("No.%g iteration", i,private$k_split))
           }
-          output <- list(validation_index,Q.fit,mu0,mu1,g.fit,raw_p_score)
-          names(output) <- c("validation_index","Q.fit","mu0","mu1","g.fit","raw_p_score")
+
+          if (private$save.sl.fit){
+            output <- list(validation_index, validation_index.Q, Q.fit, mu0, mu1, g.fit, raw_p_score)
+            names(output) <- c("validation_index","validation_index.Q","Q.fit","mu0","mu1","g.fit","raw_p_score")
+          } else {
+            output <- list(validation_index, validation_index.Q, mu0, mu1, raw_p_score)
+            names(output) <- c("validation_index","validation_index.Q","mu0","mu1","raw_p_score")
+          }
+
           return(output)
         })
 
       #store fitted values from future to member variables
       for (i in fitted){
         #add estimates based on the val index
-        self$obs_est$mu0[i$validation_index] <- i$mu0
-        self$obs_est$mu1[i$validation_index] <- i$mu1
+        self$obs_est$mu0[i$validation_index.Q] <- i$mu0
+        self$obs_est$mu1[i$validation_index.Q] <- i$mu1
         self$obs_est$raw_p_score[i$validation_index] <- i$raw_p_score
         #append fitted objects
         if (private$save.sl.fit){
@@ -314,8 +353,10 @@ AIPW <- R6::R6Class(
           self$libs$g.fit = append(self$libs$g.fit, i$g.fit)
         }
         self$libs$validation_index = append(self$libs$validation_index, i$validation_index)
+        self$libs$validation_index.Q = append(self$libs$validation_index.Q, i$validation_index.Q)
       }
-      self$obs_est$mu  <- (self$obs_est$mu0*(1-private$A) + self$obs_est$mu1*(private$A)) #Q_pred
+      self$obs_est$mu[private$observed==1]  <- self$obs_est$mu0[private$observed==1]*(1-private$A[private$observed==1]) +
+        self$obs_est$mu1[private$observed==1]*(private$A[private$observed==1])#Q_pred
 
       if (private$verbose){
         message("Done!\n")
@@ -337,8 +378,10 @@ AIPW <- R6::R6Class(
       k_index= NULL,
       #a list of indices for each fold
       fold_index= NULL,
+      fold_index.Q = NULL,
       #a vector of length(fold_index[[i]])
-      fold_length = NULL
+      fold_length = NULL,
+      fold_length.Q = NULL
     ),
     fitted=NULL,
     sl.pkg =NULL,

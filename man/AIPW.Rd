@@ -32,7 +32,7 @@ See examples for illustration.
 \code{g.SL.library}    \tab   SL.library         \tab    Algorithms used for the \strong{exposure} model (g). \cr
 \code{k_split}         \tab   Integer           \tab    Number of folds for splitting (Default = 10).\cr
 \code{verbose}         \tab   Logical           \tab    Whether to print the result (Default = TRUE) \cr
-\code{save.sl.fit}     \tab   Logical          \tab     Whether to save Q.fit and g.fit (Default = False) \cr
+\code{save.sl.fit}     \tab   Logical          \tab     Whether to save Q.fit and g.fit (Default = FALSE) \cr
 }
 }
 

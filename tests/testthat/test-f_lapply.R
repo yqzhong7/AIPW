@@ -34,7 +34,7 @@ test_that("AIPW .flappy: future_lapply", {
   #check function body is lapply rather than future_lapply
   func_body<- as.character(body(aipw$.__enclos_env__$private$.f_lapply))
   expect_true(any(grepl("future_lapply",func_body)))
-  #check whether run sucessfully with the same seed
+  #check whether run successfully with the same seed
   set.seed(888)
   mat1 <- aipw$fit()$summary()$result
   set.seed(888)

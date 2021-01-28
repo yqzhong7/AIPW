@@ -54,7 +54,7 @@ test_that("AIPW helper functions", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/06/02
+#' 2021/01/27
 test_that("make new training index: .new_cv_index",{
   vec <- rep(1,100)
   root_n = sqrt(length(vec))
@@ -67,6 +67,8 @@ test_that("make new training index: .new_cv_index",{
                     g.SL.library=sl.lib,
                     k_split = 3,verbose = FALSE)
   suppressWarnings(aipw$fit())
+  k_index = aipw$.__enclos_env__$private$cv$k_index
+  fold_index = aipw$.__enclos_env__$private$cv$fold_index
   fold_length = aipw$.__enclos_env__$private$cv$fold_length
   expect_equal(sum(fold_length),100)
   k_split = aipw$.__enclos_env__$private$k_split
