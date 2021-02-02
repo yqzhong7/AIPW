@@ -89,7 +89,7 @@ libraries for estimating the efficient influence function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2.1</span>
       </span>
     </div>
 
@@ -153,8 +153,11 @@ libraries for estimating the efficient influence function.</p>
 
     <p>An AIPW object is constructed by <code>new()</code> with users' inputs of data and causal structures, then it <code><a href='fit.html'>fit()</a></code> the data using the
 libraries in <code>Q.SL.library</code> and <code>g.SL.library</code> with <code>k_split</code> cross-fitting, and provides results via the <code><a href='summary.html'>summary()</a></code> method.
-After using <code><a href='fit.html'>fit()</a></code> and/or <code><a href='summary.html'>summary()</a></code> methods, the propensity scores by exposure status can be examined with <code><a href='plot.p_score.html'>plot.p_score()</a></code>.
-See examples for illustration.</p>
+After using <code><a href='fit.html'>fit()</a></code> and/or <code><a href='summary.html'>summary()</a></code> methods, propensity scores  and inverse probability weights by exposure status can be
+examined with <code><a href='plot.p_score.html'>plot.p_score()</a></code> and <code><a href='plot.ip_weights.html'>plot.ip_weights()</a></code>, respectively.</p>
+<p>If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores with I(A=a, observed=1).
+Missing exposure is not supported.</p>
+<p>See examples for illustration.</p>
     <h2 class="hasAnchor" id="constructor"><a class="anchor" href="#constructor"></a>Constructor</h2>
 
     
