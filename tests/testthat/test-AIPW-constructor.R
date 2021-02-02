@@ -225,7 +225,7 @@ test_that("AIPW constructor: k_split", {
              Q.SL.library=c("SL.mean","SL.glm"),
              g.SL.library=c("SL.mean","SL.glm"),
              k_split = 100,verbose = FALSE),
-    regexp = "`k_split` >= number of observation is not allowed."
+    regexp = "`k_split` >= number of observations is not allowed."
   )
 })
 

@@ -35,8 +35,6 @@ AIPW_base <- R6::R6Class(
     estimates = list(risk_A1 = NULL,
                      risk_A0 = NULL,
                      RD = NULL,
-                     ATT = NULL,
-                     ATC = NULL,
                      RR = NULL,
                      OR = NULL,
                      sigma_covar = NULL),
@@ -91,18 +89,18 @@ AIPW_base <- R6::R6Class(
     summary = function(g.bound=0.025){
       #p_score truncation
       if (length(g.bound) > 2){
-        warning('More than two g.bound are provided. Only the first two will be used.')
+        warning('More than two `g.bound` are provided. Only the first two will be used.')
         g.bound = g.bound[1:2]
       } else if (length(g.bound) ==1 & g.bound[1] >= 0.5){
-          stop("g.bound >= 0.5 is not allowed when only one g.bound value is provided")
+          stop("`g.bound` >= 0.5 is not allowed when only one `g.bound` value is provided")
       }
 
       private$g.bound=g.bound
       #check g.bound value
       if (!is.numeric(private$g.bound)){
-        stop("g.bound must be numeric")
+        stop("`g.bound` must be numeric")
       } else if (max(private$g.bound) > 1 | min(private$g.bound) < 0){
-        stop("g.bound must between 0 and 1")
+        stop("`g.bound` must between 0 and 1")
       }
       self$obs_est$p_score <- private$.bound(self$obs_est$raw_p_score)
 
@@ -130,16 +128,11 @@ AIPW_base <- R6::R6Class(
       ## risk difference
       self$estimates$RD <- private$get_RD(self$obs_est$aipw_eif1, self$obs_est$aipw_eif0, root_n)
 
-      ## Average treatment effects among the treated and controls
-      self$estimates$ATT <- private$get_RD(self$obs_est$aipw_eif1[private$A==1], self$obs_est$aipw_eif0[private$A==1], sqrt(self$n_A1))
-      self$estimates$ATC <- private$get_RD(self$obs_est$aipw_eif1[private$A==0], self$obs_est$aipw_eif0[private$A==0], sqrt(self$n_A0))
-
       #results on additive sacles
       self$result <- cbind(matrix(c(self$estimates$risk_A1, self$estimates$risk_A0,
-                                    self$estimates$RD, self$estimates$ATT, self$estimates$ATC), nrow=5, byrow=T),
-                           c(rep(self$n,3), self$n_A1, self$n_A0))
-      row.names(self$result) <- c("Risk of exposure", "Risk of control",
-                                  "Risk Difference","Risk Difference among the Treated", "Risk Difference among the Controls")
+                                    self$estimates$RD), nrow=3, byrow=T),
+                           c( self$n_A1, self$n_A0,rep(self$n,1)))
+      row.names(self$result) <- c("Risk of exposure", "Risk of control","Risk Difference")
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
 
       if (private$Y.type == 'binomial'){

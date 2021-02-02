@@ -13,7 +13,12 @@ libraries for estimating the efficient influence function.
 \details{
 An AIPW object is constructed by \code{new()} with users' inputs of data and causal structures, then it \code{fit()} the data using the
 libraries in \code{Q.SL.library} and \code{g.SL.library} with \code{k_split} cross-fitting, and provides results via the \code{summary()} method.
-After using \code{fit()} and/or \code{summary()} methods, the propensity scores by exposure status can be examined with \code{plot.p_score()}.
+After using \code{fit()} and/or \code{summary()} methods, propensity scores  and inverse probability weights by exposure status can be
+examined with \code{plot.p_score()} and \code{plot.ip_weights()}, respectively.
+
+If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores with I(A=a, observed=1).
+Missing exposure is not supported.
+
 See examples for illustration.
 }
 \section{Constructor}{

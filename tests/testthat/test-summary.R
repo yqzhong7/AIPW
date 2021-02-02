@@ -73,7 +73,7 @@ test_that("AIPW summary: sl3 & k_split", {
   expect_false(any(sapply(aipw$obs_est, is.null)))
   expect_false(is.null(aipw$result))
   #check results with RR and OR
-  expect_equal(nrow(aipw$result),7)
+  expect_equal(nrow(aipw$result),5)
 
   ##k_split >0: cross-fitting == k_split
   aipw <-  AIPW$new(Y=vec(),
@@ -92,7 +92,7 @@ test_that("AIPW summary: sl3 & k_split", {
   expect_false(any(sapply(aipw$obs_est, is.null)))
   expect_false(is.null(aipw$result))
   #check results with RR and OR
-  expect_equal(nrow(aipw$result),7)
+  expect_equal(nrow(aipw$result),5)
 })
 
 
@@ -166,7 +166,7 @@ test_that("AIPW summary: continuous outcome", {
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)$fit()$summary()
   #check results with RR and OR
-  expect_equal(nrow(aipw$result),5)
+  expect_equal(nrow(aipw$result),3)
 })
 
 

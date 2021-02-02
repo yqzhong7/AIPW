@@ -28,9 +28,11 @@ Kennedy](https://github.com/ehkennedy)
 Augmented inverse probability weighting (AIPW) is a doubly robust
 estimator for causal inference. The `AIPW` package is designed for
 estimating the average treatment effect of a binary exposure on risk
-difference (RD), risk ratio (RR) and odds ratio (OR). Users need to
-examine causal assumptions (e.g., consistency) before using this
-package.
+difference (RD), risk ratio (RR) and odds ratio (OR) scales with
+user-defined stacked machine learning algorithms
+([SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html)
+or [sl3](https://tlverse.org/sl3/index.html)). Users need to examine
+causal assumptions (e.g., consistency) before using this package.
 
 ------------------------------------------------------------------------
 

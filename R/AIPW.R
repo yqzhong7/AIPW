@@ -5,7 +5,12 @@
 #'
 #' @details An AIPW object is constructed by `new()` with users' inputs of data and causal structures, then it `fit()` the data using the
 #' libraries in `Q.SL.library` and `g.SL.library` with `k_split` cross-fitting, and provides results via the `summary()` method.
-#' After using `fit()` and/or `summary()` methods, the propensity scores by exposure status can be examined with `plot.p_score()`.
+#' After using `fit()` and/or `summary()` methods, propensity scores  and inverse probability weights by exposure status can be
+#' examined with `plot.p_score()` and `plot.ip_weights()`, respectively.
+#'
+#' If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores with I(A=a, observed=1).
+#' Missing exposure is not supported.
+#'
 #' See examples for illustration.
 #'
 #' @section Constructor:
@@ -208,7 +213,7 @@ AIPW <- R6::R6Class(
       #------input checking-----#
       #check k_split value
       if (private$k_split>=self$n){
-        stop("`k_split` >= number of observation is not allowed.")
+        stop("`k_split` >= number of observations is not allowed.")
       }else if (private$k_split < 1){
         stop("`k_split` < 1 is not allowed.")
       }
