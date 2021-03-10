@@ -39,7 +39,7 @@ install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
-2. Install [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html) or [sl3](https://tlverse.org/sl3/articles/intro_sl3.html))
+2. Install [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html) or [sl3](https://tlverse.org/sl3/articles/intro_sl3.html)
 
 ```{r, eval = FALSE}
 #SuperLearner
@@ -133,6 +133,8 @@ This step will fit the data stored in the AIPW object to obtain estimates for la
 ```{r}
 #fit the AIPW_SL object
 AIPW_SL$fit()
+# or you can use stratified_fit
+# AIPW_SL$stratified_fit()
 ```
 
 #### 3. <a id="ate"></a>Calculate average treatment effects 

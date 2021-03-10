@@ -1,13 +1,13 @@
-#' @title Testing fit: SuperLeaner & k_split
+#' @title Testing stratified_fit: SuperLeaner & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
 #' 2021/01/25
-test_that("AIPW fit: SuperLeaner & k_split", {
+test_that("AIPW stratified_fit: SuperLeaner & k_split", {
   require(SuperLearner)
   ##k_split == 1: no cross-fitting
   vec <- function() sample(0:1,100,replace = T)
-  sl.lib <- c("SL.mean","SL.glm")
+  sl.lib <- c("SL.glm")
   aipw <-  AIPW$new(Y=vec(),
                     A=vec(),
                     W.Q =vec(),
@@ -16,7 +16,7 @@ test_that("AIPW fit: SuperLeaner & k_split", {
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE,
                     save.sl.fit = TRUE)
-  aipw$fit()
+  expect_warning(aipw$stratified_fit())
   #check any null values after calculating results
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score
@@ -42,7 +42,7 @@ test_that("AIPW fit: SuperLeaner & k_split", {
                     g.SL.library=sl.lib,
                     k_split = 3,verbose = FALSE,
                     save.sl.fit = TRUE)
-  aipw$fit()
+  expect_warning(aipw$stratified_fit())
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score
   expect_true(any(sapply(aipw$obs_est[5:7], is.null)))
@@ -50,18 +50,17 @@ test_that("AIPW fit: SuperLeaner & k_split", {
   expect_true(is.null(aipw$estimate))
 })
 
-#' @title Testing fit: sl3 & k_split
+#' @title Testing stratified_fit: sl3 & k_split
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
 #' 2020/08/09
-test_that("AIPW fit: sl3 & k_split", {
+test_that("AIPW stratified_fit: sl3 & k_split", {
   require(sl3)
   ##k_split == 1: no cross-fitting
   vec <- function() sample(0:1,100,replace = T)
-  lrnr_glm <- sl3::Lrnr_glm$new()
   lrnr_mean <- sl3::Lrnr_mean$new()
-  stacklearner <- sl3::Stack$new(lrnr_glm, lrnr_mean)
+  stacklearner <- sl3::Stack$new( lrnr_mean)
   metalearner <- sl3::Lrnr_nnls$new()
   sl3.lib <- sl3::Lrnr_sl$new(learners = stacklearner,
                               metalearner = metalearner)
@@ -73,7 +72,7 @@ test_that("AIPW fit: sl3 & k_split", {
                     g.SL.library=sl3.lib,
                     k_split = 1,verbose = FALSE,
                     save.sl.fit = TRUE)
-  aipw$fit()
+  aipw$stratified_fit()
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score
   expect_true(any(sapply(aipw$obs_est[5:7], is.null)))
@@ -89,7 +88,7 @@ test_that("AIPW fit: sl3 & k_split", {
                     g.SL.library=sl3.lib,
                     k_split = 3,verbose = FALSE,
                     save.sl.fit = TRUE)
-  aipw$fit()
+  aipw$stratified_fit()
   expect_false(any(sapply(aipw$libs, is.null)))
   expect_false(any(sapply(aipw$obs_est[1:4], is.na))) #mu - raw_p_score
   expect_true(any(sapply(aipw$obs_est[5:7], is.null)))
@@ -98,16 +97,16 @@ test_that("AIPW fit: sl3 & k_split", {
 })
 
 
-#' @title Testing fit: verbose and progressr
+#' @title Testing stratified_fit: verbose and progressr
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
 #' 2021/01/20
-test_that("AIPW fit: verbose", {
+test_that("AIPW stratified_fit: verbose", {
   #verbose == TRUE: "Done!"
   library(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
-  sl.lib <- c("SL.mean","SL.glm")
+  sl.lib <- c("SL.mean")
   aipw <-  AIPW$new(Y=vec(),
                     A=vec(),
                     W.Q =vec(),
@@ -115,26 +114,24 @@ test_that("AIPW fit: verbose", {
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = T)
-  expect_message(aipw$fit(),regexp = "Done!")
+  expect_message(aipw$stratified_fit(),regexp = "Done!")
 
   ##progressr
-  #when progressr not loaded
-  expect_false(aipw$.__enclos_env__$private$isLoaded_progressr)
   #when loaded
   library(progressr)
-  aipw$fit()
+  expect_message(aipw$stratified_fit())
   expect_true(aipw$.__enclos_env__$private$isLoaded_progressr)
 })
 
-#' @title Testing fit: missing outcome reporting (N)
+#' @title Testing stratified_fit: missing outcome reporting (N)
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
 #' 2021/01/27
-test_that("AIPW fit: missing outcome", {
+test_that("AIPW stratified_fit: missing outcome", {
   require(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
-  sl.lib <- c("SL.mean","SL.glm")
+  sl.lib <- c("SL.mean")
   ##k_split == 1: no cross-fitting
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                                    A=c(1,vec()[2:100]),
@@ -142,7 +139,7 @@ test_that("AIPW fit: missing outcome", {
                                    W.g =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
-                                   k_split = 1,verbose = FALSE)$fit())
+                                   k_split = 1,verbose = FALSE)$stratified_fit())
   #Check nuisance functions with missing data
   expect_true(is.na(aipw$obs_est$mu0[1]))
   expect_true(is.na(aipw$obs_est$mu1[1]))
@@ -156,7 +153,7 @@ test_that("AIPW fit: missing outcome", {
                                    W.g =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
-                                   k_split = 2,verbose = FALSE)$fit())
+                                   k_split = 2,verbose = FALSE)$stratified_fit())
   #Check nuisance functions with missing data
   expect_true(is.na(aipw$obs_est$mu0[1]))
   expect_true(is.na(aipw$obs_est$mu1[1]))
@@ -170,10 +167,52 @@ test_that("AIPW fit: missing outcome", {
                                    W.g =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
-                                   k_split = 3,verbose = FALSE)$fit())
+                                   k_split = 3,verbose = FALSE)$stratified_fit())
   #Check nuisance functions with missing data
   expect_true(is.na(aipw$obs_est$mu0[1]))
   expect_true(is.na(aipw$obs_est$mu1[1]))
   expect_true(is.na(aipw$obs_est$mu[1]))
   expect_false(is.na(aipw$obs_est$raw_p_score[1]))
+})
+
+
+#' @title Testing stratified_fit: object
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2021/03/10
+test_that("AIPW stratified_fit: object", {
+  library(SuperLearner)
+  vec <- function() sample(0:1,100,replace = T)
+  sl.lib <- c("SL.mean")
+  aipw <-  AIPW$new(Y=vec(),
+                    A=vec(),
+                    W.Q =vec(),
+                    W.g =vec(),
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 3,
+                    verbose = F,
+                    save.sl.fit = T)
+  # not stratified
+  aipw$fit()
+  expect_false(aipw$stratified_fitted)
+  expect_equal(length(aipw$libs$Q.fit),3)
+
+
+  #stratified
+  aipw <-  AIPW$new(Y=vec(),
+                    A=vec(),
+                    W.Q =vec(),
+                    W.g =vec(),
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 3,
+                    verbose = F,
+                    save.sl.fit = T)
+
+  aipw$stratified_fit()
+  expect_true(aipw$stratified_fitted)
+  expect_equal(length(aipw$libs$Q.fit),3)
+  expect_equal(length(aipw$libs$Q.fit[[1]]),2)
 })

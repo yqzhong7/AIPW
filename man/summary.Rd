@@ -10,7 +10,7 @@ Propensity score will be truncated to \eqn{[g.bound, 1-g.bound]} when one g.boun
 \strong{Defaults to 0.025}.}
 }
 \value{
-\code{estimates} and \code{result} (public variables): Risks, Average treatment effect in RD, RR and OR, and Addictive Effects among the treated and the controls (ATT and ATC)
+\code{estimates} and \code{result} (public variables): Risks, Average treatment effect in RD, RR and OR.
 }
 \description{
 Calculate average causal effects in RD, RR and OR in the fitted \link{AIPW} or \link{AIPW_tmle} object using the estimated efficient influence functions

@@ -22,6 +22,8 @@ AIPW_base <- R6::R6Class(
     n_A1 = NULL,
     #Number ofunexposed
     n_A0 = NULL,
+    #Fit the outcome model stratified by exposure status (only applicable to AIPW class)
+    stratified_fitted = FALSE,
     #Components for estimating the influence functions of all observations to calculate average causal effects
     obs_est = list(mu0 = NULL,
                    mu1 = NULL,
@@ -128,7 +130,7 @@ AIPW_base <- R6::R6Class(
       ## risk difference
       self$estimates$RD <- private$get_RD(self$obs_est$aipw_eif1, self$obs_est$aipw_eif0, root_n)
 
-      #results on additive sacles
+      #results on additive scales
       self$result <- cbind(matrix(c(self$estimates$risk_A1, self$estimates$risk_A0,
                                     self$estimates$RD), nrow=3, byrow=T),
                            c( self$n_A1, self$n_A0,rep(self$n,1)))
@@ -311,7 +313,7 @@ AIPW_base <- R6::R6Class(
 #'
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
-#' @return `estimates` and `result` (public variables): Risks, Average treatment effect in RD, RR and OR, and Addictive Effects among the treated and the controls (ATT and ATC)
+#' @return `estimates` and `result` (public variables): Risks, Average treatment effect in RD, RR and OR.
 #'
 #' @examples
 #' library(SuperLearner)
