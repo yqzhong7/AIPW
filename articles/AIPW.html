@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2.2</span>
       </span>
     </div>
 
@@ -126,7 +126,8 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW"</span><span class="op">)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>Install <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">SuperLearner</a> or <a href="https://tlverse.org/sl3/articles/intro_sl3.html">sl3</a>)</li>
+<li>Install <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">SuperLearner</a> or <a href="https://tlverse.org/sl3/articles/intro_sl3.html">sl3</a>
+</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#SuperLearner</span>
@@ -229,7 +230,9 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <p>This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#fit the AIPW_SL object</span>
-<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span>
+<span class="co"># or you can use stratified_fit</span>
+<span class="co"># AIPW_SL$stratified_fit()</span></code></pre></div>
 </div>
 <div id="calculate-average-treatment-effects" class="section level4">
 <h4 class="hasAnchor">

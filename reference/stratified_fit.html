@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authors • AIPW</title>
+<title>Fit the data to the AIPW object stratified by A for the outcome model — stratified_fit • AIPW</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,19 +33,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 <!-- docsearch -->
-<script src="docsearch.js"></script>
+<script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
-<link href="docsearch.css" rel="stylesheet">
+<link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
-<meta property="og:title" content="Authors" />
+<meta property="og:title" content="Fit the data to the AIPW object stratified by A for the outcome model — stratified_fit" />
+<meta property="og:description" content="Fitting the data into the AIPW object with/without cross-fitting to estimate the efficient influence functions.
+Outcome model is fitted stratified by exposure stuatus A" />
 
 
 
@@ -74,7 +76,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -86,7 +88,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">AIPW</a>
+        <a class="navbar-link" href="../index.html">AIPW</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2.2</span>
       </span>
     </div>
@@ -94,16 +96,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="articles/AIPW.html">Get started</a>
+  <a href="../articles/AIPW.html">Get started</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -130,34 +132,47 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Authors</h1>
+    <h1>Fit the data to the <a href='AIPW.html'>AIPW</a> object stratified by <code>A</code> for the outcome model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yqzhong7/AIPW/blob/master/R/AIPW.R'><code>R/AIPW.R</code></a></small>
+    <div class="hidden name"><code>stratified_fit.Rd</code></div>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong><a href='https://github.com/yqzhong7'>Yongqi Zhong</a></strong>. Author, maintainer. <a href='https://orcid.org/0000-0002-4042-7450' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-      <li>
-        <p><strong><a href='https://github.com/ainaimi'>Ashley Naimi</a></strong>. Author. <a href='https://orcid.org/0000-0002-1510-8175' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-      <li>
-        <p><strong><a href='https://github.com/gconzuelo'>Gabriel Conzuelo</a></strong>. Contributor. 
-        </p>
-      </li>
-      <li>
-        <p><strong>Edward Kennedy</strong>. Contributor. 
-        </p>
-      </li>
-    </ul>
+    <div class="ref-description">
+    <p>Fitting the data into the <a href='AIPW.html'>AIPW</a> object with/without cross-fitting to estimate the efficient influence functions.
+Outcome model is fitted stratified by exposure stuatus <code>A</code></p>
+    </div>
 
+
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A fitted <a href='AIPW.html'>AIPW</a> object with <code>obs_est</code> and <code>libs</code> (public variables)</p>
+    <h2 class="hasAnchor" id="r-usage"><a class="anchor" href="#r-usage"></a>R6 Usage</h2>
+
+    
+
+<p><code>$fit()</code></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='AIPW.html'>AIPW</a></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ecpolley/SuperLearner'>SuperLearner</a></span><span class='op'>)</span>
+<span class='va'>aipw_sl</span> <span class='op'>&lt;-</span> <span class='va'><a href='AIPW.html'>AIPW</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>Y<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>, A<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>,
+                    W.Q<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>, W.g<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span>,
+                    Q.SL.library<span class='op'>=</span><span class='st'>"SL.mean"</span>,g.SL.library<span class='op'>=</span><span class='st'>"SL.mean"</span>,
+                    k_split<span class='op'>=</span><span class='fl'>1</span>,verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>aipw_sl</span><span class='op'>$</span><span class='fu'>stratified_fit</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
+  </div>
 </div>
-
 
 
       <footer>
