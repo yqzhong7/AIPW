@@ -96,10 +96,11 @@ AIPW_SL <- AIPW$new(Y = outcome,
   fit()$
   #Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended
   summary(g.bound = 0.25)$ 
-  plot.p_score()
+  plot.p_score()$
+  plot.ip_weights()
 ```
 
-![](man/figures/one_line-1.png)<!-- -->
+![](man/figures/one_line-1.png)<!-- -->![](man/figures/one_line-2.png)<!-- -->
 
 To see the results, set `verbose = TRUE`(default) or:
 
@@ -123,7 +124,7 @@ AIPW_SL <- aipw_wrapper(Y = outcome,
                         Q.SL.library = c("SL.mean","SL.glm"),
                         g.SL.library = c("SL.mean","SL.glm"),
                         k_split = 3,
-                        verbose=TRUE)$plot.p_score()
+                        verbose=TRUE)$plot.p_score()$plot.ip_weights()
 ```
 
 ## <a id="par"></a>Parallelization with `future.apply` and progress bar with `progressr`
@@ -255,12 +256,15 @@ AIPW_tmle$
 
 ### <a id="ref"></a>References:
 
-Robins, J.M., Rotnitzky, A. and Zhao, L.P., 1994. Estimation of
-regression coefficients when some regressors are not always observed.
-Journal of the American statistical Association, 89(427), pp.846-866.
+Robins JM, Rotnitzky A (1995). Semiparametric efficiency in multivariate
+regression models with missing data. Journal of the American Statistical
+Association.
 
-Glynn, A.N. and Quinn, K.M., 2010. An introduction to the augmented
-inverse propensity weighted estimator. Political analysis, 18(1),
-pp.36-56.
+Chernozhukov V, Chetverikov V, Demirer M, et al (2018). Double/debiased
+machine learning for treatment and structural parameters. The
+Econometrics Journal.
+
+Kennedy EH, Sjolander A, Small DS (2015). Semiparametric causal
+inference in matched cohort studies. Biometrika.
 
 Pearl, J., 2009. Causality. Cambridge university press.

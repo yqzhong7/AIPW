@@ -25,6 +25,7 @@ Contents:
     + [Create an AIPW object](#constructor)
     + [Fit the object](#fit)
     + [Calculate average treatment effects](#ate)
+    + [Calculate average treatment effects among the treated](#att)
   * [Parallelization](#par)
   * [Using tmle/tmle3 as input](#tmle_input)
     + [tmle](#tmle)
@@ -126,6 +127,8 @@ AIPW_sl3 <- AIPW$new(Y= eager_sim_obs$sim_Y,
                      verbose=FALSE)
 ```
 
+If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores with I(A=a, observed=1). Missing exposure is not supported.
+
 #### 2. <a id="fit"></a>Fit the AIPW object
 
 This step will fit the data stored in the AIPW object to obtain estimates for later average treatment effect calculations.
@@ -145,11 +148,22 @@ AIPW_SL$fit()
 AIPW_SL$summary(g.bound = 0.25) #propensity score truncation 
 ```
 
-  * ##### Check the balance of propensity scores by exposure status after truncation
+  * ##### Check the balance of propensity scores and inverse probability weights by exposure status after truncation
 ```{r ps_trunc}
 library(ggplot2)
 AIPW_SL$plot.p_score()
+AIPW_SL$plot.ip_weights()
 ```
+
+#### 4. <a id="att"></a>Calculate average treatment effects among the treated
+* ##### `stratified_fit()` fits the outcome model by exposure status while `fit()` does not. Hence, `stratified_fit()` must be used to compute ATT [(Kennedy et al. 2015)](http://www.ehkennedy.com/uploads/5/8/4/5/58450265/2015_kennedy_et_al_-_semiparametric_causal_inference_in_matched_cohort_studies.pdf)
+
+```{r}
+suppressWarnings({
+  AIPW_SL$stratified_fit()$summary()
+})
+```
+
 
 ## <a id="par"></a>Parallelization with future.apply
 
@@ -177,7 +191,7 @@ AIPW shares similar intermediate estimates with the Targeted Maximum Likelihood 
 
 #### 1. <a id="tmle"></a>`tmle`
 
-As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) only support sample splitting in the outcome model. 
+As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) only support cross-fitting in the outcome model. 
 
 ```{r tmle, eval=F}
 library(tmle)
@@ -204,7 +218,7 @@ a_tmle <- AIPW_tmle$
 
 #### 2. <a id="tmle3"></a> `tmle3`
 
-Notably, [tmle3](https://github.com/tlverse/tmle3) conducts sample splitting and propensity truncation (0.025) by default.
+Notably, [tmle3](https://github.com/tlverse/tmle3) conducts cross-fitting and propensity truncation (0.025) by default.
 
 ```{r tmle3, eval=F}
 library(tmle3,quietly = TRUE)

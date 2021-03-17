@@ -22,7 +22,7 @@ AIPW_base <- R6::R6Class(
     n_A1 = NULL,
     #Number ofunexposed
     n_A0 = NULL,
-    #Fit the outcome model stratified by exposure status (only applicable to AIPW class)
+    #Fit the outcome model stratified by exposure status (only applicable to AIPW class or manual setup)
     stratified_fitted = FALSE,
     #Components for estimating the influence functions of all observations to calculate average causal effects
     obs_est = list(mu0 = NULL,
@@ -33,13 +33,15 @@ AIPW_base <- R6::R6Class(
                    ip_weights = NULL,
                    aipw_eif1 = NULL,
                    aipw_eif0 = NULL),
-    #Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
+    #ATE: Risk difference, risk ratio, odds ratio and variance-covariance matrix for SE calculation
     estimates = list(risk_A1 = NULL,
                      risk_A0 = NULL,
                      RD = NULL,
                      RR = NULL,
                      OR = NULL,
                      sigma_covar = NULL),
+    #ATT: Risk difference
+    ATT_estimates = list(RD = NULL),
     #A matrix contains RD, RR and OR with their SE and 95%CI
     result = NULL,
     #A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
@@ -110,6 +112,7 @@ AIPW_base <- R6::R6Class(
       self$obs_est$ip_weights <- (as.numeric(private$A==1)/self$obs_est$p_score) + (as.numeric(private$A==0)/(1-self$obs_est$p_score))
 
       ##------AIPW est------##
+      #### ATE EIF
       self$obs_est$aipw_eif1 <- ifelse(private$observed == 1,
                                        (as.numeric(private$A[private$observed==1]==1)/self$obs_est$p_score[private$observed==1])*
                                          (private$Y[private$observed==1] - self$obs_est$mu[private$observed==1]) +
@@ -152,6 +155,17 @@ AIPW_base <- R6::R6Class(
         row.names(mult_result) <- c("Risk Ratio", "Odds Ratio")
         self$result <- rbind(self$result, mult_result)
       }
+
+      #### ATT/ATC
+      if (self$stratified_fitted) {
+        self$ATT_estimates$RD <- private$get_ATT_RD(mu0 = self$obs_est$mu0[private$observed==1],
+                                       p_score = self$obs_est$p_score[private$observed==1],
+                                       A_level = 1, root_n=root_n)
+        ATT_result <- matrix(c(self$ATT_estimates$RD, self$n), nrow = 1)
+        row.names(ATT_result) <- c("ATT Risk Difference")
+        self$result <- rbind(self$result, ATT_result)
+      }
+
 
       if (private$verbose){
         print(self$result,digit=3)
@@ -279,6 +293,19 @@ AIPW_base <- R6::R6Class(
                       stats::cov(aipw_eif1,aipw_eif0),
                       stats::var(aipw_eif1)),nrow=2)
       return(mat)
+    },
+    #ATT/ATC calculation
+    get_ATT_RD = function(A =private$A[private$observed==1], Y = private$Y[private$observed==1],
+                          mu0, p_score, A_level, root_n){
+      I_A = (A==A_level) / mean(A==A_level)
+      I_A_com = (1-A==A_level) / mean(1-(A==A_level))
+      eif <- I_A*Y  - (I_A*(mu0) + I_A_com*(Y-mu0)*p_score/(1-p_score))
+      est <- mean(eif)
+      se <- stats::sd(eif - I_A*est)/root_n
+      ci <- get_ci(est,se,ratio=F)
+      output = c(est, se, ci)
+      names(output) = c("Estimate","SE","95% LCL","95% UCL")
+      return(output)
     },
     #setup the bounds for the propensity score to ensure the balance
     .bound = function(p_score,bound = private$g.bound){

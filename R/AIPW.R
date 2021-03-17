@@ -72,7 +72,7 @@
 #' ## Public Variable Details
 #' \describe{
 #'    \item{\code{stratified_fit}}{An indicator for whether the outcome model is fitted stratified by exposure status in the`fit()` method.
-#'    Only when using `stratified_fit()` to turn on `stratified_fit = TRUE`, `summary_ATT()` outputs average treatment effects among the treated and the controls.}
+#'    Only when using `stratified_fit()` to turn on `stratified_fit = TRUE`, `summary` outputs average treatment effects among the treated and the controls.}
 #'    \item{\code{obs_est}}{After using `fit()` and `summary()` methods, this list contains the propensity scores (`p_score`),
 #'    counterfactual predictions (`mu`, `mu1` & `mu0`) and
 #'    efficient influence functions (`aipw_eif1` & `aipw_eif0`) for later average treatment effect calculations.}
@@ -81,6 +81,12 @@
 #' }
 #'
 #' @return \code{AIPW} object
+#'
+#'
+#' @references Robins JM, Rotnitzky A (1995). Semiparametric efficiency in multivariate regression models with missing data. \emph{Journal of the American Statistical Association}.
+#' @references Chernozhukov V, Chetverikov V, Demirer M, et al (2018). Double/debiased machine learning for treatment and structural parameters. \emph{The Econometrics Journal}.
+#' @references Kennedy EH, Sjolander A, Small DS (2015). Semiparametric causal inference in matched cohort studies. \emph{Biometrika}.
+#'
 #'
 #' @examples
 #' library(SuperLearner)
@@ -243,6 +249,7 @@ AIPW <- R6::R6Class(
 
     #-------------------------fit method-----------------------------#
     fit = function(){
+      self$stratified_fitted = FALSE
       #----------create index for cross-fitting---------#
       private$cv$k_index <- sample(rep(1:private$k_split,ceiling(self$n/private$k_split))[1:self$n],replace = F)
       private$cv$fold_index = split(1:self$n, private$cv$k_index)

@@ -192,5 +192,25 @@ test_that("AIPW summary: missing outcome", {
   expect_equal(aipw$result[3,5], 100)
 })
 
-
+#' @title Testing summary: ATT reporting
+#' @section Last Updated By:
+#' Yongqi Zhong
+#' @section Last Update Date:
+#' 2021/03/17
+test_that("AIPW summary: continuous outcome", {
+  require(SuperLearner)
+  set.seed(123)
+  vec <- function() sample(0:1,100,replace = T)
+  sl.lib <- c("SL.mean","SL.glm")
+  aipw <-  AIPW$new(Y=vec(),
+                    A=vec(),
+                    W.Q =vec(),
+                    W.g =vec(),
+                    Q.SL.library=sl.lib,
+                    g.SL.library=sl.lib,
+                    k_split = 1,verbose = FALSE)
+  expect_warning(aipw$stratified_fit()$summary())
+  #check results with RR and OR
+  expect_equal(nrow(aipw$result),6)
+})
 

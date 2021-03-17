@@ -87,7 +87,7 @@ If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
 
 \describe{
 \item{\code{stratified_fit}}{An indicator for whether the outcome model is fitted stratified by exposure status in the\code{fit()} method.
-Only when using \code{stratified_fit()} to turn on \code{stratified_fit = TRUE}, \code{summary_ATT()} outputs average treatment effects among the treated and the controls.}
+Only when using \code{stratified_fit()} to turn on \code{stratified_fit = TRUE}, \code{summary} outputs average treatment effects among the treated and the controls.}
 \item{\code{obs_est}}{After using \code{fit()} and \code{summary()} methods, this list contains the propensity scores (\code{p_score}),
 counterfactual predictions (\code{mu}, \code{mu1} & \code{mu0}) and
 efficient influence functions (\code{aipw_eif1} & \code{aipw_eif0}) for later average treatment effect calculations.}
@@ -116,4 +116,11 @@ aipw_sl$summary(g.bound = 0.025)
 #check the propensity scores by exposure status after truncation
 aipw_sl$plot.p_score()
 
+}
+\references{
+Robins JM, Rotnitzky A (1995). Semiparametric efficiency in multivariate regression models with missing data. \emph{Journal of the American Statistical Association}.
+
+Chernozhukov V, Chetverikov V, Demirer M, et al (2018). Double/debiased machine learning for treatment and structural parameters. \emph{The Econometrics Journal}.
+
+Kennedy EH, Sjolander A, Small DS (2015). Semiparametric causal inference in matched cohort studies. \emph{Biometrika}.
 }

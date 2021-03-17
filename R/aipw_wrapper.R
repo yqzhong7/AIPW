@@ -20,6 +20,8 @@
 #'                         (e.g., `k_split=10`, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
 #'   NOTE: it's recommended to use cross-fitting.
 #' @param g.bound Value between \[0,1\] at which the propensity score should be truncated. Defaults to 0.025.
+#' @param stratified_fit An indicator for whether the outcome model is fitted stratified by exposure status in the`fit()` method.
+#'    Only when using `stratified_fit()` to turn on `stratified_fit = TRUE`, `summary` outputs average treatment effects among the treated and the controls.
 #'
 #' @export
 #' @seealso [AIPW]
@@ -34,10 +36,17 @@
 aipw_wrapper = function(Y, A, verbose=TRUE,
                  W=NULL, W.Q=NULL, W.g=NULL,
                  Q.SL.library, g.SL.library,
-                 k_split=10, g.bound=0.025){
+                 k_split=10, g.bound=0.025,stratified_fit=FALSE){
   aipw_obj <- AIPW$new(Y=Y,A=A,verbose=verbose,
                        W=W, W.Q=W.Q,W.g=W.g,
                        Q.SL.library=Q.SL.library, g.SL.library=g.SL.library,
-                       k_split=k_split)$fit()$summary(g.bound=g.bound)
+                       k_split=k_split)
+  if (stratified_fit){
+    aipw_obj$stratified_fit()
+  } else{
+    aipw_obj$fit()
+  }
+  aipw_obj$summary(g.bound=g.bound)
+
   invisible(aipw_obj)
 }

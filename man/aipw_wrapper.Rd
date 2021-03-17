@@ -14,7 +14,8 @@ aipw_wrapper(
   Q.SL.library,
   g.SL.library,
   k_split = 10,
-  g.bound = 0.025
+  g.bound = 0.025,
+  stratified_fit = FALSE
 )
 }
 \arguments{
@@ -44,6 +45,9 @@ if k_split>=2, cross-fitting is used
 NOTE: it's recommended to use cross-fitting.}
 
 \item{g.bound}{Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.}
+
+\item{stratified_fit}{An indicator for whether the outcome model is fitted stratified by exposure status in the\code{fit()} method.
+Only when using \code{stratified_fit()} to turn on \code{stratified_fit = TRUE}, \code{summary} outputs average treatment effects among the treated and the controls.}
 }
 \value{
 A fitted \code{AIPW} object with summarised results
