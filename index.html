@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3</span>
       </span>
     </div>
 
@@ -156,8 +156,9 @@
   <span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
   <span class="co">#Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended</span>
   <span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span><span class="op">$</span> 
-  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/one_line-1.png"><!-- --></p>
+  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
+  <span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/one_line-1.png"><!-- --><img src="reference/figures/one_line-2.png"><!-- --></p>
 <p>To see the results, set <code>verbose = TRUE</code>(default) or:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">AIPW_SL</span><span class="op">$</span><span class="va">result</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
@@ -175,7 +176,7 @@
                         Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
                         g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
                         k_split <span class="op">=</span> <span class="fl">3</span>,
-                        verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+                        verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="parallelization-with-futureapply-and-progress-bar-with-progressr" class="section level2">
@@ -297,8 +298,9 @@
 <div id="references-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#references-1" class="anchor"></a><a id="ref"></a>References:</h3>
-<p>Robins, J.M., Rotnitzky, A. and Zhao, L.P., 1994. Estimation of regression coefficients when some regressors are not always observed. Journal of the American statistical Association, 89(427), pp.846-866.</p>
-<p>Glynn, A.N. and Quinn, K.M., 2010. An introduction to the augmented inverse propensity weighted estimator. Political analysis, 18(1), pp.36-56.</p>
+<p>Robins JM, Rotnitzky A (1995). Semiparametric efficiency in multivariate regression models with missing data. Journal of the American Statistical Association.</p>
+<p>Chernozhukov V, Chetverikov V, Demirer M, et al (2018). Double/debiased machine learning for treatment and structural parameters. The Econometrics Journal.</p>
+<p>Kennedy EH, Sjolander A, Small DS (2015). Semiparametric causal inference in matched cohort studies. Biometrika.</p>
 <p>Pearl, J., 2009. Causality. Cambridge university press.</p>
 </div>
 </div>

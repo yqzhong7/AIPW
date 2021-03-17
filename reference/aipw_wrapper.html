@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3</span>
       </span>
     </div>
 
@@ -152,7 +152,8 @@
   <span class='va'>Q.SL.library</span>,
   <span class='va'>g.SL.library</span>,
   k_split <span class='op'>=</span> <span class='fl'>10</span>,
-  g.bound <span class='op'>=</span> <span class='fl'>0.025</span>
+  g.bound <span class='op'>=</span> <span class='fl'>0.025</span>,
+  stratified_fit <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -204,6 +205,11 @@ NOTE: it's recommended to use cross-fitting.</p></td>
     <tr>
       <th>g.bound</th>
       <td><p>Value between [0,1] at which the propensity score should be truncated. Defaults to 0.025.</p></td>
+    </tr>
+    <tr>
+      <th>stratified_fit</th>
+      <td><p>An indicator for whether the outcome model is fitted stratified by exposure status in the<code><a href='fit.html'>fit()</a></code> method.
+Only when using <code><a href='stratified_fit.html'>stratified_fit()</a></code> to turn on <code>stratified_fit = TRUE</code>, <code>summary</code> outputs average treatment effects among the treated and the controls.</p></td>
     </tr>
     </table>
 

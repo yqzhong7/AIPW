@@ -89,7 +89,7 @@ libraries for estimating the efficient influence function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3</span>
       </span>
     </div>
 
@@ -234,7 +234,7 @@ If k_split=1, no cross-fitting; if k_split&gt;=2, cross-fitting is used
 
 <dl>
 <dt><code>stratified_fit</code></dt><dd><p>An indicator for whether the outcome model is fitted stratified by exposure status in the<code><a href='fit.html'>fit()</a></code> method.
-Only when using <code><a href='stratified_fit.html'>stratified_fit()</a></code> to turn on <code>stratified_fit = TRUE</code>, <code>summary_ATT()</code> outputs average treatment effects among the treated and the controls.</p></dd>
+Only when using <code><a href='stratified_fit.html'>stratified_fit()</a></code> to turn on <code>stratified_fit = TRUE</code>, <code>summary</code> outputs average treatment effects among the treated and the controls.</p></dd>
 <dt><code>obs_est</code></dt><dd><p>After using <code><a href='fit.html'>fit()</a></code> and <code><a href='summary.html'>summary()</a></code> methods, this list contains the propensity scores (<code>p_score</code>),
 counterfactual predictions (<code>mu</code>, <code>mu1</code> &amp; <code>mu0</code>) and
 efficient influence functions (<code>aipw_eif1</code> &amp; <code>aipw_eif0</code>) for later average treatment effect calculations.</p></dd>
@@ -244,6 +244,11 @@ efficient influence functions (<code>aipw_eif1</code> &amp; <code>aipw_eif0</cod
 </dl>
 
 
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Robins JM, Rotnitzky A (1995). Semiparametric efficiency in multivariate regression models with missing data. <em>Journal of the American Statistical Association</em>.</p>
+<p>Chernozhukov V, Chetverikov V, Demirer M, et al (2018). Double/debiased machine learning for treatment and structural parameters. <em>The Econometrics Journal</em>.</p>
+<p>Kennedy EH, Sjolander A, Small DS (2015). Semiparametric causal inference in matched cohort studies. <em>Biometrika</em>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ecpolley/SuperLearner'>SuperLearner</a></span><span class='op'>)</span>
