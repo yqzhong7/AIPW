@@ -291,7 +291,7 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <div id="use-tmletmle3-fitted-object-as-input" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use-tmletmle3-fitted-object-as-input" class="anchor"></a><a id="tmle_input"></a>Use <code>tmle</code>/<code>tmle3</code> fitted object as input</h2>
-<p>AIPW shares similar intermediate estimates with the Targeted Maximum Likelihood / Minimum Loss-Based Estimation (TMLE). Therefore, <code>AIPW_tmle</code> class is designed for using <code>tmle</code>/<code>tmle3</code> fitted object as input. Details about these two packages can be found <a href="https://www.jstatsoft.org/article/view/v051i13">here</a> and <a href="https://tlverse.org/tlverse-handbook/">here</a></p>
+<p>AIPW shares similar intermediate estimates (nuisance functions) with the Targeted Maximum Likelihood / Minimum Loss-Based Estimation (TMLE). Therefore, <code>AIPW_tmle</code> class is designed for using <code>tmle</code>/<code>tmle3</code> fitted object as input. Details about these two packages can be found <a href="https://www.jstatsoft.org/article/view/v051i13">here</a> and <a href="https://tlverse.org/tlverse-handbook/">here</a>. This feature is designed for debugging and easy comparisons across these three packages because cross-fitting procedures are different in <code>tmle</code> and <code>tmle3</code>. In addition, this feature does not support ATT outputs.</p>
 <div id="tmle" class="section level4">
 <h4 class="hasAnchor">
 <a href="#tmle" class="anchor"></a>1. <a id="tmle"></a><code>tmle</code>
