@@ -586,10 +586,10 @@ NULL
 #'
 #' @description
 #' Fitting the data into the [AIPW] object with/without cross-fitting to estimate the efficient influence functions.
-#' Outcome model is fitted stratified by exposure stuatus `A`
+#' Outcome model is fitted, stratified by exposure status `A`
 #'
 #' @section R6 Usage:
-#' \code{$fit()}
+#' \code{$stratified_fit.AIPW()}
 #'
 #' @return A fitted [AIPW] object with `obs_est` and `libs` (public variables)
 #'

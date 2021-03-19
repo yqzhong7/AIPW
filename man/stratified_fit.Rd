@@ -9,11 +9,11 @@ A fitted \link{AIPW} object with \code{obs_est} and \code{libs} (public variable
 }
 \description{
 Fitting the data into the \link{AIPW} object with/without cross-fitting to estimate the efficient influence functions.
-Outcome model is fitted stratified by exposure stuatus \code{A}
+Outcome model is fitted, stratified by exposure status \code{A}
 }
 \section{R6 Usage}{
 
-\code{$fit()}
+\code{$stratified_fit.AIPW()}
 }
 
 \examples{

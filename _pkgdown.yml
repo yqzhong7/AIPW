@@ -25,7 +25,7 @@ reference:
   desc:  Estimation with user-defined data, SL.library and causal structure
 - contents:
   - AIPW
-  - starts_with("fit")
+  - ends_with("fit")
   - aipw_wrapper
 - title: AIPW_tmle Class
   desc:  Using a fitted tmle or tmle3 object as input
