@@ -42,7 +42,8 @@ Imports:
     sl3,
     ggplot2,
     future.apply,
-    progressr
+    progressr,
+    Rsolnp
 Remotes: 
     github::tlverse/sl3,
     github::tlverse/tmle3

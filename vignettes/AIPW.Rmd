@@ -47,6 +47,7 @@ remotes::install_github("yqzhong7/AIPW")
 install.packages("SuperLearner")
 #sl3
 remotes::install_github("tlverse/sl3")
+install.packages("Rsolnp")
 ```
 
 ## Input data for analyses 
@@ -194,6 +195,7 @@ AIPW shares similar intermediate estimates (nuisance functions) with the Targete
 As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) only support cross-fitting in the outcome model. 
 
 ```{r tmle, eval=F}
+# install.packages("tmle")
 library(tmle)
 library(SuperLearner)
 
@@ -221,6 +223,7 @@ a_tmle <- AIPW_tmle$
 Notably, [tmle3](https://github.com/tlverse/tmle3) conducts cross-fitting and propensity truncation (0.025) by default.
 
 ```{r tmle3, eval=F}
+# remotes::install_github("tlverse/tmle3")
 library(tmle3,quietly = TRUE)
 library(sl3,quietly = TRUE)
 
