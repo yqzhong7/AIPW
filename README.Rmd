@@ -93,6 +93,21 @@ To see the results, set `verbose = TRUE`(default) or:
 print(AIPW_SL$result, digits = 2)
 ```
 
+To obtain average treatment effect among the treated (ATT), `statified_fit()` must be used:
+```{r}
+AIPW_SL_att <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
+                    k_split = 3,
+                    verbose=T)
+suppressWarnings({
+  AIPW_SL_att$stratified_fit()$summary()
+})
+```
+
+
 You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and `summary()` together (also support method chaining):
 ```{r wrapper, eval=F}
 AIPW_SL <- aipw_wrapper(Y = outcome,
@@ -101,7 +116,8 @@ AIPW_SL <- aipw_wrapper(Y = outcome,
                         Q.SL.library = c("SL.mean","SL.glm"),
                         g.SL.library = c("SL.mean","SL.glm"),
                         k_split = 3,
-                        verbose=TRUE)$plot.p_score()$plot.ip_weights()
+                        verbose=TRUE,
+                        stratified_fit=F)$plot.p_score()$plot.ip_weights()
 ```
 
 ## <a id="par"></a>Parallelization with `future.apply` and progress bar with `progressr`

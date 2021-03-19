@@ -187,13 +187,13 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
 
 ## <a id="tmle_input"></a>Use `tmle`/`tmle3` fitted object as input
 
-AIPW shares similar intermediate estimates with the Targeted Maximum Likelihood / Minimum Loss-Based Estimation (TMLE). Therefore, `AIPW_tmle` class is designed for using `tmle`/`tmle3` fitted object as input. Details about these two packages can be found [here](https://www.jstatsoft.org/article/view/v051i13) and [here](https://tlverse.org/tlverse-handbook/)
+AIPW shares similar intermediate estimates (nuisance functions) with the Targeted Maximum Likelihood / Minimum Loss-Based Estimation (TMLE). Therefore, `AIPW_tmle` class is designed for using `tmle`/`tmle3` fitted object as input. Details about these two packages can be found [here](https://www.jstatsoft.org/article/view/v051i13) and [here](https://tlverse.org/tlverse-handbook/). This feature is designed for debugging and easy comparisons across these three packages because cross-fitting procedures are different in `tmle` and `tmle3`. In addition, this feature does not support ATT outputs.
 
 #### 1. <a id="tmle"></a>`tmle`
 
 As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) only support cross-fitting in the outcome model. 
 
-```{r tmle, eval=F}
+```{r tmle, eval=T}
 library(tmle)
 library(SuperLearner)
 
@@ -220,7 +220,7 @@ a_tmle <- AIPW_tmle$
 
 Notably, [tmle3](https://github.com/tlverse/tmle3) conducts cross-fitting and propensity truncation (0.025) by default.
 
-```{r tmle3, eval=F}
+```{r tmle3, eval=T}
 library(tmle3,quietly = TRUE)
 library(sl3,quietly = TRUE)
 

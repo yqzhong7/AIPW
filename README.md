@@ -114,6 +114,30 @@ print(AIPW_SL$result, digits = 2)
 #> Odds Ratio           1.74 0.310  0.9494    3.20 200
 ```
 
+To obtain average treatment effect among the treated (ATT),
+`statified_fit()` must be used:
+
+``` r
+AIPW_SL_att <- AIPW$new(Y = outcome,
+                    A = exposure,
+                    W = covariates, 
+                    Q.SL.library = c("SL.mean","SL.glm"),
+                    g.SL.library = c("SL.mean","SL.glm"),
+                    k_split = 3,
+                    verbose=T)
+suppressWarnings({
+  AIPW_SL_att$stratified_fit()$summary()
+})
+#> Done!
+#>                     Estimate     SE 95% LCL 95% UCL   N
+#> Risk of exposure       0.730 0.0539  0.6240   0.835  78
+#> Risk of control        0.558 0.0502  0.4600   0.657 122
+#> Risk Difference        0.171 0.0733  0.0276   0.315 200
+#> Risk Ratio             1.307 0.1152  1.0426   1.638 200
+#> Odds Ratio             2.134 0.3373  1.1018   4.133 200
+#> ATT Risk Difference    0.103 0.0672 -0.0285   0.235 200
+```
+
 You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and
 `summary()` together (also support method chaining):
 
@@ -124,7 +148,8 @@ AIPW_SL <- aipw_wrapper(Y = outcome,
                         Q.SL.library = c("SL.mean","SL.glm"),
                         g.SL.library = c("SL.mean","SL.glm"),
                         k_split = 3,
-                        verbose=TRUE)$plot.p_score()$plot.ip_weights()
+                        verbose=TRUE,
+                        stratified_fit=F)$plot.p_score()$plot.ip_weights()
 ```
 
 ## <a id="par"></a>Parallelization with `future.apply` and progress bar with `progressr`
