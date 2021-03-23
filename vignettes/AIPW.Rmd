@@ -156,8 +156,8 @@ AIPW_SL$plot.p_score()
 AIPW_SL$plot.ip_weights()
 ```
 
-#### 4. <a id="att"></a>Calculate average treatment effects among the treated
-* ##### `stratified_fit()` fits the outcome model by exposure status while `fit()` does not. Hence, `stratified_fit()` must be used to compute ATT [(Kennedy et al. 2015)](http://www.ehkennedy.com/uploads/5/8/4/5/58450265/2015_kennedy_et_al_-_semiparametric_causal_inference_in_matched_cohort_studies.pdf)
+#### 4. <a id="att"></a>Calculate average treatment effects among the treated/controls
+* ##### `stratified_fit()` fits the outcome model by exposure status while `fit()` does not. Hence, `stratified_fit()` must be used to compute ATT/ATC [(Kennedy et al. 2015)](http://www.ehkennedy.com/uploads/5/8/4/5/58450265/2015_kennedy_et_al_-_semiparametric_causal_inference_in_matched_cohort_studies.pdf)
 
 ```{r}
 suppressWarnings({

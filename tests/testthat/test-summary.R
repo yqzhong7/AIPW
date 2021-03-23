@@ -211,6 +211,6 @@ test_that("AIPW summary: continuous outcome", {
                     k_split = 1,verbose = FALSE)
   expect_warning(aipw$stratified_fit()$summary())
   #check results with RR and OR
-  expect_equal(nrow(aipw$result),6)
+  expect_equal(nrow(aipw$result),7)
 })
 

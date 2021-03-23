@@ -58,7 +58,7 @@ remotes::install_github("yqzhong7/AIPW")
 
 ### <a id="data"></a>Setup example data
 ```{r example data}
-set.seed(123)
+set.seed(888)
 data("eager_sim_obs")
 outcome <- eager_sim_obs$sim_A
 exposure <- eager_sim_obs$sim_Y
@@ -93,7 +93,7 @@ To see the results, set `verbose = TRUE`(default) or:
 print(AIPW_SL$result, digits = 2)
 ```
 
-To obtain average treatment effect among the treated (ATT), `statified_fit()` must be used:
+To obtain average treatment effect among the treated/controls (ATT/ATC), `statified_fit()` must be used:
 ```{r}
 AIPW_SL_att <- AIPW$new(Y = outcome,
                     A = exposure,
@@ -181,6 +181,8 @@ tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial")
+tmle_fit
+#extract fitted tmle object to AIPW
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)

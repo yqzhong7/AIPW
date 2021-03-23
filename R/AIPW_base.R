@@ -42,6 +42,8 @@ AIPW_base <- R6::R6Class(
                      sigma_covar = NULL),
     #ATT: Risk difference
     ATT_estimates = list(RD = NULL),
+    #ATC: Risk difference
+    ATC_estimates = list(RD = NULL),
     #A matrix contains RD, RR and OR with their SE and 95%CI
     result = NULL,
     #A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
@@ -158,12 +160,17 @@ AIPW_base <- R6::R6Class(
 
       #### ATT/ATC
       if (self$stratified_fitted) {
+        #ATT
         self$ATT_estimates$RD <- private$get_ATT_RD(mu0 = self$obs_est$mu0[private$observed==1],
                                        p_score = self$obs_est$p_score[private$observed==1],
-                                       A_level = 1, root_n=root_n)
-        ATT_result <- matrix(c(self$ATT_estimates$RD, self$n), nrow = 1)
-        row.names(ATT_result) <- c("ATT Risk Difference")
-        self$result <- rbind(self$result, ATT_result)
+                                       A_level = 1, root_n=root_n, ATC = F)
+        self$ATC_estimates$RD <- private$get_ATT_RD(mu0 = self$obs_est$mu1[private$observed==1],
+                                                    p_score = 1-self$obs_est$p_score[private$observed==1],
+                                                    A_level = 0, root_n=root_n, ATC = T)
+        ATT_ATC_result <- matrix(c(self$ATT_estimates$RD, self$n,
+                                   self$ATC_estimates$RD, self$n), nrow = 2,byrow = T)
+        row.names(ATT_ATC_result) <- c("ATT Risk Difference","ATC Risk Difference")
+        self$result <- rbind(self$result, ATT_ATC_result)
       }
 
 
@@ -296,11 +303,14 @@ AIPW_base <- R6::R6Class(
     },
     #ATT/ATC calculation
     get_ATT_RD = function(A =private$A[private$observed==1], Y = private$Y[private$observed==1],
-                          mu0, p_score, A_level, root_n){
+                          mu0, p_score, A_level, root_n, ATC = F){
       I_A = (A==A_level) / mean(A==A_level)
       I_A_com = (1-A==A_level) / mean(1-(A==A_level))
       eif <- I_A*Y  - (I_A*(mu0) + I_A_com*(Y-mu0)*p_score/(1-p_score))
       est <- mean(eif)
+      if (ATC){
+        est <- -1 * est
+      }
       se <- stats::sd(eif - I_A*est)/root_n
       ci <- get_ci(est,se,ratio=F)
       output = c(est, se, ci)

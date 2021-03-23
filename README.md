@@ -66,7 +66,7 @@ remotes::install_github("yqzhong7/AIPW")
 ### <a id="data"></a>Setup example data
 
 ``` r
-set.seed(123)
+set.seed(888)
 data("eager_sim_obs")
 outcome <- eager_sim_obs$sim_A
 exposure <- eager_sim_obs$sim_Y
@@ -107,14 +107,14 @@ To see the results, set `verbose = TRUE`(default) or:
 ``` r
 print(AIPW_SL$result, digits = 2)
 #>                  Estimate    SE 95% LCL 95% UCL   N
-#> Risk of exposure     0.68 0.053  0.5714    0.78  78
-#> Risk of control      0.54 0.047  0.4536    0.64 122
-#> Risk Difference      0.13 0.071 -0.0081    0.27 200
-#> Risk Ratio           1.24 0.117  0.9860    1.56 200
-#> Odds Ratio           1.74 0.310  0.9494    3.20 200
+#> Risk of exposure     0.68 0.053  0.5765    0.78  78
+#> Risk of control      0.54 0.046  0.4458    0.63 122
+#> Risk Difference      0.14 0.070  0.0059    0.28 200
+#> Risk Ratio           1.27 0.116  1.0099    1.59 200
+#> Odds Ratio           1.84 0.307  1.0084    3.36 200
 ```
 
-To obtain average treatment effect among the treated (ATT),
+To obtain average treatment effect among the treated/controls (ATT/ATC),
 `statified_fit()` must be used:
 
 ``` r
@@ -129,13 +129,14 @@ suppressWarnings({
   AIPW_SL_att$stratified_fit()$summary()
 })
 #> Done!
-#>                     Estimate     SE 95% LCL 95% UCL   N
-#> Risk of exposure       0.730 0.0539  0.6240   0.835  78
-#> Risk of control        0.558 0.0502  0.4600   0.657 122
-#> Risk Difference        0.171 0.0733  0.0276   0.315 200
-#> Risk Ratio             1.307 0.1152  1.0426   1.638 200
-#> Odds Ratio             2.134 0.3373  1.1018   4.133 200
-#> ATT Risk Difference    0.103 0.0672 -0.0285   0.235 200
+#>                     Estimate     SE  95% LCL 95% UCL   N
+#> Risk of exposure       0.672 0.0555  0.56310   0.781  78
+#> Risk of control        0.546 0.0462  0.45537   0.637 122
+#> Risk Difference        0.126 0.0724 -0.01581   0.268 200
+#> Risk Ratio             1.231 0.1187  0.97537   1.553 200
+#> Odds Ratio             1.704 0.3144  0.91994   3.155 200
+#> ATT Risk Difference    0.125 0.0624  0.00262   0.247 200
+#> ATC Risk Difference    0.121 0.1058 -0.08662   0.328 200
 ```
 
 You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and
@@ -245,6 +246,41 @@ tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial")
+tmle_fit
+#>  Additive Effect
+#>    Parameter Estimate:  0.14389
+#>    Estimated Variance:  0.0048764
+#>               p-value:  0.039348
+#>     95% Conf Interval: (0.0070199, 0.28076) 
+#> 
+#>  Additive Effect among the Treated
+#>    Parameter Estimate:  0.14419
+#>    Estimated Variance:  0.0048673
+#>               p-value:  0.038752
+#>     95% Conf Interval: (0.0074516, 0.28093) 
+#> 
+#>  Additive Effect among the Controls
+#>    Parameter Estimate:  0.14318
+#>    Estimated Variance:  0.0048874
+#>               p-value:  0.040552
+#>     95% Conf Interval: (0.0061575, 0.2802) 
+#> 
+#>  Relative Risk
+#>    Parameter Estimate:  1.2696
+#>               p-value:  0.039067
+#>     95% Conf Interval: (1.012, 1.5927) 
+#> 
+#>               log(RR):  0.23871
+#>     variance(log(RR)):  0.013383 
+#> 
+#>  Odds Ratio
+#>    Parameter Estimate:  1.8362
+#>               p-value:  0.045369
+#>     95% Conf Interval: (1.0126, 3.3297) 
+#> 
+#>               log(OR):  0.6077
+#>     variance(log(OR)):  0.092213
+#extract fitted tmle object to AIPW
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)
