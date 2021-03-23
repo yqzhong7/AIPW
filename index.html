@@ -126,7 +126,7 @@
 <h3 class="hasAnchor">
 <a href="#setup-example-data-1" class="anchor"></a><a id="data"></a>Setup example data</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">888</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"eager_sim_obs"</span><span class="op">)</span>
 <span class="va">outcome</span> <span class="op">&lt;-</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span>
 <span class="va">exposure</span> <span class="op">&lt;-</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>
@@ -163,12 +163,12 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">AIPW_SL</span><span class="op">$</span><span class="va">result</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;                  Estimate    SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk of exposure     0.68 0.053  0.5714    0.78  78</span>
-<span class="co">#&gt; Risk of control      0.54 0.047  0.4536    0.64 122</span>
-<span class="co">#&gt; Risk Difference      0.13 0.071 -0.0081    0.27 200</span>
-<span class="co">#&gt; Risk Ratio           1.24 0.117  0.9860    1.56 200</span>
-<span class="co">#&gt; Odds Ratio           1.74 0.310  0.9494    3.20 200</span></code></pre></div>
-<p>To obtain average treatment effect among the treated (ATT), <code>statified_fit()</code> must be used:</p>
+<span class="co">#&gt; Risk of exposure     0.68 0.053  0.5765    0.78  78</span>
+<span class="co">#&gt; Risk of control      0.54 0.046  0.4458    0.63 122</span>
+<span class="co">#&gt; Risk Difference      0.14 0.070  0.0059    0.28 200</span>
+<span class="co">#&gt; Risk Ratio           1.27 0.116  1.0099    1.59 200</span>
+<span class="co">#&gt; Odds Ratio           1.84 0.307  1.0084    3.36 200</span></code></pre></div>
+<p>To obtain average treatment effect among the treated/controls (ATT/ATC), <code>statified_fit()</code> must be used:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">AIPW_SL_att</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,
                     A <span class="op">=</span> <span class="va">exposure</span>,
@@ -181,13 +181,14 @@
   <span class="va">AIPW_SL_att</span><span class="op">$</span><span class="fu">stratified_fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="co">#&gt; Done!</span>
-<span class="co">#&gt;                     Estimate     SE 95% LCL 95% UCL   N</span>
-<span class="co">#&gt; Risk of exposure       0.730 0.0539  0.6240   0.835  78</span>
-<span class="co">#&gt; Risk of control        0.558 0.0502  0.4600   0.657 122</span>
-<span class="co">#&gt; Risk Difference        0.171 0.0733  0.0276   0.315 200</span>
-<span class="co">#&gt; Risk Ratio             1.307 0.1152  1.0426   1.638 200</span>
-<span class="co">#&gt; Odds Ratio             2.134 0.3373  1.1018   4.133 200</span>
-<span class="co">#&gt; ATT Risk Difference    0.103 0.0672 -0.0285   0.235 200</span></code></pre></div>
+<span class="co">#&gt;                     Estimate     SE  95% LCL 95% UCL   N</span>
+<span class="co">#&gt; Risk of exposure       0.672 0.0555  0.56310   0.781  78</span>
+<span class="co">#&gt; Risk of control        0.546 0.0462  0.45537   0.637 122</span>
+<span class="co">#&gt; Risk Difference        0.126 0.0724 -0.01581   0.268 200</span>
+<span class="co">#&gt; Risk Ratio             1.231 0.1187  0.97537   1.553 200</span>
+<span class="co">#&gt; Odds Ratio             1.704 0.3144  0.91994   3.155 200</span>
+<span class="co">#&gt; ATT Risk Difference    0.125 0.0624  0.00262   0.247 200</span>
+<span class="co">#&gt; ATC Risk Difference    0.121 0.1058 -0.08662   0.328 200</span></code></pre></div>
 <p>You can also use the <code><a href="reference/aipw_wrapper.html">aipw_wrapper()</a></code> to wrap <code>new()</code>, <code><a href="reference/fit.html">fit()</a></code> and <code><a href="reference/summary.html">summary()</a></code> together (also support method chaining):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/aipw_wrapper.html">aipw_wrapper</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,
@@ -283,6 +284,41 @@
                  Q.SL.library<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
                  g.SL.library<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,
                  family<span class="op">=</span><span class="st">"binomial"</span><span class="op">)</span>
+<span class="va">tmle_fit</span>
+<span class="co">#&gt;  Additive Effect</span>
+<span class="co">#&gt;    Parameter Estimate:  0.14389</span>
+<span class="co">#&gt;    Estimated Variance:  0.0048764</span>
+<span class="co">#&gt;               p-value:  0.039348</span>
+<span class="co">#&gt;     95% Conf Interval: (0.0070199, 0.28076) </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Additive Effect among the Treated</span>
+<span class="co">#&gt;    Parameter Estimate:  0.14419</span>
+<span class="co">#&gt;    Estimated Variance:  0.0048673</span>
+<span class="co">#&gt;               p-value:  0.038752</span>
+<span class="co">#&gt;     95% Conf Interval: (0.0074516, 0.28093) </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Additive Effect among the Controls</span>
+<span class="co">#&gt;    Parameter Estimate:  0.14318</span>
+<span class="co">#&gt;    Estimated Variance:  0.0048874</span>
+<span class="co">#&gt;               p-value:  0.040552</span>
+<span class="co">#&gt;     95% Conf Interval: (0.0061575, 0.2802) </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Relative Risk</span>
+<span class="co">#&gt;    Parameter Estimate:  1.2696</span>
+<span class="co">#&gt;               p-value:  0.039067</span>
+<span class="co">#&gt;     95% Conf Interval: (1.012, 1.5927) </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;               log(RR):  0.23871</span>
+<span class="co">#&gt;     variance(log(RR)):  0.013383 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Odds Ratio</span>
+<span class="co">#&gt;    Parameter Estimate:  1.8362</span>
+<span class="co">#&gt;               p-value:  0.045369</span>
+<span class="co">#&gt;     95% Conf Interval: (1.0126, 3.3297) </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;               log(OR):  0.6077</span>
+<span class="co">#&gt;     variance(log(OR)):  0.092213</span>
+<span class="co">#extract fitted tmle object to AIPW</span>
 <span class="va"><a href="reference/AIPW_tmle.html">AIPW_tmle</a></span><span class="op">$</span>
   <span class="fu">new</span><span class="op">(</span>A<span class="op">=</span><span class="va">exposure</span>,Y<span class="op">=</span><span class="va">outcome</span>,tmle_fit <span class="op">=</span> <span class="va">tmle_fit</span>,verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">summary</span><span class="op">(</span>g.bound<span class="op">=</span><span class="fl">0.025</span><span class="op">)</span>

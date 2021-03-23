@@ -257,12 +257,12 @@ Metalearner is required to combine the estimates from stacklearner!</li>
 <code class="sourceCode R"><span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="AIPW_files/figure-html/ps_trunc-2.png" width="576"></p>
 </div>
-<div id="calculate-average-treatment-effects-among-the-treated" class="section level4">
+<div id="calculate-average-treatment-effects-among-the-treatedcontrols" class="section level4">
 <h4 class="hasAnchor">
-<a href="#calculate-average-treatment-effects-among-the-treated" class="anchor"></a>4. <a id="att"></a>Calculate average treatment effects among the treated</h4>
+<a href="#calculate-average-treatment-effects-among-the-treatedcontrols" class="anchor"></a>4. <a id="att"></a>Calculate average treatment effects among the treated/controls</h4>
 <ul>
-<li><h5 id="stratified_fit-fits-the-outcome-model-by-exposure-status-while-fit-does-not.-hence-stratified_fit-must-be-used-to-compute-att-kennedy-et-al.-2015">
-<code>stratified_fit()</code> fits the outcome model by exposure status while <code>fit()</code> does not. Hence, <code>stratified_fit()</code> must be used to compute ATT <a href="http://www.ehkennedy.com/uploads/5/8/4/5/58450265/2015_kennedy_et_al_-_semiparametric_causal_inference_in_matched_cohort_studies.pdf">(Kennedy et al. 2015)</a>
+<li><h5 id="stratified_fit-fits-the-outcome-model-by-exposure-status-while-fit-does-not.-hence-stratified_fit-must-be-used-to-compute-attatc-kennedy-et-al.-2015">
+<code>stratified_fit()</code> fits the outcome model by exposure status while <code>fit()</code> does not. Hence, <code>stratified_fit()</code> must be used to compute ATT/ATC <a href="http://www.ehkennedy.com/uploads/5/8/4/5/58450265/2015_kennedy_et_al_-_semiparametric_causal_inference_in_matched_cohort_studies.pdf">(Kennedy et al. 2015)</a>
 </h5></li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
