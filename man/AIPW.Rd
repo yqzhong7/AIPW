@@ -16,8 +16,8 @@ libraries in \code{Q.SL.library} and \code{g.SL.library} with \code{k_split} cro
 After using \code{fit()} and/or \code{summary()} methods, propensity scores  and inverse probability weights by exposure status can be
 examined with \code{plot.p_score()} and \code{plot.ip_weights()}, respectively.
 
-If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores with I(A=a, observed=1).
-Missing exposure is not supported.
+If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores of I(A=a, observed=1) with all covariates \code{W}.
+(\code{W.Q} and \code{W.g} are disabled.) Missing exposure is not supported.
 
 See examples for illustration.
 }

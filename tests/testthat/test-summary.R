@@ -151,7 +151,7 @@ test_that("Testing summary: g.bound input", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2021/01/26
+#' 2021/03/24
 test_that("AIPW summary: continuous outcome", {
   require(SuperLearner)
   ##k_split == 1: no cross-fitting
@@ -160,8 +160,7 @@ test_that("AIPW summary: continuous outcome", {
   ##verbose==False
   aipw <-  AIPW$new(Y=rnorm(100,10),
                     A=vec(),
-                    W.Q =vec(),
-                    W.g =vec(),
+                    W =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)$fit()$summary()
@@ -174,7 +173,7 @@ test_that("AIPW summary: continuous outcome", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2021/01/27
+#' 2021/03/24
 test_that("AIPW summary: missing outcome", {
   require(SuperLearner)
   ##k_split == 1: no cross-fitting
@@ -183,8 +182,7 @@ test_that("AIPW summary: missing outcome", {
   ##verbose==False
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                     A=c(1,vec()[2:100]),
-                    W.Q =vec(),
-                    W.g =vec(),
+                    W =vec(),
                     Q.SL.library=sl.lib,
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)$fit()$summary())

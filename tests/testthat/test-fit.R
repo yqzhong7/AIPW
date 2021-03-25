@@ -130,7 +130,7 @@ test_that("AIPW fit: verbose", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2021/01/27
+#' 2021/03/24
 test_that("AIPW fit: missing outcome", {
   require(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
@@ -138,8 +138,7 @@ test_that("AIPW fit: missing outcome", {
   ##k_split == 1: no cross-fitting
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                                    A=c(1,vec()[2:100]),
-                                   W.Q =vec(),
-                                   W.g =vec(),
+                                   W =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
                                    k_split = 1,verbose = FALSE)$fit())
@@ -152,8 +151,7 @@ test_that("AIPW fit: missing outcome", {
   ##k_split == 2: 2 fold cross-fitting
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                                    A=c(1,vec()[2:100]),
-                                   W.Q =vec(),
-                                   W.g =vec(),
+                                   W =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
                                    k_split = 2,verbose = FALSE)$fit())
@@ -166,8 +164,7 @@ test_that("AIPW fit: missing outcome", {
   ##k_split == 3: 3 fold cross-fitting
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                                    A=c(1,vec()[2:100]),
-                                   W.Q =vec(),
-                                   W.g =vec(),
+                                   W =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
                                    k_split = 3,verbose = FALSE)$fit())

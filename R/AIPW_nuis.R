@@ -5,7 +5,7 @@
 #' @details Create an AIPW_nuis object that uses users' input nuisance functions from the exposure model \eqn{P(A| W)},
 #'  and the outcome models \eqn{P(Y| do(A=0), W)} and \eqn{P(Y| do(A=1), W.Q)}:
 #'      \deqn{
-#'      \psi(a) = E{[ I(A=a) / P(A=a|W_g) ] * [Y-P(Y=1|A,W_Q)] + P(Y=1| do(A=a),W_Q) }
+#'      \psi(a) = E{[ I(A=a) / P(A=a|W) ] * [Y-P(Y=1|A,W)] + P(Y=1| do(A=a),W) }
 #'      }
 #'  Note: If outcome is missing, replace (A=a) with (A=a, observed=1) when estimating the propensity scores.
 #'

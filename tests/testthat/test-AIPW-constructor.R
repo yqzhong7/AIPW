@@ -266,7 +266,7 @@ test_that("AIPW constructor: verbose", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2021/01/26
+#' 2021/03/24
 test_that("AIPW constructor: input data dimension", {
   vec <- rep(1,100)
   vec_na <- c(NA,vec[2:100])
@@ -280,11 +280,19 @@ test_that("AIPW constructor: input data dimension", {
                                    g.SL.library=sl.lib,
                                    k_split = 1,verbose = FALSE),
                  info = "Missing exposure is not allowed.")
-  #missing outcome
+  #missing outcome w/ W.Q and W.g specified
+  expect_error(suppressWarnings({aipw <-  AIPW$new(Y=vec_na,
+                                   A=vec,
+                                   W.Q =vec,
+                                   W.g =vec,
+                                   Q.SL.library=sl.lib,
+                                   g.SL.library=sl.lib,
+                                   k_split = 1,verbose = FALSE)}),
+                 info = "`W.Q` and `W.g` are disabled when missing outcome is detected. Please provide covariates in `W`")
+  #missing outcome working
   expect_warning(aipw <-  AIPW$new(Y=vec_na,
                                  A=vec,
-                                 W.Q =vec,
-                                 W.g =vec,
+                                 W =vec,
                                  Q.SL.library=sl.lib,
                                  g.SL.library=sl.lib,
                                  k_split = 1,verbose = FALSE),

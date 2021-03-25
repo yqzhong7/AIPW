@@ -8,8 +8,8 @@
 #' After using `fit()` and/or `summary()` methods, propensity scores  and inverse probability weights by exposure status can be
 #' examined with `plot.p_score()` and `plot.ip_weights()`, respectively.
 #'
-#' If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores with I(A=a, observed=1).
-#' Missing exposure is not supported.
+#' If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores of I(A=a, observed=1) with all covariates `W`.
+#' (`W.Q` and `W.g` are disabled.) Missing exposure is not supported.
 #'
 #' See examples for illustration.
 #'
@@ -132,7 +132,7 @@ AIPW <- R6::R6Class(
       #-----initialize from AIPW_base class-----#
       super$initialize(Y=Y,A=A,verbose=verbose)
       #decide covariate set(s): W.Q and W.g only works when W is null.
-      if (is.null(W)){
+      if (is.null(W) & private$Y.missing==FALSE){
         if (any(is.null(W.Q),is.null(W.g))) {
           stop("Insufficient covariate sets were provided.")
         } else{
@@ -141,6 +141,8 @@ AIPW <- R6::R6Class(
             }, error = function(e) stop('Covariates dimension error: nrow(W.Q) != length(A)'))
           private$g.set=W.g
         }
+      } else if (is.null(W) & private$Y.missing==TRUE){
+        stop("`W.Q` and `W.g` are disabled when missing outcome is detected. Please provide covariates in `W`")
       } else{
         tryCatch({
           private$Q.set=cbind(A, W)

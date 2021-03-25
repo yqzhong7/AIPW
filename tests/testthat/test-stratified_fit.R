@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2021/01/25
+#' 2021/03/10
 test_that("AIPW stratified_fit: SuperLeaner & k_split", {
   require(SuperLearner)
   ##k_split == 1: no cross-fitting
@@ -54,7 +54,7 @@ test_that("AIPW stratified_fit: SuperLeaner & k_split", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/08/09
+#' 2021/03/10
 test_that("AIPW stratified_fit: sl3 & k_split", {
   require(sl3)
   ##k_split == 1: no cross-fitting
@@ -101,7 +101,7 @@ test_that("AIPW stratified_fit: sl3 & k_split", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2021/01/20
+#' 2021/03/10
 test_that("AIPW stratified_fit: verbose", {
   #verbose == TRUE: "Done!"
   library(SuperLearner)
@@ -127,7 +127,7 @@ test_that("AIPW stratified_fit: verbose", {
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2021/01/27
+#' 2021/03/24
 test_that("AIPW stratified_fit: missing outcome", {
   require(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
@@ -135,8 +135,7 @@ test_that("AIPW stratified_fit: missing outcome", {
   ##k_split == 1: no cross-fitting
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                                    A=c(1,vec()[2:100]),
-                                   W.Q =vec(),
-                                   W.g =vec(),
+                                   W =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
                                    k_split = 1,verbose = FALSE)$stratified_fit())
@@ -149,8 +148,7 @@ test_that("AIPW stratified_fit: missing outcome", {
   ##k_split == 2: 2 fold cross-fitting
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                                    A=c(1,vec()[2:100]),
-                                   W.Q =vec(),
-                                   W.g =vec(),
+                                   W =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
                                    k_split = 2,verbose = FALSE)$stratified_fit())
@@ -163,8 +161,7 @@ test_that("AIPW stratified_fit: missing outcome", {
   ##k_split == 3: 3 fold cross-fitting
   expect_warning(aipw <-  AIPW$new(Y=c(NA,vec()[2:100]),
                                    A=c(1,vec()[2:100]),
-                                   W.Q =vec(),
-                                   W.g =vec(),
+                                   W =vec(),
                                    Q.SL.library=sl.lib,
                                    g.SL.library=sl.lib,
                                    k_split = 3,verbose = FALSE)$stratified_fit())
