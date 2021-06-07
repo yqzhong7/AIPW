@@ -34,6 +34,16 @@ user-defined stacked machine learning algorithms
 or [sl3](https://tlverse.org/sl3/index.html)). Users need to examine
 causal assumptions (e.g., consistency) before using this package.
 
+If you find this package is helpful, please consider to cite:
+
+    @article{zhong_aipw_2021,
+      author = "Zhong, Y., Kennedy, E.H., Bodnar, L.M., Naimi, A.I. ",
+      title = "AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects",
+      year = {2021},
+      note = "In Press",
+      journal = "American Journal of Epidemiology"
+    }
+
 ------------------------------------------------------------------------
 
 ## Contents:
