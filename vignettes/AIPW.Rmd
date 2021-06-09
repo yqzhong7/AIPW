@@ -159,11 +159,11 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
 
 
 
-## <a id="tmle_input"></a>Use `tmle`/`tmle3` fitted object as input
+## <a id="tmle_input"></a>Use `tmle` fitted object as input
 
-AIPW shares similar intermediate estimates (nuisance functions) with the Targeted Maximum Likelihood / Minimum Loss-Based Estimation (TMLE). Therefore, `AIPW_tmle` class is designed for using `tmle`/`tmle3` fitted object as input. Details about these two packages can be found [here](https://www.jstatsoft.org/article/view/v051i13) and [here](https://tlverse.org/tlverse-handbook/). This feature is designed for debugging and easy comparisons across these three packages because cross-fitting procedures are different in `tmle` and `tmle3`. In addition, this feature does not support ATT outputs.
+AIPW shares similar intermediate estimates (nuisance functions) with the Targeted Maximum Likelihood / Minimum Loss-Based Estimation (TMLE). Therefore, `AIPW_tmle` class is designed for using `tmle` fitted object as input. Details about these two packages can be found [here](https://www.jstatsoft.org/article/view/v051i13) and [here](https://tlverse.org/tlverse-handbook/). This feature is designed for debugging and easy comparisons across these three packages because cross-fitting procedures are different in `tmle`. In addition, this feature does not support ATT outputs.
 
-#### 1. <a id="tmle"></a>`tmle`
+#### <a id="tmle"></a>`tmle`
 
 As shown in the message, [tmle](https://CRAN.R-project.org/package=tmle) only support cross-fitting in the outcome model. 
 

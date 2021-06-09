@@ -233,12 +233,11 @@ with_progress(
 )
 ```
 
-## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input (`AIPW_tmle` class)
+## <a id="tmle"></a>Use `tmle` fitted object as input (`AIPW_tmle` class)
 
-`AIPW_tmle` class is designed for using `tmle`/`tmle3` fitted object as
-input
+`AIPW_tmle` class is designed for using `tmle` fitted object as input
 
-#### 1. `tmle`
+#### `tmle`
 
 ``` r
 require(tmle)
@@ -299,26 +298,6 @@ AIPW_tmle$
 #> Risk Difference     0.144 0.0698 0.00702   0.281 200
 #> Risk Ratio          1.270 0.1157 1.01198   1.593 200
 #> Odds Ratio          1.836 0.3037 1.01244   3.330 200
-```
-
-#### 2. `tmle3`
-
-``` r
-library(sl3)
-library(tmle3)
-node_list <- list(A = "sim_A",Y = "sim_Y",W = colnames(eager_sim_obs)[-1:-2])
-or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
-tmle_task <- or_spec$make_tmle_task(eager_sim_obs,node_list)
-lrnr_glm <- make_learner(Lrnr_glm)
-lrnr_mean <- make_learner(Lrnr_mean)
-sl <- Lrnr_sl$new(learners = list(lrnr_glm,lrnr_mean))
-learner_list <- list(A = sl, Y = sl)
-tmle3_fit <- tmle3(or_spec, data=eager_sim_obs, node_list, learner_list)
-
-# parse tmle3_fit into AIPW_tmle class
-AIPW_tmle$
-  new(A=eager_sim_obs$sim_A,Y=eager_sim_obs$sim_Y,tmle_fit = tmle3_fit,verbose = TRUE)$
-  summary()
 ```
 
 ------------------------------------------------------------------------

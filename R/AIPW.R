@@ -64,8 +64,8 @@
 #'  \code{result}         \tab   `summary()`                \tab     A matrix contains RD, ATT, ATC, RR and OR with their SE and 95%CI \cr
 #'  \code{g.plot}         \tab   `plot.p_score()`           \tab     A density plot of propensity scores by exposure status\cr
 #'  \code{ip_weights.plot}         \tab   `plot.ip_weights()`           \tab     A box plot of inverse probability weights \cr
-#'  \code{libs}           \tab   `fit()`                    \tab     [SuperLearner] or sl3 libraries and their fitted objects \cr
-#'  \code{sl.fit}         \tab   Constructor                \tab     A wrapper function for fitting [SuperLearner] or sl3 \cr
+#'  \code{libs}           \tab   `fit()`                    \tab     [SuperLearner] libraries and their fitted objects \cr
+#'  \code{sl.fit}         \tab   Constructor                \tab     A wrapper function for fitting [SuperLearner] \cr
 #'  \code{sl.predict}     \tab   Constructor                \tab     A wrapper function using \code{sl.fit} to predict \cr
 #'  }
 #'
@@ -214,7 +214,7 @@ AIPW <- R6::R6Class(
         stop("`verbose` is not valid")
       }
       #check if SuperLearner and/or sl3 library is loaded
-      if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner","sl3"))){
+      if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner"))){
         warning("`SuperLearner` package is not loaded.")
       }
       #-------check if future.apply is loaded otherwise lapply would be used.------#
