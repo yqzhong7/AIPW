@@ -29,6 +29,7 @@ Contents:
   * [Parallelization](#par)
   * [Using tmle/tmle3 as input](#tmle_input)
     + [tmle](#tmle)
+    + [tmle3](#tmle3)
 
 
 ## <a id="Installation"></a>Installation
@@ -99,6 +100,32 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
                     g.SL.library = sl.lib,
                     k_split = 10,
                     verbose=FALSE)
+```
+
+  * ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries 
+Metalearner is required to combine the estimates from stacklearner!
+```{r sl3, eval=F}
+library(AIPW)
+library(sl3)
+
+##construct sl3 learners for outcome (Q) and exposure models (g)
+lrnr_glm <- Lrnr_glm$new()
+lrnr_mean <- Lrnr_mean$new()
+#stacking two learner (this will yield estimates for each learner)
+stacklearner <- Stack$new(lrnr_glm, lrnr_mean) 
+#metalearner is required to combine the estimates from stacklearner
+metalearner <- Lrnr_nnls$new()
+sl3.lib <- Lrnr_sl$new(learners = stacklearner,
+                       metalearner = metalearner)
+
+#construct an aipw object for later estimations 
+AIPW_sl3 <- AIPW$new(Y= eager_sim_obs$sim_Y,
+                     A= eager_sim_obs$sim_A,
+                     W= subset(eager_sim_obs,select=cov), 
+                     Q.SL.library = sl3.lib,
+                     g.SL.library = sl3.lib,
+                     k_split = 10,
+                     verbose=FALSE)
 ```
 
 If outcome is missing, analysis assumes missing at random (MAR) by estimating propensity scores with I(A=a, observed=1). Missing exposure is not supported.
@@ -190,3 +217,35 @@ a_tmle <- AIPW_tmle$
   new(A=eager_sim_obs$sim_A,Y=eager_sim_obs$sim_Y,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)
 ```
+
+#### 2. <a id="tmle3"></a> `tmle3`
+
+Notably, [tmle3](https://github.com/tlverse/tmle3) conducts cross-fitting and propensity truncation (0.025) by default.
+
+```{r tmle3, eval=F}
+# remotes::install_github("tlverse/tmle3")
+library(tmle3,quietly = TRUE)
+library(sl3,quietly = TRUE)
+
+node_list <- list(A = "sim_A",Y = "sim_Y",W = colnames(eager_sim_obs)[-1:-2])
+or_spec <- tmle_OR(baseline_level = "0",contrast_level = "1")
+tmle_task <- or_spec$make_tmle_task(eager_sim_obs,node_list)
+lrnr_glm <- make_learner(Lrnr_glm)
+lrnr_mean <- make_learner(Lrnr_mean)
+sl <- Lrnr_sl$new(learners = list(lrnr_glm,lrnr_mean))
+learner_list <- list(A = sl, Y = sl)
+tmle3_fit <- tmle3(or_spec, data=eager_sim_obs, node_list, learner_list)
+
+cat("\nEstimates from TMLE\n")
+tmle3_fit$summary
+
+# parse tmle3_fit into AIPW_tmle class
+cat("\nEstimates from AIPW\n")
+a_tmle3<- AIPW_tmle$
+  new(A=eager_sim_obs$sim_A,Y=eager_sim_obs$sim_Y,tmle_fit = tmle3_fit,verbose = TRUE)$
+  summary(g.bound=0)
+```
+
+
+
+

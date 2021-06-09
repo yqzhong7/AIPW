@@ -12,8 +12,8 @@
 #' Covariates for outcome model (vector, matrix or data.frame).
 #' @param W.g Only valid when `W` is null, otherwise it would be replaced by `W`.
 #' Covariates for exposure model (vector, matrix or data.frame)
-#' @param Q.SL.library SuperLearner libraries for outcome model
-#' @param g.SL.library SuperLearner libraries for exposure model
+#' @param Q.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model
+#' @param g.SL.library SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model
 #' @param k_split Number of splitting (integer; range: from 1 to number of observation-1):
 #'   if k_split=1, no cross-fitting;
 #'   if k_split>=2, cross-fitting is used
