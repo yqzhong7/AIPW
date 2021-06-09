@@ -1,5 +1,5 @@
 Package: AIPW
-Title: Augmented Inverse Probability Weighted (AIPW) Estimation for Average Causal Effects
+Title: Augmented Inverse Probability Weighting (AIPW) for binary exposure
 Version: 0.6.3.1
 Authors@R: 
     c(person(given = "Yongqi",
