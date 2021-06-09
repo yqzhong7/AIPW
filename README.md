@@ -6,8 +6,6 @@ AIPW: Augmented Inverse Probability Weighting
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
 [![Travis build
@@ -30,9 +28,9 @@ estimator for causal inference. The `AIPW` package is designed for
 estimating the average treatment effect of a binary exposure on risk
 difference (RD), risk ratio (RR) and odds ratio (OR) scales with
 user-defined stacked machine learning algorithms
-([SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html)
-or [sl3](https://tlverse.org/sl3/index.html)). Users need to examine
-causal assumptions (e.g., consistency) before using this package.
+([SuperLearner](https://CRAN.R-project.org/package=SuperLearner) or
+[sl3](https://tlverse.org/sl3/index.html)). Users need to examine causal
+assumptions (e.g., consistency) before using this package.
 
 If you find this package is helpful, please consider to cite:
 
