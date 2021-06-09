@@ -83,7 +83,7 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
 
 #### 1. <a id="constructor"></a>Create an AIPW object 
 
-  * ##### Use [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/index.html) libraries
+  * ##### Use [SuperLearner](https://CRAN.R-project.org/package=SuperLearner) libraries
 ```{r SuperLearner, message=FALSE,eval=F}
 library(AIPW)
 library(SuperLearner)
@@ -165,7 +165,7 @@ AIPW shares similar intermediate estimates (nuisance functions) with the Targete
 
 #### 1. <a id="tmle"></a>`tmle`
 
-As shown in the message, [tmle](https://cran.r-project.org/web/packages/tmle/index.html) only support cross-fitting in the outcome model. 
+As shown in the message, [tmle](https://CRAN.R-project.org/package=tmle) only support cross-fitting in the outcome model. 
 
 ```{r tmle, eval=F}
 # install.packages("tmle")
