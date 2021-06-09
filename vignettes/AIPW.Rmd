@@ -38,6 +38,7 @@ Contents:
 install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
+__* CRAN version only supports SuperLearner and tmle. Please install the Github version (master branch) to use sl3 and tmle3.__
 
 2. Install [SuperLearner](https://CRAN.R-project.org/package=SuperLearner) or [sl3](https://tlverse.org/sl3/articles/intro_sl3.html)
 

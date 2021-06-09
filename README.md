@@ -42,6 +42,9 @@ If you find this package is helpful, please consider to cite:
       journal = "American Journal of Epidemiology"
     }
 
+**\* CRAN version only supports SuperLearner and tmle. Please install
+the Github version (master branch) to use sl3 and tmle3.**
+
 ------------------------------------------------------------------------
 
 ## Contents:
