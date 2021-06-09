@@ -1,5 +1,5 @@
 Package: AIPW
-Title: Augmented Inverse Probability Weighting (AIPW) for binary exposure
+Title: Augmented Inverse Probability Weighted (AIPW) Estimation for Average Causal Effects
 Version: 0.6.3.1
 Authors@R: 
     c(person(given = "Yongqi",
@@ -20,6 +20,7 @@ Authors@R:
              family = "Kennedy",
              role = c("ctb"),
              email = "edward@stat.cmu.edu"))
+Maintainer: Yongqi Zhong <yq.zhong7@gmail.com>
 Description: Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. This pacakge implements the AIPW estimator for an binary exposure with user-defined stacked machine learning algorithms.  
 License: GPL-3
 Encoding: UTF-8

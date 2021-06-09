@@ -1,0 +1,15 @@
+citHeader("To cite AIPW in publications use:")
+
+citEntry(entry = "Article",
+  title        = "AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects",
+  author       = personList(as.person("Yongqi Zhong"),
+                   person("Edward H. Kennedy"),
+                   person("Lisa M. Bodnar"),
+                   person("Ashley I. Naimi")),
+  journal      = "American Journal of Epidemiology",
+  year         = "2021",
+  note          = "In Press",
+  textVersion  = paste("Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021, In Press).",
+  "AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects.",
+  "American Journal of Epidemiology")
+)
