@@ -50,7 +50,7 @@ If you find this package is helpful, please consider to cite:
     + ###### [Setup example data](#data)
     + ###### [One line version](#one_line)
   * ##### [Parallelization and progress bar](#par) 
-  * ##### [Use tmle/tmle3 as input](#tmle)
+  * ##### [Use tmle as input](#tmle)
   * ##### [References](#ref)
 
 
