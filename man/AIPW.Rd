@@ -45,7 +45,7 @@ See examples for illustration.
 
 \describe{
 \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if \code{W == NULL}, \code{W} would be replaced by \code{W.Q} and \code{W.g}. }
-\item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from \link{SuperLearner} libraries}
+\item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from \link{SuperLearner} libraries or \code{sl3} learner object (Lrnr_base)}
 \item{\code{k_split}}{It ranges from 1 to number of observation-1.
 If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
 (e.g., \code{k_split=10}, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).

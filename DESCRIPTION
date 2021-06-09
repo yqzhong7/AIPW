@@ -1,5 +1,5 @@
 Package: AIPW
-Title: Augmented Inverse Probability Weighted (AIPW) Estimation for Average Causal Effects
+Title: Augmented Inverse Probability Weighting (AIPW) for binary exposure
 Version: 0.6.3.1
 Authors@R: 
     c(person(given = "Yongqi",
@@ -20,8 +20,7 @@ Authors@R:
              family = "Kennedy",
              role = c("ctb"),
              email = "edward@stat.cmu.edu"))
-Maintainer: Yongqi Zhong <yq.zhong7@gmail.com>
-Description: Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. This pacakge implements the AIPW estimator for an binary exposure with user-defined stacked machine learning algorithms. To cite AIPW package, please use: Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021, In Press). AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects. American Journal of Epidemiology
+Description: Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. This pacakge implements the AIPW estimator for an binary exposure with user-defined stacked machine learning algorithms.  
 License: GPL-3
 Encoding: UTF-8
 Language: es
@@ -32,17 +31,22 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    tmle
+    tmle,
+    tmle3
 RoxygenNote: 7.1.0
 Imports: 
     stats,
     utils,
     R6,
     SuperLearner,
+    sl3,
     ggplot2,
     future.apply,
     progressr,
     Rsolnp
+Remotes: 
+    github::tlverse/sl3,
+    github::tlverse/tmle3
 URL: https://github.com/yqzhong7/AIPW
 BugReports: https://github.com/yqzhong7/AIPW/issues
 VignetteBuilder: knitr

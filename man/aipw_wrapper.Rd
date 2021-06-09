@@ -34,9 +34,9 @@ Covariates for outcome model (vector, matrix or data.frame).}
 \item{W.g}{Only valid when \code{W} is null, otherwise it would be replaced by \code{W}.
 Covariates for exposure model (vector, matrix or data.frame)}
 
-\item{Q.SL.library}{SuperLearner libraries for outcome model}
+\item{Q.SL.library}{SuperLearner libraries or sl3 learner object (Lrnr_base) for outcome model}
 
-\item{g.SL.library}{SuperLearner libraries for exposure model}
+\item{g.SL.library}{SuperLearner libraries or sl3 learner object (Lrnr_base) for exposure model}
 
 \item{k_split}{Number of splitting (integer; range: from 1 to number of observation-1):
 if k_split=1, no cross-fitting;
