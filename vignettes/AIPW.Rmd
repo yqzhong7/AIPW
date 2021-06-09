@@ -39,7 +39,7 @@ install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
-2. Install [SuperLearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html) or [sl3](https://tlverse.org/sl3/articles/intro_sl3.html)
+2. Install [SuperLearner](https://CRAN.R-project.org/package=SuperLearner) or [sl3](https://tlverse.org/sl3/articles/intro_sl3.html)
 
 ```{r, eval = FALSE}
 #SuperLearner
