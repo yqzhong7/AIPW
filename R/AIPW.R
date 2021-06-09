@@ -34,7 +34,7 @@
 #' ## Constructor Argument Details
 #' \describe{
 #'   \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if `W == NULL`, `W` would be replaced by `W.Q` and `W.g`. }
-#'   \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from [SuperLearner] libraries or `sl3` learner object (Lrnr_base)}
+#'   \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from [SuperLearner] libraries}
 #'   \item{\code{k_split}}{It ranges from 1 to number of observation-1.
 #'                         If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
 #'                         (e.g., `k_split=10`, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
@@ -195,29 +195,8 @@ AIPW <- R6::R6Class(
         } else{
           stop("Input Q.SL.library and/or g.SL.library is not a valid SuperLearner library")
         }
-      } else if (any(class(Q.SL.library) == "Lrnr_base") & any(class(g.SL.library) == "Lrnr_base")) {
-        #only using Stack in sl3 will return estimates of each library separately
-        if (any(class(Q.SL.library) == "Stack") & any(class(g.SL.library) == "Stack")){
-          warning("Only using sl3::Stack may cause problem. Please consider using metalearners for the stacked libraries!")
-        } else {
-          #change wrapper functions
-          self$sl.fit = function(X, Y, SL.library, CV){
-            dat <- data.frame(cbind(Y,X))
-            dat_colnames <- colnames(dat)
-            task <- sl3::sl3_Task$new(dat, covariates = colnames(dat)[-1],
-                                      outcome = colnames(dat)[1], outcome_type = "binomial"
-            )
-            fit <- SL.library$train(task)
-            return(fit)
-          }
-          self$sl.predict = function(fit, newdata){
-            new_task <- sl3::sl3_Task$new(newdata, covariates = colnames(newdata))
-            pred <- fit$predict(new_task)
-            return(pred)
-          }
-        }
-      } else {
-        stop("Input Q.SL.library and/or g.SL.library is not a valid SuperLearner/sl3 library")
+      }  else {
+        stop("Input Q.SL.library and/or g.SL.library is not a valid SuperLearner library")
       }
 
       #input sl libraries
@@ -236,7 +215,7 @@ AIPW <- R6::R6Class(
       }
       #check if SuperLearner and/or sl3 library is loaded
       if (!any(names(sessionInfo()$otherPkgs) %in% c("SuperLearner","sl3"))){
-        warning("Either `SuperLearner` or `sl3` package is not loaded.")
+        warning("`SuperLearner` package is not loaded.")
       }
       #-------check if future.apply is loaded otherwise lapply would be used.------#
       if (any(names(sessionInfo()$otherPkgs) %in% c("future.apply"))){
