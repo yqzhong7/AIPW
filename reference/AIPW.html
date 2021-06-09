@@ -186,7 +186,7 @@ examined with <code><a href='plot.p_score.html'>plot.p_score()</a></code> and <c
 
 <dl>
 <dt><code>W</code>, <code>W.Q</code> &amp; <code>W.g</code></dt><dd><p>It can be a vector, matrix or data.frame. If and only if <code>W == NULL</code>, <code>W</code> would be replaced by <code>W.Q</code> and <code>W.g</code>.</p></dd>
-<dt><code>Q.SL.library</code> &amp; <code>g.SL.library</code></dt><dd><p>Machine learning algorithms from <a href='https://rdrr.io/pkg/SuperLearner/man/SuperLearner.html'>SuperLearner</a> libraries</p></dd>
+<dt><code>Q.SL.library</code> &amp; <code>g.SL.library</code></dt><dd><p>Machine learning algorithms from <a href='https://rdrr.io/pkg/SuperLearner/man/SuperLearner.html'>SuperLearner</a> libraries or <code>sl3</code> learner object (Lrnr_base)</p></dd>
 <dt><code>k_split</code></dt><dd><p>It ranges from 1 to number of observation-1.
 If k_split=1, no cross-fitting; if k_split&gt;=2, cross-fitting is used
 (e.g., <code>k_split=10</code>, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
