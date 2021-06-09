@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   AIPW: AIPW.html
-last_built: 2021-06-09T03:27Z
+last_built: 2021-06-09T03:53Z
 urls:
   reference: https://yqzhong7.github.io/AIPW/reference
   article: https://yqzhong7.github.io/AIPW/articles
