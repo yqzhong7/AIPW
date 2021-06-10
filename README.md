@@ -35,11 +35,11 @@ assumptions (e.g., consistency) before using this package.
 If you find this package is helpful, please consider to cite:
 
     @article{zhong_aipw_2021,
-      author = "Zhong, Y., Kennedy, E.H., Bodnar, L.M., Naimi, A.I. ",
-      title = "AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects",
-      year = {2021},
-      note = "In Press",
-      journal = "American Journal of Epidemiology"
+        title = {AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects},
+        author = {{Yongqi Zhong} and {Edward H. Kennedy} and {Lisa M. Bodnar} and {Ashley I. Naimi}},
+        journal = {American Journal of Epidemiology},
+        year = {2021},
+        note = {In Press}
     }
 
 **\* CRAN version only supports SuperLearner and tmle. Please install
