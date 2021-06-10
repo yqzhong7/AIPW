@@ -351,14 +351,6 @@ AIPW_base <- R6::R6Class(
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
 #' @return `estimates` and `result` (public variables): Risks, Average treatment effect in RD, RR and OR.
-#'
-#' @examples
-#' library(SuperLearner)
-#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-#'                     k_split=1,verbose=FALSE)$fit()
-#' aipw_sl$summary(g.bound=0.025)
 NULL
 
 
@@ -375,18 +367,6 @@ NULL
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
 #' @return `g.plot` (public variable): A density plot of propensity scores by exposure status (`ggplot2::geom_density`)
-#'
-#' @examples
-#' library(SuperLearner)
-#' library(ggplot2)
-#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-#'                     k_split=1,verbose=FALSE)$fit()
-#' #before average treatment effect calculation
-#' aipw_sl$plot.p_score()
-#' #after calculation
-#' aipw_sl$summary(g.bound=0.025)$plot.p_score()
 NULL
 
 #' @name plot.ip_weights
@@ -401,14 +381,4 @@ NULL
 #' @seealso [AIPW] and [AIPW_tmle]
 #'
 #' @return `ip_weights.plot` (public variable): A box plot of inverse probability weights using truncated propensity scores by exposure status (`ggplot2::geom_boxplot`)
-#'
-#' @examples
-#' library(SuperLearner)
-#' library(ggplot2)
-#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-#'                     k_split=1,verbose=FALSE)$fit()
-#' #after average treatment effect calculation calculation
-#' aipw_sl$summary(g.bound=0.025)$plot.ip_weights()
 NULL

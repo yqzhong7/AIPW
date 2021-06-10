@@ -82,7 +82,7 @@
 #'
 #' @return \code{AIPW} object
 #'
-#'
+#' @references Zhong Y, Kennedy EH, Bodnar LM, Naimi AI (2021, In Press). AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects. \emph{American Journal of Epidemiology}.
 #' @references Robins JM, Rotnitzky A (1995). Semiparametric efficiency in multivariate regression models with missing data. \emph{Journal of the American Statistical Association}.
 #' @references Chernozhukov V, Chetverikov V, Demirer M, et al (2018). Double/debiased machine learning for treatment and structural parameters. \emph{The Econometrics Journal}.
 #' @references Kennedy EH, Sjolander A, Small DS (2015). Semiparametric causal inference in matched cohort studies. \emph{Biometrika}.
@@ -96,12 +96,13 @@
 #' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
 #'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
 #'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-#'                     k_split=1,verbose=FALSE)$fit()
+#'                     k_split=1,verbose=FALSE)
 #'
 #' #fit the object
 #' aipw_sl$fit()
+#' # or use `aipw_sl$stratified_fit()` to estimate ATE and ATT/ATC
 #'
-#' #calculate the retults
+#' #calculate the results
 #' aipw_sl$summary(g.bound = 0.025)
 #'
 #' #check the propensity scores by exposure status after truncation
@@ -551,14 +552,6 @@ AIPW <- R6::R6Class(
 #' @return A fitted [AIPW] object with `obs_est` and `libs` (public variables)
 #'
 #' @seealso [AIPW]
-#'
-#' @examples
-#' library(SuperLearner)
-#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-#'                     k_split=1,verbose=FALSE)
-#' aipw_sl$fit()
 NULL
 
 #' @name stratified_fit
@@ -575,12 +568,4 @@ NULL
 #' @return A fitted [AIPW] object with `obs_est` and `libs` (public variables)
 #'
 #' @seealso [AIPW]
-#'
-#' @examples
-#' library(SuperLearner)
-#' aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-#'                     W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-#'                     Q.SL.library="SL.mean",g.SL.library="SL.mean",
-#'                     k_split=1,verbose=FALSE)
-#' aipw_sl$stratified_fit()
 NULL
