@@ -48,7 +48,6 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' vec <- function() sample(0:1,100,replace = TRUE)
 #' df <- data.frame(replicate(4,vec()))
 #' names(df) <- c("A","Y","W1","W2")
@@ -61,7 +60,6 @@
 #'                  g.SL.library="SL.glm",
 #'                  family="binomial")
 #' AIPW_tmle$new(A=df$A,Y=df$Y,tmle_fit = tmle_fit,verbose = TRUE)$summary()
-#' }
 AIPW_tmle <- R6::R6Class(
   "AIPW_tmle",
   portable = TRUE,
