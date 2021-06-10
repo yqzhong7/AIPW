@@ -21,14 +21,6 @@ Calculate average causal effects in RD, RR and OR in the fitted \link{AIPW} or \
 \code{$summary(g.bound = c(0.025,0.975))}
 }
 
-\examples{
-library(SuperLearner)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)$fit()
-aipw_sl$summary(g.bound=0.025)
-}
 \seealso{
 \link{AIPW} and \link{AIPW_tmle}
 }

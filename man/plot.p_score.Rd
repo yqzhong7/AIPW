@@ -14,18 +14,6 @@ Plot and check the balance of propensity scores by exposure status
 \code{$plot.p_plot()}
 }
 
-\examples{
-library(SuperLearner)
-library(ggplot2)
-aipw_sl <- AIPW$new(Y=rbinom(100,1,0.5), A=rbinom(100,1,0.5),
-                    W.Q=rbinom(100,1,0.5), W.g=rbinom(100,1,0.5),
-                    Q.SL.library="SL.mean",g.SL.library="SL.mean",
-                    k_split=1,verbose=FALSE)$fit()
-#before average treatment effect calculation
-aipw_sl$plot.p_score()
-#after calculation
-aipw_sl$summary(g.bound=0.025)$plot.p_score()
-}
 \seealso{
 \link{AIPW} and \link{AIPW_tmle}
 }
