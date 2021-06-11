@@ -120,12 +120,15 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a><a id="Installation"></a>Installation</h2>
 <ol style="list-style-type: decimal">
-<li>Install AIPW from <a href="https://github.com/yqzhong7/AIPW">GitHub</a>
+<li>Install AIPW from CRAN or <a href="https://github.com/yqzhong7/AIPW">GitHub</a>
 </li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># CRAN version</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"AIPW"</span><span class="op">)</span>
+<span class="co"># github version</span>
+<span class="co"># install.packages("remotes")</span>
+<span class="co"># remotes::install_github("yqzhong7/AIPW")</span></code></pre></div>
 <p><strong>* CRAN version only supports SuperLearner and tmle. Please install the Github version (master branch) to use sl3 and tmle3.</strong></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Install <a href="https://CRAN.R-project.org/package=SuperLearner">SuperLearner</a> or <a href="https://tlverse.org/sl3/articles/intro_sl3.html">sl3</a>
