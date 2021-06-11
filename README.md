@@ -12,6 +12,7 @@ coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](ht
 status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-ci.com/yqzhong7/AIPW)
 [![R build
 status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
+[![](https://www.r-pkg.org/badges/version/AIPW?color=blue)](https://cran.r-project.org/package=AIPW)
 
 <!-- badges: end -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
