@@ -33,11 +33,14 @@ Contents:
 
 
 ## <a id="Installation"></a>Installation
-1. Install AIPW from [GitHub](https://github.com/yqzhong7/AIPW)
+1. Install AIPW from CRAN or [GitHub](https://github.com/yqzhong7/AIPW) 
 
 ```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("yqzhong7/AIPW")
+# CRAN version
+install.packages("AIPW")
+# github version
+# install.packages("remotes")
+# remotes::install_github("yqzhong7/AIPW")
 ```
 __* CRAN version only supports SuperLearner and tmle. Please install the Github version (master branch) to use sl3 and tmle3.__
 
