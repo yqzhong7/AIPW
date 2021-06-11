@@ -41,7 +41,7 @@ If you find this package is helpful, please consider to cite:
     note = {In Press}
 }
 ```
-__* CRAN version only supports SuperLearner and tmle. Please install the Github version (master branch) to use sl3 and tmle3.__
+
 
 ---------------
 
@@ -60,11 +60,18 @@ __* CRAN version only supports SuperLearner and tmle. Please install the Github 
 
 ## <a id="Installation"></a>Installation
 
+### CRAN version
+```{r installation cran, eval=FALSE}
+install.packages("AIPW")
+```
+
+### Github version
 ```{r installation, eval=FALSE}
 install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
+__* CRAN version only supports SuperLearner and tmle. Please install the Github version (master branch) if you choose to use sl3 and tmle3.__
 
 ## <a id="Example"></a>Example
 
