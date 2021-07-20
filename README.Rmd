@@ -43,7 +43,6 @@ If you find this package is helpful, please consider to cite:
     doi = {10.1093/aje/kwab207},
     url = {https://doi.org/10.1093/aje/kwab207},
 }
-```
 
 
 ---------------
