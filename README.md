@@ -36,11 +36,14 @@ assumptions (e.g., consistency) before using this package.
 If you find this package is helpful, please consider to cite:
 
     @article{zhong_aipw_2021,
+        author = {Zhong, Yongqi and Kennedy, Edward H and Bodnar, Lisa M and Naimi, Ashley I},
         title = {AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects},
-        author = {{Yongqi Zhong} and {Edward H. Kennedy} and {Lisa M. Bodnar} and {Ashley I. Naimi}},
         journal = {American Journal of Epidemiology},
         year = {2021},
-        note = {In Press}
+        month = {07},
+        issn = {0002-9262},
+        doi = {10.1093/aje/kwab207},
+        url = {https://doi.org/10.1093/aje/kwab207},
     }
 
 ------------------------------------------------------------------------
