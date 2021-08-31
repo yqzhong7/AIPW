@@ -21,7 +21,7 @@ Authors@R:
              role = c("ctb"),
              email = "edward@stat.cmu.edu"))
 Maintainer: Yongqi Zhong <yq.zhong7@gmail.com>
-Description: The 'AIPW' pacakge implements the augmented inverse probability weighting, a doubly robust estimator, for average causal effect estimation with user-defined stacked machine learning algorithms. To cite the 'AIPW' package, please use: "Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021). AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects. American Journal of Epidemiology. doi: 10.1093/aje/kwab207". Visit: <https://yqzhong7.github.io/AIPW/> for more information.
+Description: The 'AIPW' package implements the augmented inverse probability weighting, a doubly robust estimator, for average causal effect estimation with user-defined stacked machine learning algorithms. To cite the 'AIPW' package, please use: "Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021). AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects. American Journal of Epidemiology. doi: 10.1093/aje/kwab207". Visit: <https://yqzhong7.github.io/AIPW/> for more information.
 License: GPL-3
 Encoding: UTF-8
 Language: es

@@ -46,33 +46,28 @@ If you find this package is helpful, please consider to cite:
         url = {https://doi.org/10.1093/aje/kwab207},
     }
 
-------------------------------------------------------------------------
 
-## Contents:
+    ---------------
 
--   ##### [Installation](#Installation)
+    ## Contents:
 
--   ##### [Example](#Example)
+      * ##### [Installation](#Installation)
+      * ##### [Example](#Example)
+        + ###### [Setup example data](#data)
+        + ###### [One line version](#one_line)
+      * ##### [Parallelization and progress bar](#par) 
+      * ##### [Use tmle/tmle3 as input](#tmle)
+      * ##### [References](#ref)
 
-    -   ###### [Setup example data](#data)
 
-    -   ###### [One line version](#one_line)
+    ---------
 
--   ##### [Parallelization and progress bar](#par)
+    ## <a id="Installation"></a>Installation
 
--   ##### [Use tmle/tmle3 as input](#tmle)
+    ### CRAN version
 
--   ##### [References](#ref)
-
-------------------------------------------------------------------------
-
-## <a id="Installation"></a>Installation
-
-### CRAN version
-
-``` r
-install.packages("AIPW")
-```
+    ```r
+    install.packages("AIPW")
 
 ### Github version
 
@@ -227,7 +222,7 @@ library(progressr)
 #define the type of progress bar
 handlers("progress")
 #reporting through progressr::with_progress() which is embedded in the AIPW$fit() method
-with_progress(
+with_progress({
   AIPW_SL <- AIPW$new(Y = outcome,
                     A = exposure,
                     W = covariates, 
@@ -235,9 +230,9 @@ with_progress(
                     g.SL.library = c("SL.mean","SL.glm"),
                     k_split = 3,
                     verbose=FALSE)$fit()$summary()
-)
+})
 #also available for the wrapper
-with_progress(
+with_progress({
   AIPW_SL <- aipw_wrapper(Y = outcome,
                         A = exposure,
                         W = covariates, 
@@ -245,7 +240,7 @@ with_progress(
                         g.SL.library = c("SL.mean","SL.glm"),
                         k_split = 3,
                         verbose=FALSE)
-)
+})
 ```
 
 ## <a id="tmle"></a>Use `tmle`/`tmle3` fitted object as input (`AIPW_tmle` class)
