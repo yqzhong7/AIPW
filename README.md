@@ -46,28 +46,33 @@ If you find this package is helpful, please consider to cite:
         url = {https://doi.org/10.1093/aje/kwab207},
     }
 
+------------------------------------------------------------------------
 
-    ---------------
+## Contents:
 
-    ## Contents:
+-   ##### [Installation](#Installation)
 
-      * ##### [Installation](#Installation)
-      * ##### [Example](#Example)
-        + ###### [Setup example data](#data)
-        + ###### [One line version](#one_line)
-      * ##### [Parallelization and progress bar](#par) 
-      * ##### [Use tmle/tmle3 as input](#tmle)
-      * ##### [References](#ref)
+-   ##### [Example](#Example)
 
+    -   ###### [Setup example data](#data)
 
-    ---------
+    -   ###### [One line version](#one_line)
 
-    ## <a id="Installation"></a>Installation
+-   ##### [Parallelization and progress bar](#par)
 
-    ### CRAN version
+-   ##### [Use tmle/tmle3 as input](#tmle)
 
-    ```r
-    install.packages("AIPW")
+-   ##### [References](#ref)
+
+------------------------------------------------------------------------
+
+## <a id="Installation"></a>Installation
+
+### CRAN version
+
+``` r
+install.packages("AIPW")
+```
 
 ### Github version
 
@@ -86,8 +91,8 @@ the Github version (master branch) if you choose to use sl3 and tmle3.**
 ``` r
 set.seed(888)
 data("eager_sim_obs")
-outcome <- eager_sim_obs$sim_A
-exposure <- eager_sim_obs$sim_Y
+outcome <- eager_sim_obs$sim_Y
+exposure <- eager_sim_obs$sim_A
 #covariates for both outcome model (Q) and exposure model (g)
 covariates <- as.matrix(eager_sim_obs[-1:-2])
 
@@ -125,11 +130,11 @@ To see the results, set `verbose = TRUE`(default) or:
 ``` r
 print(AIPW_SL$result, digits = 2)
 #>                  Estimate    SE 95% LCL 95% UCL   N
-#> Risk of exposure     0.68 0.053  0.5765    0.78  78
-#> Risk of control      0.54 0.046  0.4458    0.63 122
-#> Risk Difference      0.14 0.070  0.0059    0.28 200
-#> Risk Ratio           1.27 0.116  1.0099    1.59 200
-#> Odds Ratio           1.84 0.307  1.0084    3.36 200
+#> Risk of exposure     0.44 0.046  0.3528    0.53 118
+#> Risk of control      0.31 0.051  0.2061    0.41  82
+#> Risk Difference      0.14 0.068  0.0048    0.27 200
+#> Risk Ratio           1.45 0.191  0.9974    2.11 200
+#> Odds Ratio           1.81 0.295  1.0144    3.22 200
 ```
 
 To obtain average treatment effect among the treated/controls (ATT/ATC),
@@ -148,13 +153,13 @@ suppressWarnings({
 })
 #> Done!
 #>                     Estimate     SE  95% LCL 95% UCL   N
-#> Risk of exposure       0.672 0.0555  0.56310   0.781  78
-#> Risk of control        0.546 0.0462  0.45537   0.637 122
-#> Risk Difference        0.126 0.0724 -0.01581   0.268 200
-#> Risk Ratio             1.231 0.1187  0.97537   1.553 200
-#> Odds Ratio             1.704 0.3144  0.91994   3.155 200
-#> ATT Risk Difference    0.125 0.0624  0.00262   0.247 200
-#> ATC Risk Difference    0.121 0.1058 -0.08662   0.328 200
+#> Risk of exposure      0.4352 0.0467  0.34362   0.527 118
+#> Risk of control       0.3244 0.0513  0.22385   0.425  82
+#> Risk Difference       0.1108 0.0684 -0.02320   0.245 200
+#> Risk Ratio            1.3416 0.1858  0.93210   1.931 200
+#> Odds Ratio            1.6048 0.2927  0.90429   2.848 200
+#> ATT Risk Difference   0.0991 0.0880 -0.07339   0.272 200
+#> ATC Risk Difference   0.1148 0.0634 -0.00946   0.239 200
 ```
 
 You can also use the `aipw_wrapper()` to wrap `new()`, `fit()` and
@@ -205,12 +210,12 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     k_split = 3,
                     verbose=TRUE)$fit()$summary()
 #> Done!
-#>                  Estimate     SE  95% LCL 95% UCL   N
-#> Risk of exposure    0.676 0.0546  0.56913   0.783  78
-#> Risk of control     0.538 0.0462  0.44705   0.628 122
-#> Risk Difference     0.139 0.0714 -0.00144   0.279 200
-#> Risk Ratio          1.258 0.1177  0.99869   1.584 200
-#> Odds Ratio          1.796 0.3104  0.97745   3.300 200
+#>                  Estimate     SE 95% LCL 95% UCL   N
+#> Risk of exposure    0.443 0.0462 0.35284   0.534 118
+#> Risk of control     0.306 0.0510 0.20607   0.406  82
+#> Risk Difference     0.137 0.0677 0.00482   0.270 200
+#> Risk Ratio          1.449 0.1906 0.99741   2.106 200
+#> Odds Ratio          1.807 0.2946 1.01442   3.219 200
 ```
 
 Progress bar that supports parallel processing is available in the
@@ -266,49 +271,49 @@ tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
                  family="binomial")
 tmle_fit
 #>  Additive Effect
-#>    Parameter Estimate:  0.14389
-#>    Estimated Variance:  0.0048764
-#>               p-value:  0.039348
-#>     95% Conf Interval: (0.0070199, 0.28076) 
+#>    Parameter Estimate:  0.13484
+#>    Estimated Variance:  0.004308
+#>               p-value:  0.039939
+#>     95% Conf Interval: (0.0061944, 0.26348) 
 #> 
 #>  Additive Effect among the Treated
-#>    Parameter Estimate:  0.14419
-#>    Estimated Variance:  0.0048673
-#>               p-value:  0.038752
-#>     95% Conf Interval: (0.0074516, 0.28093) 
+#>    Parameter Estimate:  0.13525
+#>    Estimated Variance:  0.0043779
+#>               p-value:  0.040941
+#>     95% Conf Interval: (0.0055666, 0.26494) 
 #> 
 #>  Additive Effect among the Controls
-#>    Parameter Estimate:  0.14318
-#>    Estimated Variance:  0.0048874
-#>               p-value:  0.040552
-#>     95% Conf Interval: (0.0061575, 0.2802) 
+#>    Parameter Estimate:  0.1332
+#>    Estimated Variance:  0.0042363
+#>               p-value:  0.040711
+#>     95% Conf Interval: (0.0056273, 0.26077) 
 #> 
 #>  Relative Risk
-#>    Parameter Estimate:  1.2696
-#>               p-value:  0.039067
-#>     95% Conf Interval: (1.012, 1.5927) 
+#>    Parameter Estimate:  1.4352
+#>               p-value:  0.051898
+#>     95% Conf Interval: (0.99703, 2.0658) 
 #> 
-#>               log(RR):  0.23871
-#>     variance(log(RR)):  0.013383 
+#>               log(RR):  0.36128
+#>     variance(log(RR)):  0.034539 
 #> 
 #>  Odds Ratio
-#>    Parameter Estimate:  1.8362
-#>               p-value:  0.045369
-#>     95% Conf Interval: (1.0126, 3.3297) 
+#>    Parameter Estimate:  1.7837
+#>               p-value:  0.045351
+#>     95% Conf Interval: (1.012, 3.1436) 
 #> 
-#>               log(OR):  0.6077
-#>     variance(log(OR)):  0.092213
+#>               log(OR):  0.57866
+#>     variance(log(OR)):  0.083597
 #extract fitted tmle object to AIPW
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)
 #> Cross-fitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)
 #>                  Estimate     SE 95% LCL 95% UCL   N
-#> Risk of exposure    0.678 0.0529 0.57380   0.781  78
-#> Risk of control     0.534 0.0455 0.44450   0.623 122
-#> Risk Difference     0.144 0.0698 0.00702   0.281 200
-#> Risk Ratio          1.270 0.1157 1.01198   1.593 200
-#> Odds Ratio          1.836 0.3037 1.01244   3.330 200
+#> Risk of exposure    0.445 0.0454 0.35577   0.534 118
+#> Risk of control     0.310 0.0497 0.21243   0.407  82
+#> Risk Difference     0.135 0.0656 0.00619   0.263 200
+#> Risk Ratio          1.435 0.1815 1.00562   2.048 200
+#> Odds Ratio          1.784 0.2818 1.02672   3.099 200
 ```
 
 #### 2. `tmle3`

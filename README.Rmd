@@ -43,7 +43,7 @@ If you find this package is helpful, please consider to cite:
     doi = {10.1093/aje/kwab207},
     url = {https://doi.org/10.1093/aje/kwab207},
 }
-
+```
 
 ---------------
 
@@ -81,8 +81,8 @@ __* CRAN version only supports SuperLearner and tmle. Please install the Github 
 ```{r example data}
 set.seed(888)
 data("eager_sim_obs")
-outcome <- eager_sim_obs$sim_A
-exposure <- eager_sim_obs$sim_Y
+outcome <- eager_sim_obs$sim_Y
+exposure <- eager_sim_obs$sim_A
 #covariates for both outcome model (Q) and exposure model (g)
 covariates <- as.matrix(eager_sim_obs[-1:-2])
 
