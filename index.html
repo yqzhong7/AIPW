@@ -227,13 +227,13 @@
 <h2 class="hasAnchor">
 <a href="#parallelization-with-futureapply-and-progress-bar-with-progressr" class="anchor"></a><a id="par"></a>Parallelization with <code>future.apply</code> and progress bar with <code>progressr</code>
 </h2>
-<p>In default setting, the <code>AIPW$fit()</code> method will be run sequentially. The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future">future</a> framework. Simply use <code><a href="https://rdrr.io/pkg/future/man/plan.html">future::plan()</a></code> to enable parallelization and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
+<p>In default setting, the <code>AIPW$fit()</code> method will be run sequentially. The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future">future</a> framework. Simply use <code><a href="https://future.futureverse.org/reference/plan.html">future::plan()</a></code> to enable parallelization and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">###Additional steps for parallel processing###</span>
 <span class="co"># install.packages("future.apply")</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.apply.futureverse.org">future.apply</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: future</span>
-<span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span><span class="op">(</span><span class="va">multiprocess</span>, workers<span class="op">=</span><span class="fl">2</span>, gc<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
+<span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multiprocess</span>, workers<span class="op">=</span><span class="fl">2</span>, gc<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
 <span class="co">#&gt; Warning: [ONE-TIME WARNING] Forked processing ('multicore') is disabled</span>
 <span class="co">#&gt; in future (&gt;= 1.13.0) when running R from RStudio, because it is</span>
 <span class="co">#&gt; considered unstable. Because of this, plan("multicore") will fall</span>
