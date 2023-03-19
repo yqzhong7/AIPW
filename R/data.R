@@ -8,7 +8,7 @@
 #'
 #' @usage data(eager_sim_obs)
 #'
-#' @format An object of class data.frame with 200 rows and 8 column:
+#' @format An object of class data.frame with 200 rows and 8 columns:
 #' \describe{
 #'   \item{sim_Y}{binary, simulated  outcome which is condition on all other covariates in the dataset}
 #'   \item{sim_A}{binary, simulated exposure which is conditon on all other covarites expect sim_Y.}
@@ -32,7 +32,7 @@
 #'
 #' @usage data(eager_sim_rct)
 #'
-#' @format An object of class data.frame with 1228 rows and 8 column:
+#' @format An object of class data.frame with 1228 rows and 8 columns:
 #' \describe{
 #'   \item{sim_Y}{binary, simulated  outcome which is condition on all other covariates in the dataset}
 #'   \item{sim_T}{binary, simulated treatment which is condition on eligibility only.}

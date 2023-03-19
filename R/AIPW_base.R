@@ -20,7 +20,7 @@ AIPW_base <- R6::R6Class(
     n = NULL,
     #Number of exposed
     n_A1 = NULL,
-    #Number ofunexposed
+    #Number of unexposed
     n_A0 = NULL,
     #Fit the outcome model stratified by exposure status (only applicable to AIPW class or manual setup)
     stratified_fitted = FALSE,

@@ -241,12 +241,10 @@ AIPW <- R6::R6Class(
       }
       #-------check if future.apply is loaded otherwise lapply would be used.------#
       if (any(names(sessionInfo()$otherPkgs) %in% c("future.apply"))){
-        private$.f_lapply = function(iter,func) {
-          future.apply::future_lapply(iter,func,future.seed = T,future.packages = private$sl.pkg,future.globals = TRUE)
-        }
-      }else{
-        private$.f_lapply = function(iter,func) lapply(iter,func)
-        }
+        private$use.f_lapply = TRUE
+      } else {
+        private$use.f_lapply = FALSE
+      }
     },
 
 
@@ -542,7 +540,16 @@ AIPW <- R6::R6Class(
     isLoaded_progressr = FALSE,
     #private methods
     #lapply or future_lapply
-    .f_lapply =NULL,
+    use.f_lapply = NULL,
+    .f_lapply = function(iter,func) {
+      #-------check if future.apply is loaded otherwise lapply would be used.------#
+      if (private$use.f_lapply){
+        future.apply::future_lapply(iter,func,future.seed = T,future.packages = private$sl.pkg,future.globals = TRUE)
+      }
+      else{
+        lapply(iter,func)
+      }
+    },
     #create new index for training set
     .new_cv_index = function(val_fold,fold_length=private$cv$fold_length, k_split=private$k_split){
       train_fold_length = c(0,fold_length[-val_fold])

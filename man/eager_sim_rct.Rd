@@ -5,7 +5,7 @@
 \alias{eager_sim_rct}
 \title{Simulated Randomized Trial}
 \format{
-An object of class data.frame with 1228 rows and 8 column:
+An object of class data.frame with 1228 rows and 8 columns:
 \describe{
 \item{sim_Y}{binary, simulated  outcome which is condition on all other covariates in the dataset}
 \item{sim_T}{binary, simulated treatment which is condition on eligibility only.}
