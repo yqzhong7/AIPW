@@ -3,6 +3,9 @@ url: https://yqzhong7.github.io/AIPW
 
 destination: docs
 
+development:
+  mode: auto
+
 authors:
   Yongqi Zhong:
     href: https://github.com/yqzhong7
