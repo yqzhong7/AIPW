@@ -71,7 +71,7 @@
 #'
 #' ## Public Variable Details
 #' \describe{
-#'    \item{\code{stratified_fit}}{An indicator for whether the outcome model is fitted stratified by exposure status in the`fit()` method.
+#'    \item{\code{stratified_fit}}{An indicator for whether the outcome model is fitted stratified by exposure status in the `fit()` method.
 #'    Only when using `stratified_fit()` to turn on `stratified_fit = TRUE`, `summary` outputs average treatment effects among the treated and the controls.}
 #'    \item{\code{obs_est}}{After using `fit()` and `summary()` methods, this list contains the propensity scores (`p_score`),
 #'    counterfactual predictions (`mu`, `mu1` & `mu0`) and
