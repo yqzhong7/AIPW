@@ -30,7 +30,12 @@ Repeated <- R6Class("RepeatedFit",
                               iter = 1:self$num_reps
                               self$repeated_estimates =
                                 private$.f_lapply(iter,function(i,...){
-                                  self$aipw_obj$fit()$summary()
+                                  if (self$stratified_fitted) {
+                                    self$aipw_obj$stratified_fit()$summary()
+                                  } else {
+                                    self$aipw_obj$fit()$summary()
+                                  }
+
                                   estimates_count = 3
                                   Estimand_label = c("Risk of exposure", "Risk of control","Risk Difference")
 
@@ -44,7 +49,7 @@ Repeated <- R6Class("RepeatedFit",
                                     Estimand_label = c(Estimand_label, "ATT Risk Difference","ATC Risk Difference")
                                   }
 
-                                  estimates = data.frame(do.call(rbind,self$aipw_obj$estimates[1:estimates_count]))
+                                  estimates = data.frame(do.call(rbind,self$aipw_obj$estimates[1:estimates_count]))[,1:2]
                                   estimates$Estimand = rownames(estimates)
                                   estimates$Estimand = factor(estimates$Estimand,
                                                               levels = estimates$Estimand,
