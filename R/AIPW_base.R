@@ -139,7 +139,7 @@ AIPW_base <- R6::R6Class(
       self$result <- cbind(matrix(c(self$estimates$risk_A1, self$estimates$risk_A0,
                                     self$estimates$RD), nrow=3, byrow=T),
                            c( self$n_A1, self$n_A0,rep(self$n,1)))
-      row.names(self$result) <- c("Risk of exposure", "Risk of control","Risk Difference")
+      row.names(self$result) <- c("Risk of Exposure", "Risk of Control","Risk Difference")
       colnames(self$result) <- c("Estimate","SE","95% LCL","95% UCL","N")
 
       if (private$Y.type == 'binomial'){
@@ -173,6 +173,10 @@ AIPW_base <- R6::R6Class(
         self$result <- rbind(self$result, ATT_ATC_result)
       }
 
+      #### Change row names for continuous outcome
+      if (private$Y.type == 'gaussian'){
+        row.names(self$result) = gsub("Risk", "Mean", row.names(self$result))
+      }
 
       if (private$verbose){
         print(self$result,digit=3)

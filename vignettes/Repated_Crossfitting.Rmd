@@ -49,7 +49,7 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
 ### <a id="decorator"></a>Decorate with `Repeated` class
 
 ```{r refit}
-# Create a new object from the previous AIPW_SL (Repeated class is a decorator of the AIPW class)
+# Create a new object from the previous AIPW_SL (Repeated class is an extension of the AIPW class)
 repeated_aipw_sl <- Repeated$new(aipw_obj = AIPW_SL)
 # Fit repetitively
 repeated_aipw_sl$repfit(num_reps = 30, stratified = F)

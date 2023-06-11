@@ -64,7 +64,7 @@ AIPW_nuis <- R6::R6Class(
     initialize = function(Y=NULL, A=NULL, mu0 = NULL , mu1 = NULL, raw_p_score = NULL, verbose=TRUE, stratified_fitted=FALSE){
       #initialize from AIPW_base class
       super$initialize(Y=Y,A=A,verbose=verbose)
-      message("Cross-fitting for estimating nuisance functions is recommended")
+      message("Cross-fitting for estimating nuisance functions is recommended for using SuperLearner.")
       self$obs_est$mu0 <- mu0
       self$obs_est$mu1 <- mu1
       self$obs_est$mu <- self$obs_est$mu0*(1-private$A) + self$obs_est$mu1*(private$A)
