@@ -50,19 +50,19 @@ If you find this package is helpful, please consider to cite:
 
 ## Contents:
 
--   ##### [Installation](#Installation)
+- ##### [Installation](#Installation)
 
--   ##### [Example](#Example)
+- ##### [Example](#Example)
 
-    -   ###### [Setup example data](#data)
+  - ###### [Setup example data](#data)
 
-    -   ###### [One line version](#one_line)
+  - ###### [One line version](#one_line)
 
--   ##### [Parallelization and progress bar](#par)
+- ##### [Parallelization and progress bar](#par)
 
--   ##### [Use tmle/tmle3 as input](#tmle)
+- ##### [Use tmle/tmle3 as input](#tmle)
 
--   ##### [References](#ref)
+- ##### [References](#ref)
 
 ------------------------------------------------------------------------
 
@@ -81,8 +81,12 @@ install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
-**\* CRAN version only supports SuperLearner and tmle. Please install
-the Github version (master branch) if you choose to use sl3 and tmle3.**
+**\* CRAN version only supports SuperLearner and tmle. New GitHub
+versions (after v0.6.3.1) no longer support sl3 and tmle3. If you are
+still interested in using the version with sl3 and tmle3 support, please
+install `remotes::install_github("yqzhong7/AIPW@aje_version")` <s>Please
+install the Github version (master branch) if you choose to use sl3 and
+tmle3.</s>**
 
 ## <a id="Example"></a>Example
 
@@ -105,9 +109,13 @@ covariates <- as.matrix(eager_sim_obs[-1:-2])
 library(AIPW)
 library(SuperLearner)
 #> Loading required package: nnls
+#> Loading required package: gam
+#> Loading required package: splines
+#> Loading required package: foreach
+#> Loaded gam 1.20.2
 #> Super Learner
-#> Version: 2.0-26
-#> Package created on 2019-10-27
+#> Version: 2.0-28
+#> Package created on 2021-05-04
 library(ggplot2)
 AIPW_SL <- AIPW$new(Y = outcome,
                     A = exposure,
@@ -117,8 +125,8 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     k_split = 3,
                     verbose=FALSE)$
   fit()$
-  #Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended
-  summary(g.bound = 0.25)$ 
+  #Default truncation
+  summary(g.bound = 0.025)$ 
   plot.p_score()$
   plot.ip_weights()
 ```
@@ -130,8 +138,8 @@ To see the results, set `verbose = TRUE`(default) or:
 ``` r
 print(AIPW_SL$result, digits = 2)
 #>                  Estimate    SE 95% LCL 95% UCL   N
-#> Risk of exposure     0.44 0.046  0.3528    0.53 118
-#> Risk of control      0.31 0.051  0.2061    0.41  82
+#> Risk of Exposure     0.44 0.046  0.3528    0.53 118
+#> Risk of Control      0.31 0.051  0.2061    0.41  82
 #> Risk Difference      0.14 0.068  0.0048    0.27 200
 #> Risk Ratio           1.45 0.191  0.9974    2.11 200
 #> Odds Ratio           1.81 0.295  1.0144    3.22 200
@@ -153,8 +161,8 @@ suppressWarnings({
 })
 #> Done!
 #>                     Estimate     SE  95% LCL 95% UCL   N
-#> Risk of exposure      0.4352 0.0467  0.34362   0.527 118
-#> Risk of control       0.3244 0.0513  0.22385   0.425  82
+#> Risk of Exposure      0.4352 0.0467  0.34362   0.527 118
+#> Risk of Control       0.3244 0.0513  0.22385   0.425  82
 #> Risk Difference       0.1108 0.0684 -0.02320   0.245 200
 #> Risk Ratio            1.3416 0.1858  0.93210   1.931 200
 #> Odds Ratio            1.6048 0.2927  0.90429   2.848 200
@@ -192,13 +200,14 @@ to take care of the random number generation (RNG) problem:
 library(future.apply)
 #> Loading required package: future
 future::plan(multiprocess, workers=2, gc=T)
-#> Warning: [ONE-TIME WARNING] Forked processing ('multicore') is disabled
-#> in future (>= 1.13.0) when running R from RStudio, because it is
-#> considered unstable. Because of this, plan("multicore") will fall
-#> back to plan("sequential"), and plan("multiprocess") will fall back to
-#> plan("multisession") - not plan("multicore") as in the past. For more details,
-#> how to control forked processing or not, and how to silence this warning in
-#> future R sessions, see ?future::supportsMulticore
+#> Warning: Strategy 'multiprocess' is deprecated in future (>= 1.20.0)
+#> [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or
+#> 'multicore'. In the current R session, 'multiprocess' equals 'multisession'.
+#> Warning in supportsMulticoreAndRStudio(...): [ONE-TIME WARNING] Forked
+#> processing ('multicore') is not supported when running R from RStudio
+#> because it is considered unstable. For more details, how to control forked
+#> processing or not, and how to silence this warning in future R sessions, see ?
+#> parallelly::supportsMulticore
 set.seed(888)
 
 ###Same procedure for AIPW as described above###
@@ -211,8 +220,8 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     verbose=TRUE)$fit()$summary()
 #> Done!
 #>                  Estimate     SE 95% LCL 95% UCL   N
-#> Risk of exposure    0.443 0.0462 0.35284   0.534 118
-#> Risk of control     0.306 0.0510 0.20607   0.406  82
+#> Risk of Exposure    0.443 0.0462 0.35284   0.534 118
+#> Risk of Control     0.306 0.0510 0.20607   0.406  82
 #> Risk Difference     0.137 0.0677 0.00482   0.270 200
 #> Risk Ratio          1.449 0.1906 0.99741   2.106 200
 #> Odds Ratio          1.807 0.2946 1.01442   3.219 200
@@ -260,65 +269,71 @@ require(tmle)
 #> Loading required package: tmle
 #> Loading required package: glmnet
 #> Loading required package: Matrix
-#> Loaded glmnet 4.0
-#> Welcome to the tmle package, version 1.4.0.1
+#> Loaded glmnet 4.1-6
+#> Welcome to the tmle package, version 1.5.0-1.1
 #> 
-#> Use tmleNews() to see details on changes and bug fixes
+#> Major changes since v1.3.x. Use tmleNews() to see details on changes and bug fixes
 require(SuperLearner)
-tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
+tmle_fit <- tmle(Y = as.vector(outcome), A = as.vector(exposure),W = covariates,
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial")
 tmle_fit
 #>  Additive Effect
-#>    Parameter Estimate:  0.13484
-#>    Estimated Variance:  0.004308
-#>               p-value:  0.039939
-#>     95% Conf Interval: (0.0061944, 0.26348) 
+#>    Parameter Estimate:  0.12795
+#>    Estimated Variance:  0.0043047
+#>               p-value:  0.051161
+#>     95% Conf Interval: (-0.00064797, 0.25654) 
 #> 
 #>  Additive Effect among the Treated
-#>    Parameter Estimate:  0.13525
-#>    Estimated Variance:  0.0043779
-#>               p-value:  0.040941
-#>     95% Conf Interval: (0.0055666, 0.26494) 
+#>    Parameter Estimate:  0.13118
+#>    Estimated Variance:  0.0045329
+#>               p-value:  0.051365
+#>     95% Conf Interval: (-0.00077957, 0.26314) 
 #> 
 #>  Additive Effect among the Controls
-#>    Parameter Estimate:  0.1332
-#>    Estimated Variance:  0.0042363
-#>               p-value:  0.040711
-#>     95% Conf Interval: (0.0056273, 0.26077) 
+#>    Parameter Estimate:  0.12446
+#>    Estimated Variance:  0.00414
+#>               p-value:  0.05307
+#>     95% Conf Interval: (-0.0016502, 0.25057) 
 #> 
 #>  Relative Risk
-#>    Parameter Estimate:  1.4352
-#>               p-value:  0.051898
-#>     95% Conf Interval: (0.99703, 2.0658) 
+#>    Parameter Estimate:  1.4093
+#>               p-value:  0.064957
+#>     95% Conf Interval: (0.97895, 2.0288) 
 #> 
-#>               log(RR):  0.36128
-#>     variance(log(RR)):  0.034539 
+#>               log(RR):  0.34308
+#>     variance(log(RR)):  0.034558 
 #> 
 #>  Odds Ratio
-#>    Parameter Estimate:  1.7837
-#>               p-value:  0.045351
-#>     95% Conf Interval: (1.012, 3.1436) 
+#>    Parameter Estimate:  1.7316
+#>               p-value:  0.057367
+#>     95% Conf Interval: (0.98296, 3.0504) 
 #> 
-#>               log(OR):  0.57866
-#>     variance(log(OR)):  0.083597
+#>               log(OR):  0.54905
+#>     variance(log(OR)):  0.083461
 #extract fitted tmle object to AIPW
 AIPW_tmle$
   new(A=exposure,Y=outcome,tmle_fit = tmle_fit,verbose = TRUE)$
   summary(g.bound=0.025)
 #> Cross-fitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)
-#>                  Estimate     SE 95% LCL 95% UCL   N
-#> Risk of exposure    0.445 0.0454 0.35577   0.534 118
-#> Risk of control     0.310 0.0497 0.21243   0.407  82
-#> Risk Difference     0.135 0.0656 0.00619   0.263 200
-#> Risk Ratio          1.435 0.1815 1.00562   2.048 200
-#> Odds Ratio          1.784 0.2818 1.02672   3.099 200
+#>                  Estimate     SE   95% LCL 95% UCL   N
+#> Risk of Exposure    0.441 0.0447  0.352877   0.528 118
+#> Risk of Control     0.313 0.0503  0.214003   0.411  82
+#> Risk Difference     0.128 0.0656 -0.000648   0.257 200
+#> Risk Ratio          1.409 0.1814  0.987632   2.011 200
+#> Odds Ratio          1.732 0.2814  0.997604   3.006 200
 ```
 
 #### 2. `tmle3`
 
+\_\_New GitHub versions (after v0.6.3.1) no longer support sl3 and
+tmle3. If you are still interested in using the version with sl3 and
+tmle3 support, please install
+\`remotes::install_github(“<yqzhong7/AIPW@aje>\_version”)\_\_
+
 ``` r
+remotes::install_github("yqzhong7/AIPW@aje_version")
 library(sl3)
 library(tmle3)
 node_list <- list(A = "sim_A",Y = "sim_Y",W = colnames(eager_sim_obs)[-1:-2])

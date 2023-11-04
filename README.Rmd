@@ -73,7 +73,7 @@ install.packages("remotes")
 remotes::install_github("yqzhong7/AIPW")
 ```
 
-__* CRAN version only supports SuperLearner and tmle. Please install the Github version (master branch) if you choose to use sl3 and tmle3.__
+__* CRAN version only supports SuperLearner and tmle. New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3. If you are still interested in using the version with sl3 and tmle3 support, please install `remotes::install_github("yqzhong7/AIPW@aje_version")` <s>Please install the Github version (master branch) if you choose to use sl3 and tmle3.</s>__
 
 ## <a id="Example"></a>Example
 
@@ -103,8 +103,8 @@ AIPW_SL <- AIPW$new(Y = outcome,
                     k_split = 3,
                     verbose=FALSE)$
   fit()$
-  #Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended
-  summary(g.bound = 0.25)$ 
+  #Default truncation
+  summary(g.bound = 0.025)$ 
   plot.p_score()$
   plot.ip_weights()
 ```
@@ -198,7 +198,7 @@ with_progress({
 ```{r tmle}
 require(tmle)
 require(SuperLearner)
-tmle_fit <- tmle(Y = outcome, A = exposure,W = covariates,
+tmle_fit <- tmle(Y = as.vector(outcome), A = as.vector(exposure),W = covariates,
                  Q.SL.library=c("SL.mean","SL.glm"),
                  g.SL.library=c("SL.mean","SL.glm"),
                  family="binomial")
@@ -209,9 +209,11 @@ AIPW_tmle$
   summary(g.bound=0.025)
 ```
 
-#### 2. `tmle3`
+#### 2. `tmle3` 
+__New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3. If you are still interested in using the version with sl3 and tmle3 support, please install `remotes::install_github("yqzhong7/AIPW@aje_version")__
 
 ```{r tmle3, eval =FALSE}
+remotes::install_github("yqzhong7/AIPW@aje_version")
 library(sl3)
 library(tmle3)
 node_list <- list(A = "sim_A",Y = "sim_Y",W = colnames(eager_sim_obs)[-1:-2])
