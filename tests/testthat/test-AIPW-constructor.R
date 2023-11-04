@@ -145,46 +145,6 @@ test_that("AIPW constructor: SL libraries", {
              k_split = 1,verbose = FALSE),
     regexp = "Input Q.SL.library and/or g.SL.library is not a valid SuperLearner library"
   )
-
-  ##sl3
-  #if sl3 package is not loaded
-  lrnr_glm <- sl3::Lrnr_glm$new()
-  lrnr_mean <- sl3::Lrnr_mean$new()
-  stacklearner <- sl3::Stack$new(lrnr_glm, lrnr_mean)
-  metalearner <- sl3::Lrnr_nnls$new()
-  sl3.lib <- sl3::Lrnr_sl$new(learners = stacklearner,
-                              metalearner = metalearner)
-  expect_warning(aipw <- AIPW$new(Y=vec,
-             A=vec,
-             W.Q =vec,
-             W.g =vec,
-             Q.SL.library=sl3.lib,
-             g.SL.library=sl3.lib,
-             k_split = 1,verbose = FALSE),
-  regexp = "Either `SuperLearner` or `sl3` package is not loaded.")
-  #sl3 lib writing
-  expect_identical(aipw$libs$Q.SL.library,sl3.lib)
-  expect_identical(aipw$libs$g.SL.library,sl3.lib)
-  expect_false(is.null(aipw$sl.fit))
-  expect_false(is.null(aipw$sl.predict))
-  #warning for using stack learners only
-  expect_warning(AIPW$new(Y=vec,
-                          A=vec,
-                          W.Q =vec,
-                          W.g =vec,
-                          Q.SL.library=stacklearner,
-                          g.SL.library=stacklearner,
-                          k_split = 1,verbose = FALSE),
-                 regexp = "sl3::Stack")
-  # wrong libs
-  expect_error(AIPW$new(Y=vec,
-                        A=vec,
-                        W.Q =vec,
-                        W.g =vec,
-                        Q.SL.library=sl.lib,
-                        g.SL.library=sl3.lib,
-                        k_split = 1,verbose = FALSE),
-               regexp = "Input Q.SL.library and/or g.SL.library is not a valid SuperLearner/sl3 library")
 })
 
 

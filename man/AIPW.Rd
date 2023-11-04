@@ -86,7 +86,7 @@ If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
 \subsection{Public Variable Details}{
 
 \describe{
-\item{\code{stratified_fit}}{An indicator for whether the outcome model is fitted stratified by exposure status in the\code{fit()} method.
+\item{\code{stratified_fit}}{An indicator for whether the outcome model is fitted stratified by exposure status in the \code{fit()} method.
 Only when using \code{stratified_fit()} to turn on \code{stratified_fit = TRUE}, \code{summary} outputs average treatment effects among the treated and the controls.}
 \item{\code{obs_est}}{After using \code{fit()} and \code{summary()} methods, this list contains the propensity scores (\code{p_score}),
 counterfactual predictions (\code{mu}, \code{mu1} & \code{mu0}) and

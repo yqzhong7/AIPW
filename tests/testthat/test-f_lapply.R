@@ -2,7 +2,7 @@
 #' @section Last Updated By:
 #' Yongqi Zhong
 #' @section Last Update Date:
-#' 2020/05/26
+#' 2023/03/19
 test_that("AIPW .flappy: lapply", {
   require(SuperLearner)
   vec <- function() sample(0:1,100,replace = T)
@@ -15,8 +15,7 @@ test_that("AIPW .flappy: lapply", {
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)
   #check function body is lapply rather than future_lapply
-  func_body<- as.character(body(aipw$.__enclos_env__$private$.f_lapply))
-  expect_true(any(grepl("^lapply",func_body)))
+  expect_false(aipw$.__enclos_env__$private$use.f_lapply)
 })
 
 test_that("AIPW .flappy: future_lapply", {
@@ -32,8 +31,7 @@ test_that("AIPW .flappy: future_lapply", {
                     g.SL.library=sl.lib,
                     k_split = 1,verbose = FALSE)
   #check function body is lapply rather than future_lapply
-  func_body<- as.character(body(aipw$.__enclos_env__$private$.f_lapply))
-  expect_true(any(grepl("future_lapply",func_body)))
+  expect_true(aipw$.__enclos_env__$private$use.f_lapply)
   #check whether run successfully with the same seed
   set.seed(888)
   mat1 <- aipw$fit()$summary()$result

@@ -1,6 +1,6 @@
 Package: AIPW
 Title: Augmented Inverse Probability Weighting
-Version: 0.6.3.2
+Version: 0.6.9
 Authors@R: 
     c(person(given = "Yongqi",
              family = "Zhong",
@@ -21,7 +21,7 @@ Authors@R:
              role = c("ctb"),
              email = "edward@stat.cmu.edu"))
 Maintainer: Yongqi Zhong <yq.zhong7@gmail.com>
-Description: The 'AIPW' pacakge implements the augmented inverse probability weighting, a doubly robust estimator, for average causal effect estimation with user-defined stacked machine learning algorithms. To cite the 'AIPW' package, please use: "Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021). AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects. American Journal of Epidemiology. doi: 10.1093/aje/kwab207". Visit: <https://yqzhong7.github.io/AIPW/> for more information.
+Description: The 'AIPW' package implements the augmented inverse probability weighting, a doubly robust estimator, for average causal effect estimation with user-defined stacked machine learning algorithms. To cite the 'AIPW' package, please use: "Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021). AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects. American Journal of Epidemiology. doi: 10.1093/aje/kwab207". Visit: <https://yqzhong7.github.io/AIPW/> for more information.
 License: GPL-3
 Encoding: UTF-8
 Language: es
@@ -32,22 +32,17 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    tmle,
-    tmle3
-RoxygenNote: 7.1.0
+    tmle
+RoxygenNote: 7.2.2
 Imports: 
     stats,
     utils,
     R6,
     SuperLearner,
-    sl3,
     ggplot2,
     future.apply,
     progressr,
     Rsolnp
-Remotes: 
-    github::tlverse/sl3,
-    github::tlverse/tmle3
 URL: https://github.com/yqzhong7/AIPW
 BugReports: https://github.com/yqzhong7/AIPW/issues
 VignetteBuilder: knitr

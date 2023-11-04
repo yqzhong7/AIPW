@@ -79,8 +79,8 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
                     k_split = 10,
                     verbose=FALSE)$
   fit()$
-  #Default truncation is set to 0.025; using 0.25 here is for illustrative purposes and not recommended
-  summary(g.bound = c(0.25,0.75))$
+  #Default truncation
+  summary(g.bound = c(0.025,0.975))$
   plot.p_score()$
   plot.ip_weights()
 ```
@@ -108,6 +108,7 @@ AIPW_SL <- AIPW$new(Y= eager_sim_obs$sim_Y,
 ```
 
   * ##### Use [sl3](https://tlverse.org/sl3/index.html) libraries 
+__New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3. If you are still interested in using the version with sl3 and tmle3 support, please install `remotes::install_github("yqzhong7/AIPW@aje_version")`__
 Metalearner is required to combine the estimates from stacklearner!
 ```{r sl3, eval=F}
 library(AIPW)
@@ -151,7 +152,7 @@ AIPW_SL$fit()
   * ##### Estimate the ATE with propensity scores truncation
 ```{r}
 #estimate the average causal effects from the fitted AIPW_SL object 
-AIPW_SL$summary(g.bound = 0.25) #propensity score truncation 
+AIPW_SL$summary(g.bound = 0.025) #propensity score truncation 
 ```
 
   * ##### Check the balance of propensity scores and inverse probability weights by exposure status after truncation
@@ -225,6 +226,7 @@ a_tmle <- AIPW_tmle$
 
 #### 2. <a id="tmle3"></a> `tmle3`
 
+__New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3. If you are still interested in using the version with sl3 and tmle3 support, please install `remotes::install_github("yqzhong7/AIPW@aje_version")`__
 Notably, [tmle3](https://github.com/tlverse/tmle3) conducts cross-fitting and propensity truncation (0.025) by default.
 
 ```{r tmle3, eval=F}

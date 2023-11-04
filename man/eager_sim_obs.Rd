@@ -5,7 +5,7 @@
 \alias{eager_sim_obs}
 \title{Simulated Observational Study}
 \format{
-An object of class data.frame with 200 rows and 8 column:
+An object of class data.frame with 200 rows and 8 columns:
 \describe{
 \item{sim_Y}{binary, simulated  outcome which is condition on all other covariates in the dataset}
 \item{sim_A}{binary, simulated exposure which is conditon on all other covarites expect sim_Y.}
