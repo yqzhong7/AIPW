@@ -28,8 +28,15 @@ reference:
   desc:  Estimation with user-defined data, SL.library and causal structure
 - contents:
   - AIPW
-  - ends_with("fit")
+  - fit
+  - stratified_fit
   - aipw_wrapper
+- title: Repated Class
+  desc:  Repeated Sample Fitting/Cross-fitting procedures
+- contents:
+  - Repeated
+  - repfit
+  - summary_median
 - title: AIPW_tmle Class
   desc:  Using a fitted tmle or tmle3 object as input
 - contents:
@@ -42,6 +49,11 @@ reference:
   desc: Methods available for both AIPW and AIPW_tmle classes
 - contents:
   - AIPW_base
-  - starts_with("summary")
+  - summary
   - plot.p_score
   - plot.ip_weights
+- title: Simulated Data
+  desc: Simulated data from the EAGeR Trial
+- contents:
+  - eager_sim_obs
+  - eager_sim_rct
