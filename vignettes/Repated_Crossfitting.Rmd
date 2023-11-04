@@ -1,4 +1,5 @@
 ---
+
 title: "Repeated Cross-fitting"
 output: rmarkdown::html_vignette
 vignette: >
@@ -23,9 +24,11 @@ Contents:
   * [More Repeatations vs More K-split?](#whichbetter)
   
   
+
 ## <a id="repfit"></a>Repeated Cross-fitting
   
 The purpose of repeated cross-fitting is to reduce the variability of estimate based on a specific split of data by summarizing estimates using different splits as suggested by Chernozhukov (2018). 
+
   
 ### <a id="constructor"></a>Create an AIPW object
 
