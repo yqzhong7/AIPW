@@ -1,9 +1,10 @@
-pandoc: 2.7.3
-pkgdown: 1.6.1
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   AIPW: AIPW.html
-last_built: 2021-09-15T00:36Z
+  Repated_Crossfitting: Repated_Crossfitting.html
+last_built: 2023-11-04T17:09Z
 urls:
   reference: https://yqzhong7.github.io/AIPW/reference
   article: https://yqzhong7.github.io/AIPW/articles
