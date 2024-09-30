@@ -5,21 +5,31 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Augmented Inverse Probability Weighting (AIPW) for binary exposure and binary outcome • AIPW</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<title>Augmented Inverse Probability Weighting • AIPW</title>
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Augmented Inverse Probability Weighting (AIPW) for binary exposure and binary outcome">
-<meta property="og:description" content="Augmented Inverse Probability Weighting (AIPW) is a doubly robust estimator for causal inference. ">
+<script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<link href="docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Augmented Inverse Probability Weighting">
+<meta property="og:description" content='The AIPW package implements the augmented inverse probability weighting, a doubly robust estimator, for average causal effect estimation with user-defined stacked machine learning algorithms. To cite the AIPW package, please use: "Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021). AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects. American Journal of Epidemiology. doi: 10.1093/aje/kwab207". Visit: &lt;https://yqzhong7.github.io/AIPW/&gt; for more information.'>
 <meta name="robots" content="noindex">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-166939490-2"></script><script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-166939490-2');
+</script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,201 +42,453 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">AIPW</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.6.9.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
+  <a href="articles/AIPW.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/getting-started-with-aipw.html">Getting Started with AIPW</a>
+      <a href="articles/Repated_Crossfitting.html">Repeated Cross-fitting</a>
     </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/yqzhong7/AIPW/">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
+  <a href="https://github.com/yqzhong7/AIPW/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
   </a>
 </li>
       </ul>
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
+      </form>
+
+    </div>
 <!--/.nav-collapse -->
   </div>
 <!--/.container -->
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="aipw" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#aipw" class="anchor"></a>AIPW</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="aipw-augmented-inverse-probability-weighting">AIPW: Augmented Inverse Probability Weighting<a class="anchor" aria-label="anchor" href="#aipw-augmented-inverse-probability-weighting"></a>
+</h1></div>
 <!-- badges: start -->
 
-<p>Augmented inverse probability weighting (AIPW) for binary exposure and outcome</p>
-<div id="installation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"yqzhong7/AIPW"</span>)</pre></div>
+<!-- badges: end -->
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<p><strong>Contributors:</strong> <a href="https://github.com/yqzhong7" class="external-link">Yongqi Zhong</a>, <a href="https://github.com/ainaimi" class="external-link">Ashley Naimi</a>, <a href="https://github.com/gconzuelo" class="external-link">Gabriel Conzuelo</a>, <a href="https://github.com/ehkennedy" class="external-link">Edward Kennedy</a></p>
+<hr>
+<p>Augmented inverse probability weighting (AIPW) is a doubly robust estimator for causal inference. The <code>AIPW</code> package is designed for estimating the average treatment effect of a binary exposure on risk difference (RD), risk ratio (RR) and odds ratio (OR) scales with user-defined stacked machine learning algorithms (<a href="https://CRAN.R-project.org/package=SuperLearner" class="external-link">SuperLearner</a> or <a href="https://tlverse.org/sl3/index.html" class="external-link">sl3</a>). Users need to examine causal assumptions (e.g., consistency) before using this package.</p>
+<p>If you find this package is helpful, please consider to cite:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="sc">@</span>article{zhong_aipw_2021,</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>    author <span class="ot">=</span> {Zhong, Yongqi and Kennedy, Edward H and Bodnar, Lisa M and Naimi, Ashley I},</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    title <span class="ot">=</span> {AIPW<span class="sc">:</span> An R Package <span class="cf">for</span> Augmented Inverse Probability Weighted Estimation of Average Causal Effects},</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    journal <span class="ot">=</span> {American Journal of Epidemiology},</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    month <span class="ot">=</span> {<span class="dv">07</span>},</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    issn <span class="ot">=</span> {<span class="dv">0002-9262</span>},</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    doi <span class="ot">=</span> {<span class="fl">10.1093</span><span class="sc">/</span>aje<span class="sc">/</span>kwab207},</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>doi.org<span class="sc">/</span><span class="fl">10.1093</span><span class="sc">/</span>aje<span class="sc">/</span>kwab207},</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>}</span></code></pre></div>
+<hr>
+<div class="section level2">
+<h2 id="contents">Contents:<a class="anchor" aria-label="anchor" href="#contents"></a>
+</h2>
+<ul>
+<li><h5 id="installation"><a href="#Installation">Installation</a></h5></li>
+<li>
+<h5 id="example"><a href="#Example">Example</a></h5>
+<ul>
+<li><h6 id="setup-example-data"><a href="#data">Setup example data</a></h6></li>
+<li><h6 id="one-line-version"><a href="#one_line">One line version</a></h6></li>
+</ul>
+</li>
+<li><h5 id="parallelization-and-progress-bar"><a href="#par">Parallelization and progress bar</a></h5></li>
+<li><h5 id="use-tmletmle3-as-input"><a href="#tmle">Use tmle/tmle3 as input</a></h5></li>
+<li><h5 id="references"><a href="#ref">References</a></h5></li>
+</ul>
 <hr>
 </div>
-<div id="example" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h3>
-<ol>
-<li>Setup example data</li>
-</ol>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">888</span>)
-<span class="no">N</span> <span class="kw">&lt;-</span> <span class="fl">200</span>
-<span class="no">outcome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.3</span>)
-<span class="no">exposure</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.5</span>)
-<span class="co">#covaraites for outcome model (Q)</span>
-<span class="no">covariates.Q</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.4</span>),
-                                <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="no">N</span>,<span class="kw">mean</span> <span class="kw">=</span> <span class="fl">0</span>,<span class="kw">sd</span><span class="kw">=</span><span class="fl">1</span>),
-                                <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span>(<span class="no">N</span>,<span class="kw">lambda</span> <span class="kw">=</span> <span class="fl">2</span>)),
-                              <span class="kw">ncol</span><span class="kw">=</span><span class="fl">3</span>)
-<span class="co">#covariates for exposure model (g)</span>
-<span class="no">covariates.g</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span>(<span class="no">N</span>,<span class="fl">1</span>,<span class="fl">0.4</span>),
-                                <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="no">N</span>,<span class="kw">mean</span> <span class="kw">=</span> <span class="fl">0</span>,<span class="kw">sd</span><span class="kw">=</span><span class="fl">1</span>),
-                                <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span>(<span class="no">N</span>,<span class="kw">lambda</span> <span class="kw">=</span> <span class="fl">2</span>)),
-                              <span class="kw">ncol</span><span class="kw">=</span><span class="fl">3</span>)
-
-<span class="co"># covariates.g &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></pre></div>
-<ol>
-<li>Use <a href="https://cran.r-project.org/web/packages/SuperLearner/index.html">SuperLearner</a> libraries (reference: <a href="https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html">Guide to SuperLearner</a>)</li>
-</ol>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">SuperLearner</span>)
-
-<span class="co">#SuperLearner libraries for outcome (Q) and exposure models (g)</span>
-<span class="no">sl.lib</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span>)
-
-<span class="co">#construct an aipw object for later estimations </span>
-<span class="no">AIPW_SL</span> <span class="kw">&lt;-</span> <span class="no">AIPW</span>$<span class="fu">new</span>(<span class="kw">Y</span><span class="kw">=</span> <span class="no">outcome</span>,
-                    <span class="kw">A</span><span class="kw">=</span> <span class="no">exposure</span>,
-                    <span class="kw">W.Q</span><span class="kw">=</span><span class="no">covariates.Q</span>,
-                    <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
-                    <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
-                    <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl.lib</span>,
-                    <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="no">T</span>)
-<span class="co">#estimate the average causal effects</span>
-<span class="no">AIPW_SL</span>$<span class="fu">calculate_result</span>()
-
-<span class="co">#example output</span>
-<span class="co">#                 Estimate     SE 95% LCL 95% UCL   N</span>
-<span class="co"># Risk Difference   -0.150 0.0654 -0.2786 -0.0221 200</span>
-<span class="co"># Risk Ratio         0.631 0.6203  0.1872  2.1299 200</span>
-<span class="co"># Odds Ratio         0.504 1.3261  0.0374  6.7747 200</span></pre></div>
-<ol>
-<li>Use <a href="https://tlverse.org/sl3/index.html">sl3</a> libraries (reference: <a href="https://tlverse.org/sl3/articles/intro_sl3.html">Intro to sl3</a>)</li>
-</ol>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AIPW</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sl3</span>)
-
-<span class="co">##construct sl3 learners for outcome (Q) and exposure models (g)</span>
-<span class="no">lrnr_glm</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_glm</span>$<span class="fu">new</span>()
-<span class="no">lrnr_mean</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_mean</span>$<span class="fu">new</span>()
-<span class="co">#stacking two learner (this will yield estimates for each learner)</span>
-<span class="no">stacklearner</span> <span class="kw">&lt;-</span> <span class="no">Stack</span>$<span class="fu">new</span>(<span class="no">lrnr_glm</span>, <span class="no">lrnr_mean</span>)
-<span class="co">#metalearner is required to combine the estimates from stacklearner</span>
-<span class="no">metalearner</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_nnls</span>$<span class="fu">new</span>()
-<span class="no">sl3.lib</span> <span class="kw">&lt;-</span> <span class="no">Lrnr_sl</span>$<span class="fu">new</span>(<span class="kw">learners</span> <span class="kw">=</span> <span class="no">stacklearner</span>,
-                      <span class="kw">metalearner</span> <span class="kw">=</span> <span class="no">metalearner</span>)
-
-<span class="co">#construct an aipw object for later estimations </span>
-<span class="no">AIPW_sl3</span> <span class="kw">&lt;-</span> <span class="no">AIPW</span>$<span class="fu">new</span>(<span class="kw">Y</span><span class="kw">=</span> <span class="no">outcome</span>,
-                    <span class="kw">A</span><span class="kw">=</span> <span class="no">exposure</span>,
-                    <span class="kw">W.Q</span><span class="kw">=</span><span class="no">covariates.Q</span>,
-                    <span class="kw">W.g</span><span class="kw">=</span><span class="no">covariates.g</span>,
-                    <span class="kw">Q.SL.library</span> <span class="kw">=</span> <span class="no">sl3.lib</span>,
-                    <span class="kw">g.SL.library</span> <span class="kw">=</span> <span class="no">sl3.lib</span>,
-                    <span class="kw">k_split</span> <span class="kw">=</span> <span class="fl">3</span>,
-                    <span class="kw">verbose</span><span class="kw">=</span><span class="no">T</span>)
-<span class="co">#estimate the average causal effects</span>
-<span class="no">AIPW_sl3</span>$<span class="fu">calculate_result</span>()
-
-<span class="co">#example output</span>
-<span class="co">#                 Estimate     SE 95% LCL 95% UCL   N</span>
-<span class="co"># Risk Difference   -0.147 0.0659 -0.2763 -0.0179 200</span>
-<span class="co"># Risk Ratio         0.638 0.6216  0.1885  2.1559 200</span>
-<span class="co"># Odds Ratio         0.511 1.3356  0.0373  7.0037 200</span></pre></div>
+<div class="section level2">
+<h2 id="installation-1">
+<a id="Installation"></a>Installation<a class="anchor" aria-label="anchor" href="#installation-1"></a>
+</h2>
+<div class="section level3">
+<h3 id="cran-version">CRAN version<a class="anchor" aria-label="anchor" href="#cran-version"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"AIPW"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="github-version">Github version<a class="anchor" aria-label="anchor" href="#github-version"></a>
+</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>* CRAN version only supports SuperLearner and tmle. New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3. If you are still interested in using the version with sl3 and tmle3 support, please install <code>remotes::install_github("yqzhong7/AIPW@aje_version")</code> <s>Please install the Github version (master branch) if you choose to use sl3 and tmle3.</s></strong></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="example-1">
+<a id="Example"></a>Example<a class="anchor" aria-label="anchor" href="#example-1"></a>
+</h2>
+<div class="section level3">
+<h3 id="setup-example-data-1">
+<a id="data"></a>Setup example data<a class="anchor" aria-label="anchor" href="#setup-example-data-1"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">888</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"eager_sim_obs"</span><span class="op">)</span></span>
+<span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span></span>
+<span><span class="va">exposure</span> <span class="op">&lt;-</span> <span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span></span>
+<span><span class="co">#covariates for both outcome model (Q) and exposure model (g)</span></span>
+<span><span class="va">covariates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">eager_sim_obs</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">:</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># covariates &lt;- c(rbinom(N,1,0.4)) #a vector of a single covariate is also supported</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="one-line-version-aipw-class-method-chaining-from-r6class">
+<a id="one_line"></a>One line version (<code>AIPW</code> class: method chaining from R6class)<a class="anchor" aria-label="anchor" href="#one-line-version-aipw-class-method-chaining-from-r6class"></a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yqzhong7/AIPW" class="external-link">AIPW</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner" class="external-link">SuperLearner</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: nnls</span></span>
+<span><span class="co">#&gt; Loading required package: gam</span></span>
+<span><span class="co">#&gt; Loading required package: splines</span></span>
+<span><span class="co">#&gt; Loading required package: foreach</span></span>
+<span><span class="co">#&gt; Loaded gam 1.20.2</span></span>
+<span><span class="co">#&gt; Super Learner</span></span>
+<span><span class="co">#&gt; Version: 2.0-28</span></span>
+<span><span class="co">#&gt; Package created on 2021-05-04</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>                    A <span class="op">=</span> <span class="va">exposure</span>,</span>
+<span>                    W <span class="op">=</span> <span class="va">covariates</span>, </span>
+<span>                    Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    k_split <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                    verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="co">#Default truncation</span></span>
+<span>  <span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span><span class="op">$</span> </span>
+<span>  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/one_line-1.png"><!-- --><img src="reference/figures/one_line-2.png"><!-- --></p>
+<p>To see the results, set <code>verbose = TRUE</code>(default) or:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">AIPW_SL</span><span class="op">$</span><span class="va">result</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                  Estimate    SE 95% LCL 95% UCL   N</span></span>
+<span><span class="co">#&gt; Risk of Exposure     0.44 0.046  0.3528    0.53 118</span></span>
+<span><span class="co">#&gt; Risk of Control      0.31 0.051  0.2061    0.41  82</span></span>
+<span><span class="co">#&gt; Risk Difference      0.14 0.068  0.0048    0.27 200</span></span>
+<span><span class="co">#&gt; Risk Ratio           1.45 0.191  0.9974    2.11 200</span></span>
+<span><span class="co">#&gt; Odds Ratio           1.81 0.295  1.0144    3.22 200</span></span></code></pre></div>
+<p>To obtain average treatment effect among the treated/controls (ATT/ATC), <code>statified_fit()</code> must be used:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">AIPW_SL_att</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>                    A <span class="op">=</span> <span class="va">exposure</span>,</span>
+<span>                    W <span class="op">=</span> <span class="va">covariates</span>, </span>
+<span>                    Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    k_split <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                    verbose<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">AIPW_SL_att</span><span class="op">$</span><span class="fu">stratified_fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Done!</span></span>
+<span><span class="co">#&gt;                     Estimate     SE  95% LCL 95% UCL   N</span></span>
+<span><span class="co">#&gt; Risk of Exposure      0.4352 0.0467  0.34362   0.527 118</span></span>
+<span><span class="co">#&gt; Risk of Control       0.3244 0.0513  0.22385   0.425  82</span></span>
+<span><span class="co">#&gt; Risk Difference       0.1108 0.0684 -0.02320   0.245 200</span></span>
+<span><span class="co">#&gt; Risk Ratio            1.3416 0.1858  0.93210   1.931 200</span></span>
+<span><span class="co">#&gt; Odds Ratio            1.6048 0.2927  0.90429   2.848 200</span></span>
+<span><span class="co">#&gt; ATT Risk Difference   0.0991 0.0880 -0.07339   0.272 200</span></span>
+<span><span class="co">#&gt; ATC Risk Difference   0.1148 0.0634 -0.00946   0.239 200</span></span></code></pre></div>
+<p>You can also use the <code><a href="reference/aipw_wrapper.html">aipw_wrapper()</a></code> to wrap <code>new()</code>, <code><a href="reference/fit.html">fit()</a></code> and <code><a href="reference/summary.html">summary()</a></code> together (also support method chaining):</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/aipw_wrapper.html">aipw_wrapper</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>                        A <span class="op">=</span> <span class="va">exposure</span>,</span>
+<span>                        W <span class="op">=</span> <span class="va">covariates</span>, </span>
+<span>                        Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                        g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                        k_split <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                        verbose<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                        stratified_fit<span class="op">=</span><span class="cn">F</span><span class="op">)</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="parallelization-with-futureapply-and-progress-bar-with-progressr">
+<a id="par"></a>Parallelization with <code>future.apply</code> and progress bar with <code>progressr</code>
+<a class="anchor" aria-label="anchor" href="#parallelization-with-futureapply-and-progress-bar-with-progressr"></a>
+</h2>
+<p>In default setting, the <code>AIPW$fit()</code> method will be run sequentially. The current version of AIPW package supports parallel processing implemented by <a href="https://github.com/HenrikBengtsson/future.apply" class="external-link">future.apply</a> package under the <a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a> framework. Simply use <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">future::plan()</a></code> to enable parallelization and <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> to take care of the random number generation (RNG) problem:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">###Additional steps for parallel processing###</span></span>
+<span><span class="co"># install.packages("future.apply")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.apply.futureverse.org" class="external-link">future.apply</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: future</span></span>
+<span><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multiprocess</span>, workers<span class="op">=</span><span class="fl">2</span>, gc<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Strategy 'multiprocess' is deprecated in future (&gt;= 1.20.0)</span></span>
+<span><span class="co">#&gt; [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or</span></span>
+<span><span class="co">#&gt; 'multicore'. In the current R session, 'multiprocess' equals 'multisession'.</span></span>
+<span><span class="co">#&gt; Warning in supportsMulticoreAndRStudio(...): [ONE-TIME WARNING] Forked</span></span>
+<span><span class="co">#&gt; processing ('multicore') is not supported when running R from RStudio</span></span>
+<span><span class="co">#&gt; because it is considered unstable. For more details, how to control forked</span></span>
+<span><span class="co">#&gt; processing or not, and how to silence this warning in future R sessions, see ?</span></span>
+<span><span class="co">#&gt; parallelly::supportsMulticore</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">888</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">###Same procedure for AIPW as described above###</span></span>
+<span><span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>                    A <span class="op">=</span> <span class="va">exposure</span>,</span>
+<span>                    W <span class="op">=</span> <span class="va">covariates</span>, </span>
+<span>                    Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    k_split <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                    verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Done!</span></span>
+<span><span class="co">#&gt;                  Estimate     SE 95% LCL 95% UCL   N</span></span>
+<span><span class="co">#&gt; Risk of Exposure    0.443 0.0462 0.35284   0.534 118</span></span>
+<span><span class="co">#&gt; Risk of Control     0.306 0.0510 0.20607   0.406  82</span></span>
+<span><span class="co">#&gt; Risk Difference     0.137 0.0677 0.00482   0.270 200</span></span>
+<span><span class="co">#&gt; Risk Ratio          1.449 0.1906 0.99741   2.106 200</span></span>
+<span><span class="co">#&gt; Odds Ratio          1.807 0.2946 1.01442   3.219 200</span></span></code></pre></div>
+<p>Progress bar that supports parallel processing is available in the <code>AIPW$fit()</code> method through the API from <a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a> package:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org" class="external-link">progressr</a></span><span class="op">)</span></span>
+<span><span class="co">#define the type of progress bar</span></span>
+<span><span class="fu"><a href="https://progressr.futureverse.org/reference/handlers.html" class="external-link">handlers</a></span><span class="op">(</span><span class="st">"progress"</span><span class="op">)</span></span>
+<span><span class="co">#reporting through progressr::with_progress() which is embedded in the AIPW$fit() method</span></span>
+<span><span class="fu"><a href="https://progressr.futureverse.org/reference/with_progress.html" class="external-link">with_progress</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/AIPW.html">AIPW</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>                    A <span class="op">=</span> <span class="va">exposure</span>,</span>
+<span>                    W <span class="op">=</span> <span class="va">covariates</span>, </span>
+<span>                    Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                    k_split <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                    verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#also available for the wrapper</span></span>
+<span><span class="fu"><a href="https://progressr.futureverse.org/reference/with_progress.html" class="external-link">with_progress</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">AIPW_SL</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/aipw_wrapper.html">aipw_wrapper</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>                        A <span class="op">=</span> <span class="va">exposure</span>,</span>
+<span>                        W <span class="op">=</span> <span class="va">covariates</span>, </span>
+<span>                        Q.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                        g.SL.library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                        k_split <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                        verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="use-tmletmle3-fitted-object-as-input-aipw_tmle-class">
+<a id="tmle"></a>Use <code>tmle</code>/<code>tmle3</code> fitted object as input (<code>AIPW_tmle</code> class)<a class="anchor" aria-label="anchor" href="#use-tmletmle3-fitted-object-as-input-aipw_tmle-class"></a>
+</h2>
+<p><code>AIPW_tmle</code> class is designed for using <code>tmle</code>/<code>tmle3</code> fitted object as input</p>
+<div class="section level4">
+<h4 id="id_1-tmle">1. <code>tmle</code>
+<a class="anchor" aria-label="anchor" href="#id_1-tmle"></a>
+</h4>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=tmle" class="external-link">tmle</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: tmle</span></span>
+<span><span class="co">#&gt; Loading required package: glmnet</span></span>
+<span><span class="co">#&gt; Loading required package: Matrix</span></span>
+<span><span class="co">#&gt; Loaded glmnet 4.1-6</span></span>
+<span><span class="co">#&gt; Welcome to the tmle package, version 1.5.0-1.1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Major changes since v1.3.x. Use tmleNews() to see details on changes and bug fixes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner" class="external-link">SuperLearner</a></span><span class="op">)</span></span>
+<span><span class="va">tmle_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tmle/man/tmle.html" class="external-link">tmle</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">outcome</span><span class="op">)</span>, A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">exposure</span><span class="op">)</span>,W <span class="op">=</span> <span class="va">covariates</span>,</span>
+<span>                 Q.SL.library<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                 g.SL.library<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SL.mean"</span>,<span class="st">"SL.glm"</span><span class="op">)</span>,</span>
+<span>                 family<span class="op">=</span><span class="st">"binomial"</span><span class="op">)</span></span>
+<span><span class="va">tmle_fit</span></span>
+<span><span class="co">#&gt;  Additive Effect</span></span>
+<span><span class="co">#&gt;    Parameter Estimate:  0.12795</span></span>
+<span><span class="co">#&gt;    Estimated Variance:  0.0043047</span></span>
+<span><span class="co">#&gt;               p-value:  0.051161</span></span>
+<span><span class="co">#&gt;     95% Conf Interval: (-0.00064797, 0.25654) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Additive Effect among the Treated</span></span>
+<span><span class="co">#&gt;    Parameter Estimate:  0.13118</span></span>
+<span><span class="co">#&gt;    Estimated Variance:  0.0045329</span></span>
+<span><span class="co">#&gt;               p-value:  0.051365</span></span>
+<span><span class="co">#&gt;     95% Conf Interval: (-0.00077957, 0.26314) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Additive Effect among the Controls</span></span>
+<span><span class="co">#&gt;    Parameter Estimate:  0.12446</span></span>
+<span><span class="co">#&gt;    Estimated Variance:  0.00414</span></span>
+<span><span class="co">#&gt;               p-value:  0.05307</span></span>
+<span><span class="co">#&gt;     95% Conf Interval: (-0.0016502, 0.25057) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Relative Risk</span></span>
+<span><span class="co">#&gt;    Parameter Estimate:  1.4093</span></span>
+<span><span class="co">#&gt;               p-value:  0.064957</span></span>
+<span><span class="co">#&gt;     95% Conf Interval: (0.97895, 2.0288) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;               log(RR):  0.34308</span></span>
+<span><span class="co">#&gt;     variance(log(RR)):  0.034558 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Odds Ratio</span></span>
+<span><span class="co">#&gt;    Parameter Estimate:  1.7316</span></span>
+<span><span class="co">#&gt;               p-value:  0.057367</span></span>
+<span><span class="co">#&gt;     95% Conf Interval: (0.98296, 3.0504) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;               log(OR):  0.54905</span></span>
+<span><span class="co">#&gt;     variance(log(OR)):  0.083461</span></span>
+<span><span class="co">#extract fitted tmle object to AIPW</span></span>
+<span><span class="va"><a href="reference/AIPW_tmle.html">AIPW_tmle</a></span><span class="op">$</span></span>
+<span>  <span class="fu">new</span><span class="op">(</span>A<span class="op">=</span><span class="va">exposure</span>,Y<span class="op">=</span><span class="va">outcome</span>,tmle_fit <span class="op">=</span> <span class="va">tmle_fit</span>,verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">summary</span><span class="op">(</span>g.bound<span class="op">=</span><span class="fl">0.025</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Cross-fitting is supported only within the outcome model from a fitted tmle object (with cvQinit = TRUE)</span></span>
+<span><span class="co">#&gt;                  Estimate     SE   95% LCL 95% UCL   N</span></span>
+<span><span class="co">#&gt; Risk of Exposure    0.441 0.0447  0.352877   0.528 118</span></span>
+<span><span class="co">#&gt; Risk of Control     0.313 0.0503  0.214003   0.411  82</span></span>
+<span><span class="co">#&gt; Risk Difference     0.128 0.0656 -0.000648   0.257 200</span></span>
+<span><span class="co">#&gt; Risk Ratio          1.409 0.1814  0.987632   2.011 200</span></span>
+<span><span class="co">#&gt; Odds Ratio          1.732 0.2814  0.997604   3.006 200</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="id_2-tmle3">2. <code>tmle3</code>
+<a class="anchor" aria-label="anchor" href="#id_2-tmle3"></a>
+</h4>
+<p>__New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3. If you are still interested in using the version with sl3 and tmle3 support, please install `remotes::install_github(“<a href="mailto:yqzhong7/AIPW@aje" class="email">yqzhong7/AIPW@aje</a>_version”)__</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"yqzhong7/AIPW@aje_version"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sl3</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tmle3</span><span class="op">)</span></span>
+<span><span class="va">node_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>A <span class="op">=</span> <span class="st">"sim_A"</span>,Y <span class="op">=</span> <span class="st">"sim_Y"</span>,W <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">eager_sim_obs</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">:</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">or_spec</span> <span class="op">&lt;-</span> <span class="fu">tmle_OR</span><span class="op">(</span>baseline_level <span class="op">=</span> <span class="st">"0"</span>,contrast_level <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
+<span><span class="va">tmle_task</span> <span class="op">&lt;-</span> <span class="va">or_spec</span><span class="op">$</span><span class="fu">make_tmle_task</span><span class="op">(</span><span class="va">eager_sim_obs</span>,<span class="va">node_list</span><span class="op">)</span></span>
+<span><span class="va">lrnr_glm</span> <span class="op">&lt;-</span> <span class="fu">make_learner</span><span class="op">(</span><span class="va">Lrnr_glm</span><span class="op">)</span></span>
+<span><span class="va">lrnr_mean</span> <span class="op">&lt;-</span> <span class="fu">make_learner</span><span class="op">(</span><span class="va">Lrnr_mean</span><span class="op">)</span></span>
+<span><span class="va">sl</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">lrnr_glm</span>,<span class="va">lrnr_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">learner_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>A <span class="op">=</span> <span class="va">sl</span>, Y <span class="op">=</span> <span class="va">sl</span><span class="op">)</span></span>
+<span><span class="va">tmle3_fit</span> <span class="op">&lt;-</span> <span class="fu">tmle3</span><span class="op">(</span><span class="va">or_spec</span>, data<span class="op">=</span><span class="va">eager_sim_obs</span>, <span class="va">node_list</span>, <span class="va">learner_list</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># parse tmle3_fit into AIPW_tmle class</span></span>
+<span><span class="va"><a href="reference/AIPW_tmle.html">AIPW_tmle</a></span><span class="op">$</span></span>
+<span>  <span class="fu">new</span><span class="op">(</span>A<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_A</span>,Y<span class="op">=</span><span class="va">eager_sim_obs</span><span class="op">$</span><span class="va">sim_Y</span>,tmle_fit <span class="op">=</span> <span class="va">tmle3_fit</span>,verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="references-1">
+<a id="ref"></a>References:<a class="anchor" aria-label="anchor" href="#references-1"></a>
+</h3>
+<p>Robins JM, Rotnitzky A (1995). Semiparametric efficiency in multivariate regression models with missing data. Journal of the American Statistical Association.</p>
+<p>Chernozhukov V, Chetverikov V, Demirer M, et al (2018). Double/debiased machine learning for treatment and structural parameters. The Econometrics Journal.</p>
+<p>Kennedy EH, Sjolander A, Small DS (2015). Semiparametric causal inference in matched cohort studies. Biometrika.</p>
+<p>Pearl, J., 2009. Causality. Cambridge university press.</p>
+</div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/yqzhong7/AIPW/">https://​github.com/​yqzhong7/​AIPW/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/yqzhong7/AIPW/issues">https://​github.com/​yqzhong7/​AIPW/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Yongqi Zhong <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4042-7450" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Ashley Naimi <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1510-8175" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Gabriel Conzuelo <br><small class="roles"> Author </small>  </li>
+<li><a href="https://cloud.r-project.org/package=AIPW" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/yqzhong7/AIPW/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/yqzhong7/AIPW/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://codecov.io/gh/yqzhong7/AIPW?branch=master"><img src="https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://travis-ci.com/yqzhong7/AIPW"><img src="https://travis-ci.com/yqzhong7/AIPW.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing AIPW</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>
+<a href="https://github.com/yqzhong7" class="external-link">Yongqi Zhong</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4042-7450" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>
+<a href="https://github.com/ainaimi" class="external-link">Ashley Naimi</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1510-8175" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://www.repostatus.org/#active" class="external-link"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a></li>
+<li><a href="https://codecov.io/gh/yqzhong7/AIPW?branch=master" class="external-link"><img src="https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://travis-ci.com/yqzhong7/AIPW" class="external-link"><img src="https://travis-ci.com/yqzhong7/AIPW.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://github.com/yqzhong7/AIPW/actions" class="external-link"><img src="https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://cran.r-project.org/package=AIPW" class="external-link"><img src="https://www.r-pkg.org/badges/version/AIPW?color=blue"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Yongqi Zhong, Ashley Naimi, Gabriel Conzuelo.</p>
+  <p></p>
+<p>Developed by <a href="https://github.com/yqzhong7" class="external-link">Yongqi Zhong</a>, <a href="https://github.com/ainaimi" class="external-link">Ashley Naimi</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>
 </div>
 
-  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
+  docsearch({
 
 
-  </body>
+    apiKey: 'fdb17ce3606ec3425c318a7950c6cf48',
+    indexName: 'aipw',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+</body>
 </html>
