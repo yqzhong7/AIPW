@@ -180,9 +180,14 @@ AIPW <- R6::R6Class(
           private$sl.learners = grep("SL.",lsf.str(globalenv()),value = T)
           lapply(private$sl.learners, function(x) assign(x=x,value=get(x,globalenv()),envir=private$sl.env))
           #change wrapper functions
-          self$sl.fit = function(Y, X, SL.library, CV){
+          self$sl.fit = function(Y, X, SL.library, CV, Q.model=TRUE){
+            if (Q.model){
+              Y.type = private$Y.type
+            } else{
+              Y.type = 'binomial'
+            }
             suppressMessages({
-              fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family= private$Y.type,
+              fit <- SuperLearner::SuperLearner(Y = Y, X = X, SL.library = SL.library, family= Y.type,
                                                 env=private$sl.env, cvControl = CV)
             })
             return(fit)
