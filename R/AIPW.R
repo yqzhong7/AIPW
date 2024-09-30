@@ -343,7 +343,8 @@ AIPW <- R6::R6Class(
           g.fit <- self$sl.fit(Y=private$AxObserved[train_index],
                                X=train_set.g,
                                SL.library = self$libs$g.SL.library,
-                               CV= cv_param)
+                               CV= cv_param,
+                               Q.model = FALSE)
           # predict on validation set
           raw_p_score  <- self$sl.predict(g.fit,newdata = validation_set.g)  #g_pred
 
