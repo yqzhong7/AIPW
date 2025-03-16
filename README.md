@@ -8,8 +8,6 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test
 coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
-[![Travis build
-status](https://travis-ci.com/yqzhong7/AIPW.svg?branch=master)](https://travis-ci.com/yqzhong7/AIPW)
 [![R build
 status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
 [![](https://www.r-pkg.org/badges/version/AIPW?color=blue)](https://cran.r-project.org/package=AIPW)
@@ -57,6 +55,8 @@ If you find this package is helpful, please consider to cite:
   - ###### [Setup example data](#data)
 
   - ###### [One line version](#one_line)
+
+- ##### [Repeated Fitting](#rep)
 
 - ##### [Parallelization and progress bar](#par)
 
@@ -183,6 +183,59 @@ AIPW_SL <- aipw_wrapper(Y = outcome,
                         verbose=TRUE,
                         stratified_fit=F)$plot.p_score()$plot.ip_weights()
 ```
+
+## <a id="rep"></a>Repeated Fitting
+
+The `Repeated` class allows for repeated cross-fitting procedures to
+mitigate randomness due to data splits. This approach is recommended in
+machine learning-based estimation as suggested by Chernozhukov et
+al. (2018).
+
+``` r
+library(SuperLearner)
+library(ggplot2)
+
+# First create a regular AIPW object
+aipw_obj <- AIPW$new(Y = outcome,
+                     A = exposure,
+                     W = covariates, 
+                     Q.SL.library = c("SL.mean","SL.glm"),
+                     g.SL.library = c("SL.mean","SL.glm"),
+                     k_split = 3,
+                     verbose = FALSE)
+
+# Create a repeated fitting object from the AIPW object
+repeated_aipw <- Repeated$new(aipw_obj)
+
+# Perform repeated fitting 20 times
+repeated_aipw$repfit(num_reps = 20, stratified = FALSE)
+
+# Summarize results using median-based methods
+repeated_aipw$summary_median()
+
+# You can also visualize the distribution of estimates across repetitions
+estimates_df <- repeated_aipw$repeated_estimates
+ggplot(estimates_df, aes(x = Estimate, fill = Estimand)) +
+  geom_density(alpha = 0.5) +
+  theme_minimal() +
+  labs(title = "Distribution of Estimates Across Repeated Fittings",
+       subtitle = "Based on 20 repetitions",
+       x = "Estimate Value",
+       y = "Density")
+```
+
+Setting `stratified = TRUE` in the `repfit()` function will use the
+stratified fitting procedure for each repetition:
+
+``` r
+# Using stratified fitting
+repeated_aipw_strat <- Repeated$new(aipw_obj)
+repeated_aipw_strat$repfit(num_reps = 20, stratified = TRUE)
+repeated_aipw_strat$summary_median()
+```
+
+Note that the `Repeated` class also supports parallelization with
+`future.apply` as described below.
 
 ## <a id="par"></a>Parallelization with `future.apply` and progress bar with `progressr`
 
