@@ -103,24 +103,10 @@ Repeated <- R6Class("RepeatedFit",
                                     self$aipw_obj$fit()$summary()
                                   }
 
-                                  estimates_count = 3
-                                  Estimand_label = c("Risk of exposure", "Risk of control","Risk Difference")
-
-                                  if (private$Y.type == 'binomial'){
-                                    estimates_count = estimates_count +2
-                                    Estimand_label = c(Estimand_label,"Risk Ratio", "Odds Ratio")
-                                  }
-
-                                  if (self$stratified_fitted) {
-                                    estimates_count = estimates_count +2
-                                    Estimand_label = c(Estimand_label, "ATT Risk Difference","ATC Risk Difference")
-                                  }
-
-                                  estimates = data.frame(do.call(rbind,self$aipw_obj$estimates[1:estimates_count]))[,1:2]
+                                  estimates = data.frame(self$aipw_obj$result[,1:2])
                                   estimates$Estimand = rownames(estimates)
                                   estimates$Estimand = factor(estimates$Estimand,
-                                                              levels = estimates$Estimand,
-                                                              labels = Estimand_label)
+                                                               levels = estimates$Estimand)
                                   return(estimates)
                                 })
                               names(self$repeated_estimates) = iter
