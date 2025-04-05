@@ -2,6 +2,9 @@
 #'
 #' @description `AIPW_tmle` class uses a fitted `tmle` or `tmle3` object as input
 #'
+#' @importFrom stats predict
+#' @importFrom utils head
+#'
 #' @details Create an AIPW_tmle object that uses the estimated efficient influence function from a fitted `tmle` or `tmle3` object
 #'
 #' @section Constructor:

@@ -13,6 +13,7 @@ status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https
 [![](https://www.r-pkg.org/badges/version/AIPW?color=blue)](https://cran.r-project.org/package=AIPW)
 
 <!-- badges: end -->
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 **Contributors:** [Yongqi Zhong](https://github.com/yqzhong7), [Ashley
@@ -48,6 +49,8 @@ If you find this package is helpful, please consider to cite:
 
 ## Contents:
 
+- ##### [Updates](#Updates)
+
 - ##### [Installation](#Installation)
 
 - ##### [Example](#Example)
@@ -63,6 +66,53 @@ If you find this package is helpful, please consider to cite:
 - ##### [Use tmle/tmle3 as input](#tmle)
 
 - ##### [References](#ref)
+
+------------------------------------------------------------------------
+
+## <a id="Updates"></a>Updates
+
+### 2025-04-05 Updates
+
+#### Repeated Cross-fitting
+
+The major new feature introduced is the `Repeated` class, which allows
+for repeated cross-fitting procedures to mitigate randomness due to data
+splits in machine learning-based estimation as suggested by Chernozhukov
+et al. (2018). This feature: - Enables running the cross-fitting
+procedure multiple times to produce more stable estimates - Provides
+methods to summarize results using median-based approaches - Supports
+parallelization with `future.apply` - Includes visualization of estimate
+distributions across repetitions - See the [Repeated Cross-fitting
+vignette](vignettes/Repated_Crossfitting.Rmd) for more details
+
+#### Continuous Outcome Support Improvements
+
+- Fixed handling of continuous outcomes for exposure models (#50)
+- Improved handling of non-binary treatments
+- Fixed Q.model for continuous outcomes
+
+#### Infrastructure Improvements
+
+- Updated GitHub Actions workflows for R-CMD-check, test coverage, and
+  pkgdown
+- Removed Travis CI in favor of GitHub Actions
+- Enhanced test coverage with additional tests for the new Repeated
+  class
+- Updated documentation and namespace for new functionality
+
+#### Support Changes
+
+- New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3
+- Users requiring sl3 and tmle3 support should install via
+  `remotes::install_github("yqzhong7/AIPW@aje_version")`
+
+#### Bug Fixes
+
+- Fixed repeated fitting when stratified_fit is enabled
+- Fixed handling of Q.model
+- Added proper error handling for various edge cases
+- Fixed continuous outcome for exposure model
+- Improved cross-fitting to reduce randomness (#38)
 
 ------------------------------------------------------------------------
 

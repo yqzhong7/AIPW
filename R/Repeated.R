@@ -2,6 +2,11 @@
 #'
 #' @description An R6Class that allows repeated crossfitting procedure for an [AIPW] object
 #'
+#' @importFrom stats predict
+#' @importFrom utils head
+#' @importFrom future.apply future_lapply
+#' @importFrom progressr progressor
+#'
 #' @details
 #' See examples for illustration.
 #'
