@@ -60,10 +60,25 @@ jobs:
           # Install additional dependencies that might be needed
           brew install pkg-config
           brew install automake
+          brew install libomp # For OpenMP support in data.table
 
-          # Set environment variables for compiler flags
-          echo "CPPFLAGS=-I/usr/local/opt/gettext/include" >> $GITHUB_ENV
-          echo "LDFLAGS=-L/usr/local/opt/gettext/lib" >> $GITHUB_ENV
+          # Create Makevars to ensure compiler flags are used
+          mkdir -p ~/.R
+          echo "CPPFLAGS=-I/usr/local/opt/gettext/include -I/opt/homebrew/opt/gettext/include" > ~/.R/Makevars
+          echo "LDFLAGS=-L/usr/local/opt/gettext/lib -L/opt/homebrew/opt/gettext/lib" >> ~/.R/Makevars
+          echo "CFLAGS=-I/usr/local/opt/gettext/include -I/opt/homebrew/opt/gettext/include" >> ~/.R/Makevars
+
+          # Set explicit paths for arm64 architecture (for GitHub Actions runners)
+          if [ -d "/opt/homebrew" ]; then
+            echo "CPPFLAGS=-I/opt/homebrew/opt/gettext/include -I/opt/homebrew/include" > ~/.R/Makevars
+            echo "LDFLAGS=-L/opt/homebrew/opt/gettext/lib -L/opt/homebrew/lib" >> ~/.R/Makevars
+            echo "CFLAGS=-I/opt/homebrew/opt/gettext/include -I/opt/homebrew/include" >> ~/.R/Makevars
+          fi
+
+          # Add OpenMP flags for data.table
+          echo "SHLIB_OPENMP_CFLAGS=-Xclang -fopenmp" >> ~/.R/Makevars
+
+          cat ~/.R/Makevars
 
       - name: Query dependencies
         run: |
@@ -92,8 +107,25 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # Try to install problematic packages separately with special handling
+          if (Sys.info()["sysname"] == "Darwin" && R.version$status == "Under development (unstable)") {
+            options(install.packages.check.source = "no")
+            install.packages(c("data.table", "gam", "glmnet", "cvAUC", "SuperLearner"),
+                           type = "binary",
+                           repos = "https://cloud.r-project.org",
+                           quiet = TRUE,
+                           INSTALL_opts = "--no-multiarch")
+          }
+
+          # Install main dependencies
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+
+          # Print system and package information for debugging
+          cat("System information:\n")
+          print(Sys.info())
+          cat("\nR session information:\n")
+          print(sessionInfo())
         shell: Rscript {0}
 
       - name: Session info
