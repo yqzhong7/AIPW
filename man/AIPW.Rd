@@ -79,8 +79,8 @@ If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
 \code{result}         \tab   \code{summary()}                \tab     A matrix contains RD, ATT, ATC, RR and OR with their SE and 95\%CI \cr
 \code{g.plot}         \tab   \code{plot.p_score()}           \tab     A density plot of propensity scores by exposure status\cr
 \code{ip_weights.plot}         \tab   \code{plot.ip_weights()}           \tab     A box plot of inverse probability weights \cr
-\code{libs}           \tab   \code{fit()}                    \tab     \link{SuperLearner} or sl3 libraries and their fitted objects \cr
-\code{sl.fit}         \tab   Constructor                \tab     A wrapper function for fitting \link{SuperLearner} or sl3 \cr
+\code{libs}           \tab   \code{fit()}                    \tab     \CRANpkg{SuperLearner} or sl3 libraries and their fitted objects \cr
+\code{sl.fit}         \tab   Constructor                \tab     A wrapper function for fitting \CRANpkg{SuperLearner} or sl3 \cr
 \code{sl.predict}     \tab   Constructor                \tab     A wrapper function using \code{sl.fit} to predict \cr
 }
 \subsection{Public Variable Details}{
