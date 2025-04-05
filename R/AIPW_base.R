@@ -5,10 +5,13 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom stats predict
+#' @importFrom utils head
+#' @importFrom ggplot2 ggplot aes geom_density theme_bw labs
 #'
 #' @return \code{AIPW} base object
 #' @seealso [AIPW] and [AIPW_tmle]
-#' @format \code{\link{R6Class}} object.
+#' @format \CRANpkg{R6} object.
 #' @export
 AIPW_base <- R6::R6Class(
   "AIPW_base",

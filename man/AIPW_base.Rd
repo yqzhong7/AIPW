@@ -5,7 +5,7 @@
 \alias{AIPW_base}
 \title{Augmented Inverse Probability Weighting Base Class (AIPW_base)}
 \format{
-\code{\link{R6Class}} object.
+\CRANpkg{R6} object.
 }
 \value{
 \code{AIPW} base object

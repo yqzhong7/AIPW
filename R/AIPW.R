@@ -3,6 +3,14 @@
 #' @description An R6Class of AIPW for estimating the average causal effects with users' inputs of exposure, outcome, covariates and related
 #' libraries for estimating the efficient influence function.
 #'
+#' @importFrom stats predict
+#' @importFrom utils head
+#' @importFrom SuperLearner SuperLearner
+#' @importFrom ggplot2 ggplot aes geom_density theme_bw labs
+#' @importFrom future.apply future_lapply
+#' @importFrom progressr progressor
+#' @importFrom Rsolnp solnp
+#'
 #' @details An AIPW object is constructed by `new()` with users' inputs of data and causal structures, then it `fit()` the data using the
 #' libraries in `Q.SL.library` and `g.SL.library` with `k_split` cross-fitting, and provides results via the `summary()` method.
 #' After using `fit()` and/or `summary()` methods, propensity scores  and inverse probability weights by exposure status can be
@@ -34,7 +42,7 @@
 #' ## Constructor Argument Details
 #' \describe{
 #'   \item{\code{W}, \code{W.Q} & \code{W.g}}{It can be a vector, matrix or data.frame. If and only if `W == NULL`, `W` would be replaced by `W.Q` and `W.g`. }
-#'   \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from [SuperLearner] libraries or `sl3` learner object (Lrnr_base)}
+#'   \item{\code{Q.SL.library} & \code{g.SL.library}}{Machine learning algorithms from \CRANpkg{SuperLearner} libraries or `sl3` learner object (Lrnr_base)}
 #'   \item{\code{k_split}}{It ranges from 1 to number of observation-1.
 #'                         If k_split=1, no cross-fitting; if k_split>=2, cross-fitting is used
 #'                         (e.g., `k_split=10`, use 9/10 of the data to estimate and the remaining 1/10 leftover to predict).
