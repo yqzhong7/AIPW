@@ -13,6 +13,6 @@ bibentry(bibtype = "Article",
   issue       = "12",
   pages        = "2690-2699",
   issn = "0002-9262",
-  doi = "10.1093/aje/kwab207"
+  doi = "10.1093/aje/kwab207",
   url = "https://doi.org/10.1093/aje/kwab207"
 )
