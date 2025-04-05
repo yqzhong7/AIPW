@@ -118,6 +118,7 @@
 <h2 id="contents">Contents:<a class="anchor" aria-label="anchor" href="#contents"></a>
 </h2>
 <ul>
+<li><h5 id="updates"><a href="#Updates">Updates</a></h5></li>
 <li><h5 id="installation"><a href="#Installation">Installation</a></h5></li>
 <li>
 <h5 id="example"><a href="#Example">Example</a></h5>
@@ -132,6 +133,60 @@
 <li><h5 id="references"><a href="#ref">References</a></h5></li>
 </ul>
 <hr>
+</div>
+<div class="section level2">
+<h2 id="updates-1">
+<a id="Updates"></a>Updates<a class="anchor" aria-label="anchor" href="#updates-1"></a>
+</h2>
+<div class="section level3">
+<h3 id="id_2025-04-05-updates">2025-04-05 Updates<a class="anchor" aria-label="anchor" href="#id_2025-04-05-updates"></a>
+</h3>
+<div class="section level4">
+<h4 id="repeated-cross-fitting">Repeated Cross-fitting<a class="anchor" aria-label="anchor" href="#repeated-cross-fitting"></a>
+</h4>
+<p>The major new feature introduced is the <code>Repeated</code> class, which allows for repeated cross-fitting procedures to mitigate randomness due to data splits in machine learning-based estimation as suggested by Chernozhukov et al. (2018). This feature: - Enables running the cross-fitting procedure multiple times to produce more stable estimates - Provides methods to summarize results using median-based approaches - Supports parallelization with <code>future.apply</code> - Includes visualization of estimate distributions across repetitions - See the <a href="vignettes/Repated_Crossfitting.Rmd">Repeated Cross-fitting vignette</a> for more details</p>
+</div>
+<div class="section level4">
+<h4 id="continuous-outcome-support-improvements">Continuous Outcome Support Improvements<a class="anchor" aria-label="anchor" href="#continuous-outcome-support-improvements"></a>
+</h4>
+<ul>
+<li>Fixed handling of continuous outcomes for exposure models (#50)</li>
+<li>Improved handling of non-binary treatments</li>
+<li>Fixed Q.model for continuous outcomes</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="infrastructure-improvements">Infrastructure Improvements<a class="anchor" aria-label="anchor" href="#infrastructure-improvements"></a>
+</h4>
+<ul>
+<li>Updated GitHub Actions workflows for R-CMD-check, test coverage, and pkgdown</li>
+<li>Removed Travis CI in favor of GitHub Actions</li>
+<li>Enhanced test coverage with additional tests for the new Repeated class</li>
+<li>Updated documentation and namespace for new functionality</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="support-changes">Support Changes<a class="anchor" aria-label="anchor" href="#support-changes"></a>
+</h4>
+<ul>
+<li>New GitHub versions (after v0.6.3.1) no longer support sl3 and tmle3</li>
+<li>Users requiring sl3 and tmle3 support should install via <code>remotes::install_github("yqzhong7/AIPW@aje_version")</code>
+</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="bug-fixes">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes"></a>
+</h4>
+<ul>
+<li>Fixed repeated fitting when stratified_fit is enabled</li>
+<li>Fixed handling of Q.model</li>
+<li>Added proper error handling for various edge cases</li>
+<li>Fixed continuous outcome for exposure model</li>
+<li>Improved cross-fitting to reduce randomness (#38)</li>
+</ul>
+<hr>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="installation-1">
