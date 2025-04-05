@@ -21,9 +21,20 @@ jobs:
       fail-fast: false
       matrix:
         config:
+          # Windows environments
           - {os: windows-latest, r: 'release'}
+          - {os: windows-latest, r: 'oldrel'}
+          - {os: windows-latest, r: 'devel'}
+
+          # macOS environments
           - {os: macOS-latest, r: 'release'}
+          - {os: macOS-latest, r: 'oldrel'}
           - {os: macOS-latest, r: 'devel'}
+
+          # Linux environments
+          - {os: ubuntu-latest, r: 'devel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-latest, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-latest, r: 'oldrel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -35,8 +46,24 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
+          use-public-rspm: true
 
       - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Install macOS system dependencies
+        if: runner.os == 'macOS'
+        run: |
+          # Install gettext to fix the libintl.h missing issue
+          brew install gettext
+          brew link --force gettext
+
+          # Install additional dependencies that might be needed
+          brew install pkg-config
+          brew install automake
+
+          # Set environment variables for compiler flags
+          echo "CPPFLAGS=-I/usr/local/opt/gettext/include" >> $GITHUB_ENV
+          echo "LDFLAGS=-L/usr/local/opt/gettext/lib" >> $GITHUB_ENV
 
       - name: Query dependencies
         run: |
@@ -52,14 +79,16 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-1-
 
-      - name: Install system dependencies
+      - name: Install system dependencies for Linux
         if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+
+          # Additional Ubuntu packages that might be needed
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libgmp-dev libmpfr-dev
 
       - name: Install dependencies
         run: |
@@ -67,11 +96,26 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}
+
       - name: Check
         env:
-          _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+          _R_CHECK_CRAN_INCOMING_: false
+          _R_CHECK_FORCE_SUGGESTS_: false
+        run: |
+          options(crayon.enabled = TRUE)
+          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
+
+      - name: Show testthat output
+        if: always()
+        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
 
       - name: Upload check results
         if: failure()
