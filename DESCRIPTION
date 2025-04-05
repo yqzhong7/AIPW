@@ -1,6 +1,6 @@
 Package: AIPW
 Title: Augmented Inverse Probability Weighting
-Version: 0.6.9.1
+Version: 0.6.9.2
 Authors@R: 
     c(person(given = "Yongqi",
              family = "Zhong",
