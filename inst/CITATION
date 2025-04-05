@@ -13,5 +13,5 @@ citEntry(entry = "Article",
   doi = "10.1093/aje/kwab207",
   textVersion  = paste("Yongqi Zhong, Edward H. Kennedy, Lisa M. Bodnar, Ashley I. Naimi (2021).",
   "AIPW: An R Package for Augmented Inverse Probability Weighted Estimation of Average Causal Effects.",
-  "American Journal of Epidemiology. doi: 10.1093/aje/kwab207")
+  "American Journal of Epidemiology. <doi:10.1093/aje/kwab207>")
 )

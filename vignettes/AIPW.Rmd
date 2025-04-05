@@ -174,7 +174,7 @@ suppressWarnings({
 
 ## <a id="par"></a>Parallelization with future.apply
 
-In default setting, the `AIPW$fit()` method will be run sequentially. The current version of AIPW package supports parallel processing implemented by [future.apply](https://github.com/HenrikBengtsson/future.apply) package under the [future](https://github.com/HenrikBengtsson/future) framework. Before creating a `AIPW` object, simply use `future::plan()` to enable parallelization and `set.seed()` to take care of the random number generation (RNG) problem:
+In default setting, the `AIPW$fit()` method will be run sequentially. The current version of AIPW package supports parallel processing implemented by [future.apply](https://github.com/futureverse/future.apply) package under the [future](https://github.com/futureverse/future) framework. Before creating a `AIPW` object, simply use `future::plan()` to enable parallelization and `set.seed()` to take care of the random number generation (RNG) problem:
 
 ```{r parallel, eval=FALSE}
 # install.packages("future.apply")

@@ -7,7 +7,7 @@ AIPW: Augmented Inverse Probability Weighting
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test
-coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://codecov.io/gh/yqzhong7/AIPW?branch=master)
+coverage](https://codecov.io/gh/yqzhong7/AIPW/branch/master/graph/badge.svg)](https://app.codecov.io/gh/yqzhong7/AIPW?branch=master)
 [![R build
 status](https://github.com/yqzhong7/AIPW/workflows/R-CMD-check/badge.svg)](https://github.com/yqzhong7/AIPW/actions)
 [![](https://www.r-pkg.org/badges/version/AIPW?color=blue)](https://cran.r-project.org/package=AIPW)
@@ -292,8 +292,8 @@ Note that the `Repeated` class also supports parallelization with
 In default setting, the `AIPW$fit()` method will be run sequentially.
 The current version of AIPW package supports parallel processing
 implemented by
-[future.apply](https://github.com/HenrikBengtsson/future.apply) package
-under the [future](https://github.com/HenrikBengtsson/future) framework.
+[future.apply](https://github.com/futureverse/future.apply) package
+under the [future](https://github.com/futureverse/future) framework.
 Simply use `future::plan()` to enable parallelization and `set.seed()`
 to take care of the random number generation (RNG) problem:
 
@@ -332,7 +332,7 @@ AIPW_SL <- AIPW$new(Y = outcome,
 
 Progress bar that supports parallel processing is available in the
 `AIPW$fit()` method through the API from
-[progressr](https://github.com/HenrikBengtsson/progressr) package:
+[progressr](https://github.com/futureverse/progressr) package:
 
 ``` r
 library(progressr)
