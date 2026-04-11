@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AIPW</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.6.9.2</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.6.9.3</span>
       </span>
     </div>
 
@@ -167,10 +167,10 @@ or <a href="https://tlverse.org/sl3/articles/intro_sl3.html" class="external-lin
 <span><span class="co">#&gt; Loading required package: gam</span></span>
 <span><span class="co">#&gt; Loading required package: splines</span></span>
 <span><span class="co">#&gt; Loading required package: foreach</span></span>
-<span><span class="co">#&gt; Loaded gam 1.22-5</span></span>
+<span><span class="co">#&gt; Loaded gam 1.22-7</span></span>
 <span><span class="co">#&gt; Super Learner</span></span>
-<span><span class="co">#&gt; Version: 2.0-29</span></span>
-<span><span class="co">#&gt; Package created on 2024-02-06</span></span>
+<span><span class="co">#&gt; Version: 2.0-40</span></span>
+<span><span class="co">#&gt; Package created on 2025-12-14</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"eager_sim_obs"</span><span class="op">)</span></span>
@@ -199,7 +199,7 @@ sets for the exposure and the outcome models, respectively.</p>
 <span>  <span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span>g.bound <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>,<span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span>
 <span>  <span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span><span class="op">$</span></span>
 <span>  <span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AIPW_files/figure-html/one_line-1.png" width="576"><img src="AIPW_files/figure-html/one_line-2.png" width="576"></p>
+<p><img src="AIPW_files/figure-html/one_line-1.png" class="r-plt" alt="" width="576"><img src="AIPW_files/figure-html/one_line-2.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="a-more-detailed-tutorial">
@@ -291,10 +291,10 @@ exposure status after truncation</h5></li>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">plot.p_score</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AIPW_files/figure-html/ps_trunc-1.png" width="576"></p>
+<p><img src="AIPW_files/figure-html/ps_trunc-1.png" class="r-plt" alt="" width="576"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">AIPW_SL</span><span class="op">$</span><span class="fu">plot.ip_weights</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AIPW_files/figure-html/ps_trunc-2.png" width="576"></p>
+<p><img src="AIPW_files/figure-html/ps_trunc-2.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level4">
 <h4 id="calculate-average-treatment-effects-among-the-treatedcontrols">4. <a id="att"></a>Calculate average treatment effects among the
@@ -433,7 +433,7 @@ cross-fitting and propensity truncation (0.025) by default.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
